@@ -23,6 +23,12 @@ const router = createRouter({
                 {
                     path: 'besoin/create',
                     name: 'besoin-create',
+                    component: () => import('@/views/user/BesoinCreateView.vue'),
+                    meta: {requiresAuth: true}
+                },
+                {
+                    path: 'besoin',
+                    name: 'besoin',
                     component: () => import('@/views/user/BesoinView.vue'),
                     meta: {requiresAuth: true}
                 }
