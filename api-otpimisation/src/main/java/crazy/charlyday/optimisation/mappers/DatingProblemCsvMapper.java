@@ -32,7 +32,7 @@ public class DatingProblemCsvMapper {
                 String clientName = parts[1];
                 SkillType skillType = SkillType.valueOf(parts[2]);
 
-                clientMap.computeIfAbsent(clientName, k -> new ArrayList<>()).add(new Besoin(clientName, skillType));
+                clientMap.computeIfAbsent(clientName, k -> new ArrayList<>()).add(new Besoin(clientName, List.of(skillType)));
             } else {
                 // Salarie: index;name;skillType;level
                 String salarieName = parts[1];
