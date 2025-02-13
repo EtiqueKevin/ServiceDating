@@ -1,17 +1,31 @@
 <script setup>
-import {computed, onMounted, ref} from "vue";
-import {useBesoin} from "@/services/besoin.js";
+import { computed, onMounted, ref } from "vue";
+import { useBesoin } from "@/services/besoin.js";
 
 const besoins = ref([]);
 const filterStatus = ref('all');
-const {getBesoins} = useBesoin();
+const { getBesoins } = useBesoin();
 
 const isLoading = computed(() => besoins.value === null);
+
+// Pagination
+const currentPage = ref(1);
+const itemsPerPage = ref(5);
 
 const filteredBesoins = computed(() => {
   if (!besoins.value) return [];
   if (filterStatus.value === 'all') return besoins.value;
   return besoins.value.filter(b => b.status === parseInt(filterStatus.value));
+});
+
+const paginatedBesoins = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
+  return filteredBesoins.value.slice(start, end);
+});
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredBesoins.value.length / itemsPerPage.value);
 });
 
 const formatDate = (dateString) => {
@@ -29,6 +43,12 @@ const getStatusLabel = (status) => {
   }
 };
 
+const goToPage = (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+  }
+};
+
 onMounted(async () => {
   try {
     besoins.value = await getBesoins();
@@ -36,7 +56,6 @@ onMounted(async () => {
     console.error(error);
   }
 });
-
 </script>
 
 <template>
@@ -61,7 +80,7 @@ onMounted(async () => {
     </div>
 
     <div v-else class="besoins-grid">
-      <div v-for="besoin in filteredBesoins" :key="besoin.id" class="card">
+      <div v-for="besoin in paginatedBesoins" :key="besoin.id" class="card">
         <div class="card-header">
           <h2>{{ besoin.competence.nom }}</h2>
         </div>
@@ -91,10 +110,44 @@ onMounted(async () => {
         </div>
       </div>
     </div>
+
+    <div class="pagination" v-if="totalPages > 1">
+      <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Précédent</button>
+      <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+      <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Suivant</button>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 10px 15px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  margin: 0 10px;
+  font-weight: bold;
+}
+
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
 .besoins-container {
   width: 80%;
   margin: 0 auto;
