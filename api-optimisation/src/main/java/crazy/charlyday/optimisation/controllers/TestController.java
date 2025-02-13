@@ -6,10 +6,11 @@ import crazy.charlyday.optimisation.mappers.DatingProblemMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
-@Controller
+@RestController
 @RequestMapping("/test")
 public class TestController {
 
