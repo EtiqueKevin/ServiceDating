@@ -45,13 +45,37 @@ Et une image aussi :
 
 ##  Partie Optimisation ##
 
+### IA ###
+
+Pour commencer la partie IA, nous devions d'abord convertir les fichiers CSV en objet java pour pouvoir les manipuler plus facilement et pour que ce soit compatible avec l'API.
+Pour sela nous avons implémenté les méthodes toCsv et fromCsv dans les classes 
 
 ### API ###
 Pour permettre à l'application d'utiliser les algorithmes de recommandation, nous avons mis en place une API Spring Boot.
 Cet API permet d'envoyer en entrée des clients et des salariés et de recevoir en sortie le salarié le plus adapté à chaque client, le tout en format JSON.
 
-![Image de la doc de l'API](images_rendu/illustration_doc_api.png "Doc de l'API")
+![Documentation de l'API](images_rendu/illustration_doc_api.png)
 
+Pour réaliser cette API, nous nous sommes d'abord mis d'accord sur l'architecture des fichiers.
+Nous avons séparé les classes en 6 packages :
+- controllers
+- DTOs
+- entities
+- interfaces
+- mappers
+- services
+
+Les controleurs sont la première porte de l'API, ils reçoivent les requêtes HTTP et les redirigent avec les DTO.
+Les DTO ou Data Transfer Object sont des classes qui permettent de transférer des données Json du client au serveur et inversement.
+Les mappers permettent de convertir les DTO en entités et inversement.
+Les entités sont les classes qui représentent les objets nécessaires au bon fonctionnement de l'API.
+Les services sont les classes qui contiennent les algorithmes de recommandation.
+Et enfin, les interfaces sont les classes qui permettent de définir des méthodes et des enums.
+
+L'avantage de Spring Boot est que beaucoup de choses se font toutes seuls, ce qui nous a permis de gagner du temps.
+Par exemple, les mappers sont juste des interfaces où l'on décrit les attributs des classes et Spring Boot se charge de les implémenter.
+Il est également possible de les personaliser si besoin, mais le plus gros du travail est déjà fait.
+D'un autre côté, si on ne maitrise pas bien Spring Boot, et que ça ne fonctionne pas, il est difficile de comprendre vu que tout est fait automatiquement.
 
 ##  Déploiement ##
 
