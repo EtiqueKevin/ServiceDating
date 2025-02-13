@@ -6,8 +6,15 @@
 ## Liste des membres ##
 
 - nom / prénom / groupe
-- nom / prénom / groupe
-- nom / prénom / groupe
+- Bruson Paul DWM2
+- Cheklat Ahmed-Massi DACS
+- Etique Kevin DWM2
+- Mellano Louka IL1
+- Naiegon Adrien IL2
+- Netange Clément DWM2
+- Quilliec Amaury DWM2
+- Reveillard Fabio IL1
+
 
 ## URL ##
 
