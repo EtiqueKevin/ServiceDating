@@ -22,13 +22,11 @@ return function( App $app): App {
     $app->get('/users/besoins[/]', GetBesoinsByUserAction::class);
     $app->post('/besoins[/]', PostBesoinAction::class);
     $app->put('/besoins/{id}[/]', PutBesoinByIdAction::class);
-    $app->post('/salaries[/]', PostSalariesAction::class);
     $app->get('/salaries[/]', GetSalariesAction::class);
     $app->get('/competences[/]', GetCompetencesAction::class);
     $app->get('/competences/{id}[/]', GetCompetencesByIdAction::class);
     $app->post('/competences[/]', PostCompetencesAction::class);
     $app->put('/competences/{id}[/]', PutCompetencesAction::class);
-    $app->post('/affectations[/]', PostAffectationsAction::class);
     $app->delete('/competences/{id}[/]', DeleteCompetencesAction::class);
     $app->post('/utilisateur[/]',PostUtilisateurAction::class);
 

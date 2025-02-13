@@ -15,6 +15,16 @@ class Competence extends Entity
         $this->description = $description;
     }
 
+    public function getNom(): string
+    {
+        return $this->nom;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
     public function toDTO(): CompetenceDTO
     {
         return new CompetenceDTO($this);

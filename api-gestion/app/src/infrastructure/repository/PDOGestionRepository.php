@@ -36,7 +36,7 @@ class PDOGestionRepository implements GestionRepositoryInterface
                 $utilisateur = $this->getUserById($besoin['client_id']);
                 $competence = $this->getCompetenceById($besoin['competence_id']);
                 $besoinEntity = new Besoin($utilisateur, $competence, $besoin['description'], $besoin['status'], $besoin['date_init_besoin']);
-                $besoinEntity->setId($besoin['id']);
+                $besoinEntity->setId($besoin['besoin_id']);
                 $besoins[] = $besoinEntity;
             }
             return $besoins;
@@ -48,18 +48,18 @@ class PDOGestionRepository implements GestionRepositoryInterface
     public function getUserById(string $id): Utilisateur
     {
         try {
-            $stmt = $this->pdo->prepare('SELECT * FROM utilisateurs WHERE id = ?');
+            $stmt = $this->pdo->prepare('SELECT * FROM utilisateurs WHERE utilisateur_id = ?');
             $stmt->bindParam(1, $id);
             $stmt->execute();
             $data = $stmt->fetch();
 
         }catch(\Exception $e) {
-            throw new GestionRepositoryNotFoundException('Aucun utilisateur trouvé');
+            throw new GestionRepositoryNotFoundException('Aucun utilisateur trouvé.');
         }
 
         try {
-            $user = new Utilisateur($data['nom'], $data['prenom'], $data['phone']);
-            $user->setId($data['id']);
+            $user = new Utilisateur($data['name'], $data['surname'], $data['phone']);
+            $user->setId($data['utilisateur_id']);
             return $user;
         }catch (Exception) {
             throw new GestionRepositoryException('Erreur lors de la récupération de l\'utilisateur');
@@ -69,7 +69,7 @@ class PDOGestionRepository implements GestionRepositoryInterface
     public function getCompetenceById(string $id): Competence
     {
         try {
-            $stmt = $this->pdo->prepare('SELECT * FROM competences WHERE id = ?');
+            $stmt = $this->pdo->prepare('SELECT * FROM competences WHERE competence_id = ?');
             $stmt->bindParam(1, $id);
             $stmt->execute();
             $data = $stmt->fetch();
@@ -77,7 +77,9 @@ class PDOGestionRepository implements GestionRepositoryInterface
             throw new GestionRepositoryNotFoundException('Aucune compétence trouvée');
         }
 
-        return new Competence($data['nom'], $data['description']);
+        $competence = new Competence($data['name'], $data['description']);
+        $competence->setId($data['competence_id']);
+        return $competence;
     }
 
     public function getCompetences(): array
