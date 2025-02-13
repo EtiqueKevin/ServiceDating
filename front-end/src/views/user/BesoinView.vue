@@ -1,10 +1,15 @@
 <script setup>
 import {computed, onMounted, ref} from "vue";
 import {useBesoin} from "@/services/besoin.js";
+import BesoinForm from '@/components/forms/BesoinForm.vue';
+import { useToast } from 'vue-toastification';
 
+const toast = useToast();
 const besoins = ref([]);
 const filterStatus = ref('all');
 const {getBesoins} = useBesoin();
+const showEditModal = ref(false);
+const selectedBesoin = ref(null);
 
 const isLoading = computed(() => besoins.value === null);
 
@@ -29,6 +34,21 @@ const getStatusLabel = (status) => {
   }
 };
 
+const handleEditClick = (besoin) => {
+    selectedBesoin.value = besoin;
+    showEditModal.value = true;
+};
+
+const handleSuccess = async () => {
+    showEditModal.value = false;
+    try {
+        besoins.value = await getBesoins();
+        toast.success('Besoin mis à jour avec succès');
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 onMounted(async () => {
   try {
     besoins.value = await getBesoins();
@@ -36,7 +56,6 @@ onMounted(async () => {
     console.error(error);
   }
 });
-
 </script>
 
 <template>
@@ -87,8 +106,22 @@ onMounted(async () => {
           <span :class="['status-badge', `status-${besoin.status}`]">
             {{ getStatusLabel(besoin.status) }}
           </span>
-          <button class="edit-button">Modifier</button>
+          <button class="edit-button" @click="handleEditClick(besoin)">
+            <i class="fas fa-edit"></i>
+            Modifier
+          </button>
         </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div v-if="showEditModal" class="modal-overlay">
+      <div class="modal-content">
+        <BesoinForm
+          :besoin="selectedBesoin"
+          @success="handleSuccess"
+          @close="showEditModal = false"
+        />
       </div>
     </div>
   </div>
@@ -96,8 +129,9 @@ onMounted(async () => {
 
 <style scoped>
 .besoins-container {
-  width: 80%;
-  margin: 0 auto;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 3rem;
   height: 100%;
   overflow: auto;
 }
@@ -136,12 +170,8 @@ h1 {
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .empty-state {
@@ -209,6 +239,8 @@ h3 {
 }
 
 .card-footer {
+  display: flex;
+  justify-content: space-between;
   padding: 1rem;
   border-top: 1px solid #eee;
 }
@@ -246,5 +278,28 @@ h3 {
   transition: background-color 0.2s;
 }
 
+.edit-button:hover {
+  background-color: #217dbb;
+}
 
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 </style>
