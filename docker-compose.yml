@@ -62,6 +62,19 @@ services:
       - servicedating.net
     command: php -S 0.0.0.0:80 -t /var/php/public
 
+  api.optimisation.servicedating:
+    build:
+      context: api-optimisation/build-docker
+    ports:
+      - '46247:46247'
+    volumes:
+      - ./api-optimisation:/app
+    working_dir: /app
+    networks:
+      - servicedating.net
+    command: sh -c "mvn clean install && java -jar target/optimisation-0.0.1-SNAPSHOT.jar"
+    
+
 # DATABASE
   db.gestion.servicedating:
     image: postgres:latest

@@ -138,7 +138,7 @@ class PDOGestionRepository implements GestionRepositoryInterface
             $stmt->bindParam(1, $id);
             $stmt->execute();
 
-            $stmt = $this->pdo->prepare('DELETE FROM "competences" WHERE "id" = ?');
+            $stmt = $this->pdo->prepare('DELETE FROM "competences" WHERE "competence_id" = ?');
             $stmt->bindParam(1, $id);
             $stmt->execute();
         }catch (\Exception $e) {
@@ -162,8 +162,8 @@ class PDOGestionRepository implements GestionRepositoryInterface
             foreach ($data as $besoin) {
                 $utilisateur = $this->getUserById($besoin['client_id']);
                 $competence = $this->getCompetenceById($besoin['competence_id']);
-                $besoinEntity = new Besoin($utilisateur, $competence, $besoin['description'], $besoin['status'], $besoin['date_demande']);
-                $besoinEntity->setId($besoin['id']);
+                $besoinEntity = new Besoin($utilisateur, $competence, $besoin['description'], $besoin['status'], $besoin['date_init_besoin']);
+                $besoinEntity->setId($besoin['besoin_id']);
                 $besoins[] = $besoinEntity;
             }
             return $besoins;
@@ -177,7 +177,7 @@ class PDOGestionRepository implements GestionRepositoryInterface
         try {
             $date = date('Y-m-d H:i:s');
             $status = 0;
-            $stmt = $this->pdo->prepare('INSERT INTO besoins (client_id, competence_id, description, status, date_init_besoin) VALUES (?, ?, ?, ?, ?) RETURNING id');
+            $stmt = $this->pdo->prepare('INSERT INTO besoins (client_id, competence_id, description, status, date_init_besoin) VALUES (?, ?, ?, ?, ?) RETURNING besoin_id');
             $stmt->bindParam(1, $id);
             $stmt->bindParam(2, $competence_id);
             $stmt->bindParam(3, $description);
@@ -208,7 +208,7 @@ class PDOGestionRepository implements GestionRepositoryInterface
             $utilisateur = $this->getUserById($data['client_id']);
             $competence = $this->getCompetenceById($data['competence_id']);
             $besoinEntity = new Besoin($utilisateur, $competence, $data['description'], $data['status'], $data['date_init_besoin']);
-            $besoinEntity->setId($data['id']);
+            $besoinEntity->setId($data['besoin_id']);
             return $besoinEntity;
         }catch (Exception) {
             throw new GestionRepositoryException('Erreur lors de la récupération du besoin');
@@ -254,7 +254,7 @@ class PDOGestionRepository implements GestionRepositoryInterface
     public function modifierBesoin(string $id_besoin, string $id_user, string $competence_id, string $description): Besoin
     {
         try {
-            $stmt = $this->pdo->prepare('UPDATE besoins SET client_id = ?, competence_id = ?, description = ? WHERE id = ?');
+            $stmt = $this->pdo->prepare('UPDATE besoins SET client_id = ?, competence_id = ?, description = ? WHERE besoin_id = ?');
             $stmt->bindParam(1, $id_user);
             $stmt->bindParam(2, $competence_id);
             $stmt->bindParam(3, $description);
@@ -265,5 +265,20 @@ class PDOGestionRepository implements GestionRepositoryInterface
         }
 
         return $this->getBesoinsById($id_besoin);
+    }
+
+    public function getSalaries(array $idUsers): array
+    {
+        $salaries = [];
+        foreach ($idUsers as $idUser) {
+            $stmt = $this->pdo->prepare('SELECT * FROM utilisateurs WHERE utilisateur_id = ?');
+            $stmt->bindParam(1, $idUser);
+            $stmt->execute();
+            $data = $stmt->fetch();
+            $salarie = new Utilisateur($data['name'], $data['surname'], $data['phone']);
+            $salarie->setId($data['utilisateur_id']);
+            $salaries[] = $salarie;
+        }
+        return $salaries;
     }
 }

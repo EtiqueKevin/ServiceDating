@@ -15,4 +15,19 @@ class InputBesoinDTO extends DTO
         $this->description = $description;
     }
 
+    public function getClientId(): string
+    {
+        return $this->client_id;
+    }
+
+    public function getCompetenceId(): string
+    {
+        return $this->competence_id;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
 }

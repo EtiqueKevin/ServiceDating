@@ -84,4 +84,10 @@ class AuthProvider implements AuthProviderInterface
         $arrayToken = $this->jwtManager->decodeToken($token);
         return $arrayToken['sub'];
     }
+
+    public function getUserRole(string $token): string
+    {
+        $arrayToken = $this->jwtManager->decodeToken($token);
+        return $arrayToken['data']->role;
+    }
 }

@@ -11,4 +11,5 @@ interface UserServiceInterface
     public function createUser(InputUserDTO $input): void;
 
     public function createSalarier(InputUserDTO $input): string;
+    public function getusersByRole(string $role): array;
 }

@@ -45,9 +45,9 @@ class AuthMiddleware
 
         try {
             $playerID = $this->gestion->utilisateurID($tokenstring);
-            $rq = $rq->withAttribute('userId',$playerID);
+            $rq = $rq->withAttribute('idUser',$playerID);
         }catch (Exception $e){
-            throw new HttpForbiddenException($rq,"Vous n'êtes pas l'auteur de cette ressource " . $e->getMessage());
+            throw new HttpForbiddenException($rq,"Problème d'authentification");
         }
 
         return $next->handle($rq);

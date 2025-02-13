@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpBadRequestException;
 
-class GetUserIDAction extends AbstractAction
+class GetUserRoleAction extends AbstractAction
 {
     private AuthProviderInterface $authProvider;
 
@@ -21,18 +21,17 @@ class GetUserIDAction extends AbstractAction
         try{
             $headers = $rq->getHeader('Authorization');
             $tokenstring = sscanf($headers[0], "Bearer %s")[0];
-            $userID = $this->authProvider->getUserID($tokenstring);
+            $role = $this->authProvider->getUserRole($tokenstring);
         }catch (Exception $e){
-            throw new HttpBadRequestException($rq,"erreur lors de la récupération de l'id" . $e->getMessage());
+            throw new HttpBadRequestException($rq,"erreur lors de la récupération du role");
         }
         $response = [
             'type' => 'ressource',
-            'userID' => $userID,
+            'role' => $role,
         ];
 
         $rs->getBody()->write(json_encode($response));
 
         return $rs->withStatus(200)->withHeader('Content-Type', 'application/json');
-
     }
 }

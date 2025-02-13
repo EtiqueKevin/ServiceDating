@@ -3,36 +3,44 @@
 namespace apiAuth\application\actions;
 
 use apiAuth\application\providers\auth\AuthProviderInterface;
-use Exception;
+use apiAuth\core\services\user\UserServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpBadRequestException;
 
-class GetUserIDAction extends AbstractAction
+class GetUserByRoleAction extends AbstractAction
 {
-    private AuthProviderInterface $authProvider;
+    private UserServiceInterface $userService;
 
-    public function __construct(AuthProviderInterface $authProvider){
-        $this->authProvider = $authProvider;
+    public function __construct(UserServiceInterface $userService)
+    {
+        $this->userService = $userService;
     }
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
-        try{
-            $headers = $rq->getHeader('Authorization');
-            $tokenstring = sscanf($headers[0], "Bearer %s")[0];
-            $userID = $this->authProvider->getUserID($tokenstring);
-        }catch (Exception $e){
+        $role = $rq->getQueryParams()['role'] ?? null;
+
+        if($role === null) {
+            throw new HttpBadRequestException($rq, "parametre dans query role manquant");
+        }
+
+        try {
+            $roleRes = $this->userService->getusersByRole($role);
+
+        }catch (\Exception $e){
             throw new HttpBadRequestException($rq,"erreur lors de la récupération de l'id" . $e->getMessage());
         }
+
         $response = [
             'type' => 'ressource',
-            'userID' => $userID,
+            'roles' => $roleRes,
         ];
 
         $rs->getBody()->write(json_encode($response));
 
         return $rs->withStatus(200)->withHeader('Content-Type', 'application/json');
+
 
     }
 }

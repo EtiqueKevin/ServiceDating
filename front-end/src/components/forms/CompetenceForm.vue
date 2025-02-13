@@ -1,74 +1,57 @@
 <script setup>
 import {computed, onMounted, ref} from 'vue';
-import {useBesoin} from "@/services/besoin.js";
-import { useRouter } from 'vue-router';
+import InputField from "@/components/forms/inputs/InputField.vue";
+import { useAdmin } from '@/services/admin';
 
 const props = defineProps({
-  besoin: {
-    type: Object,
-    default: null,
-  },
+    competence: {
+        type: Object,
+        default: null,
+    },
 });
 
 const emit = defineEmits(['success', 'close']);
 
-const router = useRouter();
-const competences = ref([]);
-
+const { createCompetence, updateCompetence } = useAdmin();
 const formData = ref({
-  description: '',
-  option_id: null,
+    name: '',
+    description: '',
 });
 
 const formValid = computed(() => {
-  return formData.value.description && formData.value.option_id;
+  return formData.value.name && formData.value.description;
 });
 
 const title = computed(() => {
-  return props.besoin ? 'Modifier le besoin' : 'Création d\'un besoin';
+  return props.competence ? 'Modifier la compétence' : 'Créer une compétence';
 });
 
 const buttonText = computed(() => {
-  return props.besoin ? 'Modifier' : 'Créer';
+  return props.competence ? 'Modifier' : 'Créer';
 });
-
-const {getCompetences, createBesoin, updateBesoin} = useBesoin();
 
 const handleClose = () => {
   emit('close');
 };
 
 const handleSubmit = async () => {
-  if (!formValid.value) return;
-  
-  const data = {
-    description: formData.value.description,
-    competence_id: formData.value.option_id,
-  };
+    if (!formValid.value) return;
+    if (props.competence) {
+        await updateCompetence(props.competence.id, formData.value);
+    } else {
+        await createCompetence(formData.value);
+    }
+    formData.value.name = '';
+    formData.value.description = '';
 
-  let success;
-  if (props.besoin) {
-    success = await updateBesoin(props.besoin.id, data);
-  } else {
-    success = await createBesoin(data);
-  }
-
-  if(success) {
     emit('success');
-    router.push({name: 'besoins'});
-  }
-}
-
-const loadData = async () => {
-  competences.value = await getCompetences();
-  if (props.besoin) {
-    formData.value.description = props.besoin.description;
-    formData.value.option_id = props.besoin.competence.id; 
-  }
 }
 
 onMounted(() => {
-  loadData();
+  if (props.competence) {
+    formData.value.name = props.competence.nom;
+    formData.value.description = props.competence.description;
+  }
 });
 </script>
 
@@ -76,24 +59,26 @@ onMounted(() => {
   <div class="form-container">
     <h1 class="title">{{ title }}</h1>
     <form @submit.prevent="handleSubmit" class="form">
-      <textarea
+      <InputField
+          v-model="formData.name"
+          type="text"
+          id="text"
+          required
+          autocomplete="text"
+          placeholder="nom de la compétence"
+          class="input-field"
+      />
+      <InputField
           v-model="formData.description"
+          type="text"
           id="text"
           required
           autocomplete="off"
           placeholder="Description du besoin"
-          class="textArea"
-      >
-      </textarea>
+          class="input-field"
+        />
 
-      <select class="competence" id="dropdown" v-model="formData.option_id" required>
-        <option selected disabled hidden>Compétences</option>
-        <option v-for="option in competences" :key="option.id" :value="option.id">
-          {{ option.nom }}
-        </option>
-      </select>
-
-      <div class="button-container">
+        <div class="button-container">
         <button
             type="submit"
             class="submit-button"
@@ -107,7 +92,6 @@ onMounted(() => {
           {{ buttonText }}
         </button>
         <button
-            v-if="props.besoin"
             type="button"
             class="close-button"
             @click="handleClose"
@@ -200,33 +184,6 @@ onMounted(() => {
   animation: fadeIn 0.5s ease-out;
 }
 
-
-.textArea {
-  display: block;
-  margin-top: 0.25rem;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--text-color);
-  border-radius: 0.375rem;
-  height: 10rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  font-size: 0.875rem;
-  color: var(--text-color);
-  background-color: var(--background-color);
-  transition: all 0.2s ease-in-out;
-}
-
-.competence {
-  display: block;
-  margin-top: 0.25rem;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--text-color);
-  border-radius: 0.375rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  font-size: 0.875rem;
-  color: var(--text-color);
-  background-color: var(--background-color);
-  transition: all 0.2s ease-in-out;
-}
 
 .button-container {
   display: flex;

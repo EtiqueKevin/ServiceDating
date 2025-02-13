@@ -33,4 +33,24 @@ class AdaptaterAuthRepository implements AuthRepositoryInterface
 
         return $data["userID"];
     }
+
+    public function RecuperationRoleUser(string $token): string
+    {
+        $response = $this->client->post('/token/user/role', [
+            'headers' => ['Authorization' => 'Bearer '.$token]
+        ]);
+
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        return $data["role"];
+    }
+
+    public function getUsersByRoles(string $role): array
+    {
+        $response = $this->client->get('/users/role', [
+            'query' => ['role' => $role]
+        ]);
+        $data = json_decode($response->getBody()->getContents(), true);
+        return $data["roles"];
+    }
 }

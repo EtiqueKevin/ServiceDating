@@ -7,8 +7,6 @@ use apiAuth\core\dto\user\InputUserDTO;
 use apiAuth\core\dto\user\UserDTO;
 use apiAuth\core\repositoryInterface\AuthRepositoryInterface;
 use apiAuth\core\repositoryInterface\GestionRepositoryInterface;
-use apiAuth\core\services\user\UserServiceException;
-use apiAuth\core\services\user\UserServiceInterface;
 use Exception;
 
 
@@ -96,5 +94,9 @@ class UserService implements UserServiceInterface
         } catch (\Exception $e) {
             throw new UserServiceException('Erreur lors de la recherche de l\'utilisateur');
         }
+    }
+
+    public function getusersByRole(string $role): array{
+        return $this->authRepository->getusersByRole($role);
     }
 }

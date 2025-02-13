@@ -2,6 +2,7 @@ package crazy.charlyday.optimisation.mappers;
 
 import crazy.charlyday.optimisation.dtos.ClientDto;
 import crazy.charlyday.optimisation.entities.Client;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -11,5 +12,6 @@ public interface ClientMapper {
 
     ClientDto mapToDTO(Client entity);
 
+    @InheritInverseConfiguration
     Client mapToEntity(ClientDto dto);
 }
