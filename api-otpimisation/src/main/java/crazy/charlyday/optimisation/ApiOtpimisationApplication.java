@@ -9,5 +9,4 @@ public class ApiOtpimisationApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ApiOtpimisationApplication.class, args);
 	}
-
 }
