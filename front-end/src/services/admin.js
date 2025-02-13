@@ -6,6 +6,7 @@ export const useAdmin = () => {
     const getAllBesoins = async () => {
         try {
             const res = await api.get('admin/besoins');
+            console.log(res);
             return res.data;
         } catch (e) {
             return [];
@@ -66,5 +67,5 @@ export const useAdmin = () => {
         }
     }
 
-    
+    return { getAllBesoins, createSalarie, getAllSalaries, getAllCompetences, createCompetence, updateCompetence, deleteCompetence };
 }

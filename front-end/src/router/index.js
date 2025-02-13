@@ -50,6 +50,18 @@ const router = createRouter({
                             component: () => import('@/views/admin/AdminBesoinsView.vue'),
                             meta: { requiresAuth: true, requiresAdmin: true }
                         },
+                        {
+                            path: 'salaries',
+                            name: 'backoffice-salaries',
+                            component: () => import('@/views/admin/AdminSalariesView.vue'),
+                            meta: { requiresAuth: true, requiresAdmin: true }
+                        },
+                        {
+                            path: 'competences',
+                            name: 'backoffice-competences',
+                            component: () => import('@/views/admin/AdminCompetencesView.vue'),
+                            meta: { requiresAuth: true, requiresAdmin: true }
+                        }
                     ]
                 }
             ]
