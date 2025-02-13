@@ -5,7 +5,7 @@ import {useBesoin} from "@/services/besoin.js";
 
 const nom = ref('');
 const libelle = ref('');
-const competence = ref([]);
+let competences = ref([]);
 
 const formData = ref({
   nom: '',
@@ -16,18 +16,18 @@ const formData = ref({
 const formValid = computed(() => {
   return formData.value.nom && formData.value.libelle && formData.value.option_id;
 });
-
-const {loadCompetence, postBesoin} = useBesoin();
-
-const loadCompetences = async () => {
-  competence.value = await loadCompetence();
-};
+const {loadCompetences, postBesoin} = useBesoin();
 
 const handleSubmit = async () => {
-  const res = await postBesoin(formData.value)
+  await postBesoin(formValid.value)
 }
 
-loadCompetences();
+const loadData = async () => {
+  competences = await loadCompetences();
+}
+
+
+loadData();
 </script>
 
 <template>
@@ -40,23 +40,25 @@ loadCompetences();
           id="text"
           required
           autocomplete="text"
-          placeholder="Entrez le nom de votre entreprise"
+          placeholder="Nom du client ou de l'entreprise"
           class="input-field"
       />
-      <InputField
+      <Textarea
           v-model="formData.libelle"
-          type="text"
           id="text"
           required
-          autocomplete="text"
+          autocomplete="off"
           placeholder="Libellé du besoin"
-          class="input-field"
+          class="textArea"
       />
-      <select id="dropdown" v-model="formData.option_id" required>
-        <option v-for="option in competence" :key="option.id" :value="option.id">
+
+      <select class="competence" id="dropdown">
+        <option selected disabled hidden>Compétences</option>
+        <option v-for="option in competences" :key="option.id" :value="option.id">
           {{ option.name }}
         </option>
       </select>
+
       <button
           type="submit"
           class="submit-button"
@@ -65,7 +67,7 @@ loadCompetences();
           'disabled': !formValid,
           'enabled': formValid
         }"
-          title="Creer un besoin"
+          title="Créer un besoin"
       >
         Créer
       </button>
@@ -80,7 +82,7 @@ loadCompetences();
   border-radius: 1rem;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   width: 100%;
-  max-width: 28rem;
+  max-width: 40rem;
   margin: 0 auto;
   transform: translateY(0);
   transition: all 0.3s;
@@ -139,23 +141,6 @@ loadCompetences();
   opacity: 0.6;
 }
 
-.foot-button {
-  display: block;
-  width: 100%;
-  text-align: center;
-  margin-top: 1.5rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--primary-color);
-  transition: color 0.3s;
-  background: none;
-  border: none;
-}
-
-.foot-button:hover {
-  color: var(--accent-color);
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -169,5 +154,33 @@ loadCompetences();
 
 .form-container {
   animation: fadeIn 0.5s ease-out;
+}
+
+
+.textArea {
+  display: block;
+  margin-top: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--text-color);
+  border-radius: 0.375rem;
+  height: 10rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  font-size: 0.875rem;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  transition: all 0.2s ease-in-out;
+}
+
+.competence {
+  display: block;
+  margin-top: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--text-color);
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  font-size: 0.875rem;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  transition: all 0.2s ease-in-out;
 }
 </style>
