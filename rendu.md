@@ -43,6 +43,32 @@ Et une image aussi :
 
 ![Texte alternatif](boite_cuisine.png "Logo officiel")
 
+##  Partie Front-end ##
+
+### Fonctionnalité de base ###
+
+
+| Fonctionnalité | Type  | Fait ou non |
+|----------------|-------|-----------|
+| 1              | Basique | ✅         |
+| 2              | Avancé | ✅         |
+| 3              | Avancé | ✅         |
+| 4              | Admin | ✅         |
+| 5              | Admin | ✅         |
+| 6              | Admin | ✅         |
+| 7              | Admin | ✅         |
+| 8              | Avancé / Admin |❌   |
+| 9              | Avancé | ✅         |
+| 10             | Admin |     ❌      |
+
+### Fonctionnalité de avancé ###
+
+| Fonctionnalité | Type    | Fait ou non    |
+|----------------|---------|----------------|
+| 11             | Basique | ✅              |
+| 14             | Basique | 🟠 partiellement |
+
+
 ##  Partie Optimisation ##
 
 ### IA ###

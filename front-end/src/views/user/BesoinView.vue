@@ -136,7 +136,7 @@ onMounted(fetchBesoins);
       </div>
     </div>
 
-    <div class="pagination" v-if="totalPages >= 1">
+    <div class="pagination" v-if="besoins.length > 0 && totalPages >= 1">
       <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Précédent</button>
       <span>Page {{ currentPage }} sur {{ totalPages }}</span>
       <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Suivant</button>
@@ -162,11 +162,6 @@ onMounted(fetchBesoins);
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s;
-}
-
-.pagination button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
 }
 
 .pagination span {
