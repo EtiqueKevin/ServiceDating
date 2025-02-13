@@ -94,8 +94,8 @@ class PDOGestionRepository implements GestionRepositoryInterface
         try {
             $competences = [];
             foreach ($data as $competence) {
-                $competenceEntity = new Competence($competence['nom'], $competence['description']);
-                $competenceEntity->setId($competence['id']);
+                $competenceEntity = new Competence($competence['name'], $competence['description']);
+                $competenceEntity->setId($competence['competence_id']);
                 $competences[] = $competenceEntity;
             }
             return $competences;
@@ -105,8 +105,8 @@ class PDOGestionRepository implements GestionRepositoryInterface
     }
 
     public function saveCompetence(Competence $competence):void{
-        $name = $competence->name;
-        $description = $competence->description;
+        $name = $competence->getNom();
+        $description = $competence->getDescription();
 
         $stmt = $this->pdo->prepare('INSERT INTO "competences" ("name","description" ) VALUES ( ?, ?)');
 
@@ -116,11 +116,11 @@ class PDOGestionRepository implements GestionRepositoryInterface
     }
 
     public function updateCompetence(Competence $competence):void{
-        $name = $competence->name;
-        $description = $competence->description;
+        $name = $competence->getNom();
+        $description = $competence->getDescription();
         $id = $competence->getID();
 
-        $stmt = $this->pdo->prepare('UPDATE "competences" SET "name" = ?, "description" = ? WHERE "id" = ?');
+        $stmt = $this->pdo->prepare('UPDATE "competences" SET "name" = ?, "description" = ? WHERE "competence_id" = ?');
 
         $stmt->bindParam(1, $name);
         $stmt->bindParam(2, $description);

@@ -19,7 +19,7 @@ class GetCompetencesAction extends AbstractAction
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
-        $competences = $this->gestionService->getBesoinsAdmin();
+        $competences = $this->gestionService->getCompetences();
 
         $res = [
             'type' => 'collections',

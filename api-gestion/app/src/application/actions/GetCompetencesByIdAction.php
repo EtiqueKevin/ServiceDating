@@ -19,7 +19,8 @@ class GetCompetencesByIdAction extends AbstractAction
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
-        $competence = $this->gestionService->getBesoinsAdmin();
+        $id = $args['id'];
+        $competence = $this->gestionService->getCompetenceById($id);
 
         $res = [
             'type' => 'ressource',
