@@ -29,22 +29,30 @@ const router = createRouter({
             ]
         },
         {
-          path: '/',
-          component: BlankLayout,
-          children: [
-            {
-              path: 'user/connect',
-              name: 'user-connect',
-              component: () => import('@/views/user/ConnexionView.vue'),
-              meta: { requiresAuth: false }
-            },
-            {
-              path: 'admin',
-              name: 'backoffice',
-              component: () => import('@/views/admin/BackOfficeView.vue'),
-              meta: { requiresAuth: true, requiresAdmin: true }
-            }
-          ]
+            path: '/',
+            component: BlankLayout,
+            children: [
+                {
+                    path: 'user/connect',
+                    name: 'user-connect',
+                    component: () => import('@/views/user/ConnexionView.vue'),
+                    meta: { requiresAuth: false }
+                },
+                {
+                    path: 'admin',
+                    name: 'backoffice',
+                    component: () => import('@/views/admin/BackOfficeView.vue'),
+                    meta: { requiresAuth: true, requiresAdmin: true },
+                    children: [
+                        {
+                            path: 'besoins',
+                            name: 'backoffice-besoins',
+                            component: () => import('@/views/admin/AdminBesoinsView.vue'),
+                            meta: { requiresAuth: true, requiresAdmin: true }
+                        },
+                    ]
+                }
+            ]
         }
     ],
 })
@@ -55,7 +63,6 @@ router.beforeEach((to, from, next) => {
         next({name: 'home'})
         return
     }
-
 
     // Vérification des droits d'accès
     const userStore = useUserStore()
@@ -77,6 +84,6 @@ router.beforeEach((to, from, next) => {
     }
 
     next()
-});
+})
 
 export default router

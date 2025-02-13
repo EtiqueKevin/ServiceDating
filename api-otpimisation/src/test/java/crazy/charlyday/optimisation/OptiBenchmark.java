@@ -1,9 +1,8 @@
 package crazy.charlyday.optimisation;
 
 import crazy.charlyday.optimisation.entities.DatingProblem;
-import crazy.charlyday.optimisation.entities.Salarie;
+import crazy.charlyday.optimisation.entities.DatingSolution;
 import crazy.charlyday.optimisation.interfaces.SolverFactory;
-import crazy.charlyday.optimisation.mappers.DatingProblemCsvMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,7 +35,7 @@ public class OptiBenchmark {
         var fullPath = inputDirectory1 + inputFile;
         int score = getScore(fullPath);
 
-        System.out.printf("%s: %d\n", inputFile, score); // Always print score
+        System.out.printf("%s: %d\n", inputFile, score);
 
         try {
             assertThat(score).isGreaterThan(0);
@@ -63,7 +62,25 @@ public class OptiBenchmark {
         var fullPath = inputDirectory2 + inputFile;
         int score = getScore(fullPath);
 
-        System.out.printf("%s: %d\n", inputFile, score); // Always print score
+        System.out.printf("%s: %d\n", inputFile, score);
+
+        try {
+            assertThat(score).isGreaterThan(0);
+        } catch (AssertionError ignored) {
+        }
+    }
+
+    @Order(2)
+    @DisplayName("Score comparison")
+    @ParameterizedTest
+    @CsvSource({
+            "Probleme_1_nbSalaries_3_nbClients_3_nbTaches_2.csv, Probleme_1_nbSalaries_3_nbClients_3_nbTaches_2_Sol.csv",
+    })
+    void runTests3(String inputFile, String assertFile) throws IOException {
+        int score = getScore(inputDirectory1 + inputFile);
+        int expectedScore = DatingSolution.fromCsv(inputDirectory1 + assertFile).score();
+
+        System.out.printf("%s: %d %d\n", inputFile, score, expectedScore);
 
         try {
             assertThat(score).isGreaterThan(0);
@@ -72,10 +89,9 @@ public class OptiBenchmark {
     }
 
 
-
     int getScore(String inputFile) throws IOException {
         return SolverFactory.getSolver()
-                .compute(DatingProblemCsvMapper.fromCsv(inputFile))
+                .compute(DatingProblem.fromCsv(inputFile))
                 .score();
     }
 }

@@ -5,9 +5,13 @@ import { RouterView, RouterLink } from 'vue-router';
 <template>
   <div class="back-office">
     <nav class="admin-nav">
-      <RouterLink to="/admin/users">
+      <RouterLink to="/admin/besoins">
+        <i class="fas fa-list"></i>
+        <span>Gérer les besoins</span>
+      </RouterLink>
+      <RouterLink to="/admin/salaries">
         <i class="fas fa-users"></i>
-        <span>Gérer Utilisateurs</span>
+        <span>Gérer les salariés</span>
       </RouterLink>
       <RouterLink to="/" class="menu-return">
         <i class="fas fa-arrow-left"></i>
@@ -16,15 +20,7 @@ import { RouterView, RouterLink } from 'vue-router';
     </nav>
     
     <div class="admin-content">
-      <RouterView>
-        <!-- Default content when no specific route is active -->
-        <template #default>
-          <div class="welcome-admin">
-            <h1>Bienvenue dans le Back Office</h1>
-            <p>Sélectionnez une option dans le menu pour commencer.</p>
-          </div>
-        </template>
-      </RouterView>
+      <RouterView />
     </div>
   </div>
 </template>
