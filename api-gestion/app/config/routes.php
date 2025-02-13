@@ -6,7 +6,6 @@ use gestion\application\actions\GetBesoinsByUserAction;
 use gestion\application\actions\PostBesoinAction;
 use gestion\application\actions\PostUtilisateurAction;
 use gestion\application\actions\PutBesoinByIdAction;
-use gestion\application\actions\PostSalariesAction;
 use gestion\application\actions\GetSalariesAction;
 use gestion\application\actions\GetCompetencesAction;
 use gestion\application\actions\GetCompetencesByIdAction;

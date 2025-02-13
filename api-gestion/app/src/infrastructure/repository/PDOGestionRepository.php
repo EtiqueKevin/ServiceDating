@@ -266,4 +266,17 @@ class PDOGestionRepository implements GestionRepositoryInterface
 
         return $this->getBesoinsById($id_besoin);
     }
+
+    public function getSalaries(): array
+    {
+        $stmt = $this->pdo->query('SELECT * FROM utilisateurs where role = 10');
+        $data = $stmt->fetchAll();
+        $salaries = [];
+        foreach ($data as $salarie) {
+            $user = new Utilisateur($salarie['name'], $salarie['surname'], $salarie['phone']);
+            $user->setId($salarie['utilisateur_id']);
+            $salaries[] = $user;
+        }
+        return $salaries;
+    }
 }

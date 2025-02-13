@@ -139,4 +139,18 @@ class GestionService implements GestionServiceInterface
         }
     }
 
+    public function getSalaries(): array
+    {
+        try {
+            $salaries = $this->gestionRepository->getSalaries();
+            $salariesDTO = [];
+            foreach ($salaries as $salarie) {
+                $salariesDTO[] = $salarie->toDTO();
+            }
+            return $salariesDTO;
+        } catch (Exception $e) {
+            throw new GestionServiceException($e->getMessage());
+        }
+    }
+
 }
