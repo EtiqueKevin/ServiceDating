@@ -25,8 +25,6 @@ const fetchBesoins = async () => {
     besoins.value = data;
     totalPages.value = pages;
     currentPage.value = page;
-
-    console.log("Total Pages:", totalPages.value, "Besoins:", besoins.value.length);
   } catch (error) {
     console.error(error);
     toast.error("Erreur lors de la récupération des besoins.");
