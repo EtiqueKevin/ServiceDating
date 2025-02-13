@@ -1,61 +1,61 @@
 <script setup>
-import {computed, ref} from 'vue';
-import InputField from "@/components/forms/inputs/InputField.vue";
+import {computed, onMounted, ref} from 'vue';
 import {useBesoin} from "@/services/besoin.js";
+import { useRouter } from 'vue-router';
 
-const nom = ref('');
-const libelle = ref('');
-let competences = ref([]);
+const router = useRouter();
+const competences = ref([]);
 
 const formData = ref({
-  nom: '',
-  libelle: '',
+  description: '',
   option_id: null,
 });
 
 const formValid = computed(() => {
-  return formData.value.nom && formData.value.libelle && formData.value.option_id;
+  return formData.value.description && formData.value.option_id;
 });
+
 const {getCompetences, createBesoin} = useBesoin();
 
 const handleSubmit = async () => {
-  await createBesoin(formValid.value)
+  const success = await createBesoin({
+    description: formData.value.description,
+    competence_id: formData.value.option_id,
+  });
+
+  if(success) {
+    router.push({name: 'besoins'});
+  }
+
 }
 
 const loadData = async () => {
-  competences = await getCompetences();
+  competences.value = await getCompetences();
 }
 
-
-loadData();
+onMounted(() => {
+  loadData();
+});
 </script>
 
 <template>
   <div class="form-container">
     <h1 class="title">Création d'un besoin</h1>
     <form @submit.prevent="handleSubmit" class="form">
-      <InputField
-          v-model="formData.nom"
-          type="text"
-          id="text"
-          required
-          autocomplete="text"
-          placeholder="Nom du client ou de l'entreprise"
-          class="input-field"
-      />
-      <Textarea
-          v-model="formData.libelle"
+      <textarea
+          v-model="formData.description"
           id="text"
           required
           autocomplete="off"
-          placeholder="Libellé du besoin"
+          placeholder="Description du besoin"
           class="textArea"
-      />
+      >
+      </textarea>
 
-      <select class="competence" id="dropdown">
+      <select class="competence" id="dropdown" v-model="formData.option_id" required>
         <option selected disabled hidden>Compétences</option>
         <option v-for="option in competences" :key="option.id" :value="option.id">
-          {{ option.name }}
+          {{ option.nom }}
         </option>
       </select>
 

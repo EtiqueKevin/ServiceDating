@@ -9,7 +9,7 @@ export const useBesoin = () => {
     const getCompetences = async () => {
         try {
             const res = await api.get('competences');
-            return res.data;
+            return res.data.competences;
         } catch (err) {
             console.log('Erreur lors de la récupération des compétences !');
         }
@@ -25,14 +25,14 @@ export const useBesoin = () => {
         }
     };
 
-    const getBesoin = async () => {
+    const getBesoins = async () => {
         try  {
             const res = await api.get('users/besoins');
-            return res.data;
+            return res.data.besoins;
         }catch(err) {
             toast.error('Erreur lors de la récupération de vos besoin');
         }
     }
 
-    return { getCompetences, createBesoin, getBesoin };
+    return { getCompetences, createBesoin, getBesoins };
 };
