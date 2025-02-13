@@ -18,10 +18,10 @@ public class DatingProblemCsvMapper {
         boolean isClientSection = true;
 
         for (String line : lines) {
-            if (line.startsWith("besoins;;;")) {
+            if (line.startsWith("besoins")) {
                 isClientSection = true;
                 continue;
-            } else if (line.startsWith("competences;;;")) {
+            } else if (line.startsWith("competences")) {
                 isClientSection = false;
                 continue;
             }
