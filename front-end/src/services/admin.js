@@ -1,4 +1,5 @@
 import { inject } from 'vue'
+import axios from 'axios'
 
 export const useAdmin = () => {
     const api = inject('api');
@@ -68,9 +69,18 @@ export const useAdmin = () => {
 
     const getAffectations = async (data, methode) => {
         try {
-            console.log(data);
-            console.log('/affections/'+methode);
-            const res = await api.post('/affectations/'+methode, data);
+            const newApi = axios.create({
+                baseURL: import.meta.env.VITE_API_OPTI_URL,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+            let other = '';
+
+            if (methode !== "") {
+                other = `/${methode}`;
+            }
+            const res = await newApi.post('/affectations'+other, data);
             return res.data;
         } catch (e) {
             return [];
