@@ -42,8 +42,6 @@ onMounted(async () => {
     try {
         salaries.value = await getAllSalaries();
         competences.value = await getAllCompetences();
-        console.log(salaries.value);
-        console.log(competences.value);
     } catch (error) {
         console.error(error);
         toast.error('Erreur lors du chargement des salariés');

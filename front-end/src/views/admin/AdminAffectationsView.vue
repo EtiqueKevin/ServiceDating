@@ -1,8 +1,8 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useAdmin } from '@/services/admin';
 
-const { getAffections } = useAdmin();
+const { getAffectations, getClients, getAllSalaries } = useAdmin();
 const selectedMethod = ref('');
 const result = ref([]);
 const loading = ref(false);
@@ -16,14 +16,44 @@ const methods = [
 const handleSubmit = async () => {
     loading.value = true;
     try {
-        const data = {};
-        result.value = await getAffections(data, selectedMethod.value || 'default');
+        const clients = await getClients();
+        const salaries = await getAllSalaries();
+
+        // Transform clients data
+        const transformedClients = clients.map(client => ({
+            name: `${client.user.name}_${client.user.surname}`,
+            besoins: [{
+                client: `${client.user.name}_${client.user.surname}`,
+                skills: client.competences.map(comp => comp.id)
+            }]
+        }));
+
+        // Transform salaries data
+        const transformedSalaries = salaries.map(salarie => ({
+            name: salarie.name,
+            competences: salarie.competences.reduce((acc, comp) => {
+                acc[comp.id] = comp.interet;
+                return acc;
+            }, {})
+        }));
+
+        // Create the final data object
+        const data = {
+            clients: transformedClients,
+            salaries: transformedSalaries
+        };
+
+        console.log(transformedSalaries);
+
+        result.value = await getAffectations(data, selectedMethod.value || '');
+        console.log('Affections:', result.value);
     } catch (error) {
         console.error('Error fetching affections:', error);
     } finally {
         loading.value = false;
     }
 };
+
 </script>
 
 <template>

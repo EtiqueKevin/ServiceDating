@@ -20,6 +20,9 @@ use Slim\App;
 
 return function( App $app): App {
 
+    $app->get('/competences/clients[/]', GetCompetencesByClientAction::class)
+        ->setName('GetCompetencesByClient');
+
     $app->get('/besoins[/]', GetBesoinsAdminAction::class)
         ->add(AuthzMiddleware::class)
         ->setName('GetBesoinsAdmin') ;
@@ -39,8 +42,6 @@ return function( App $app): App {
     $app->get('/salaries[/]', GetSalariesAction::class)
         ->add(AuthzMiddleware::class)
         ->setName('GetSalaries');
-    $app->get('/competences/clients/[/]', GetCompetencesByClientAction::class)
-        ->setName('GetCompetencesByClient');
 
     $app->get('/competences[/]', GetCompetencesAction::class)
         ->setName('GetCompetences');
@@ -64,7 +65,5 @@ return function( App $app): App {
         ->add(AuthzMiddleware::class)
         ->setName('PostUtilisateur');
 
-    $app->get('/competences/clients/{id}[/]', GetCompetencesByClientAction::class)
-        ->setName('GetCompetencesByClient');
     return $app;
 };

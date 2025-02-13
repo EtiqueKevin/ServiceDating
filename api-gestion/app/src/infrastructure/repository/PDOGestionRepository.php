@@ -335,28 +335,27 @@ class PDOGestionRepository implements GestionRepositoryInterface
         return $competences;
     }
 
-    public function getCompetencesByClient(array $clients): array
+    public function getCompetencesByClient(): array
     {
         try {
-            $competencesById = [];
-            foreach ($clients as $client) {
-                $stmt = $this->pdo->prepare('SELECT DISTINCT * FROM besoins WHERE client_id = ?');
-                $stmt->bindParam(1, $client);
-                $stmt->execute();
-                $data = $stmt->fetchAll();
-                $competences = [];
-                foreach ($data as $besoin) {
-                    $competence = $this->getCompetenceById($besoin['competence_id']);
-                    $competences[] = $competence;
-                    $competencesById [] = [
-                        "id_user" => $client,
-                        "competences" => $competences
-                    ];
+            $clients = $this->authRepository->getUsersByRoles(0);
+            $competencesUser = $this->gestionRepository->getCompetencesByClient($clients);
+            $competencesUserRetour = [];
+            foreach ($competencesUser as $c) {
+                $client = $this->gestionRepository->getUserById($c["id_user"]);
+                $competencesTabDTO = [];
+                foreach ($c["competences"] as $comp) {
+                    $competencesTabDTO[] = $comp->toDTO();
                 }
+                $competencesUserRetour[] = [
+                    "user" => $client->toDTO(),
+                    "competences" => $competencesTabDTO
+                ];
+
             }
-            return $competencesById;
-        }catch (\Exception $e) {
-            throw new GestionRepositoryNotFoundException('Aucune compétence trouvée');
+            return $competencesUserRetour;
+        } catch (Exception $e) {
+            throw new GestionServiceException($e->getMessage());
         }
     }
 }

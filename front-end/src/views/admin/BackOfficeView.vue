@@ -19,9 +19,9 @@ const route = useRoute();
         <i class="fas fa-book"></i>
         <span>Gérer les compétences</span>
       </RouterLink>
-      <RouterLink to="/admin/affections">
+      <RouterLink to="/admin/affectations">
         <i class="fas fa-tasks"></i>
-        <span>Voir les afféctions</span>
+        <span>Voir les afféctations</span>
       </RouterLink>
       <RouterLink to="/" class="menu-return">
         <i class="fas fa-arrow-left"></i>

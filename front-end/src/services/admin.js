@@ -66,14 +66,25 @@ export const useAdmin = () => {
         }
     }
 
-    const getAffections = async (data, methode) => {
+    const getAffectations = async (data, methode) => {
         try {
-            const res = await api.post('/affections/'+methode, data);
+            console.log(data);
+            console.log('/affections/'+methode);
+            const res = await api.post('/affectations/'+methode, data);
             return res.data;
         } catch (e) {
             return [];
         }
     }
 
-    return { getAllBesoins, createSalarie, getAllSalaries, getAllCompetences, createCompetence, updateCompetence, deleteCompetence, getAffections };
+    const getClients = async () => {
+        try {
+            const res = await api.get('/competences/clients');
+            return res.data.competences_par_user;
+        } catch (e) {
+            return [];
+        }
+    }
+
+    return { getAllBesoins, createSalarie, getAllSalaries, getAllCompetences, createCompetence, updateCompetence, deleteCompetence, getAffectations, getClients };
 }

@@ -69,9 +69,9 @@ const router = createRouter({
                             meta: { requiresAuth: true, requiresAdmin: true }
                         },
                         {
-                            path: 'affections',
-                            name: 'backoffice-affections',
-                            component: () => import('@/views/admin/AdminAffectionsView.vue'),
+                            path: 'affectations',
+                            name: 'backoffice-affectations',
+                            component: () => import('@/views/admin/AdminAffectationsView.vue'),
                             meta: { requiresAuth: true, requiresAdmin: true }
                         }
                     ]
