@@ -16,5 +16,5 @@ interface GestionRepositoryInterface
     public function modifierBesoin(string $id_besoin, string $id_user, string $competence_id, string $description):Besoin;
     public function getSalaries(array $idUsers): array;
     public function getCompetencesBySalarie(string $id): array;
-    public function getCompetencesByClient(string $id): array;
+    public function getCompetencesByClient(array $clients): array;
 }

@@ -188,15 +188,24 @@ class GestionService implements GestionServiceInterface
 
     }
 
-    public function getCompetencesByClient(string $id): array
+    public function getCompetencesByClient(): array
     {
         try {
-            $competences = $this->gestionRepository->getCompetencesByClient($id);
-            $competencesDTO = [];
-            foreach ($competences as $competence) {
-                $competencesDTO[] = $competence->toDTO();
+            $clients = $this->authRepository->getUsersByRoles(0);
+            $competencesUser = $this->gestionRepository->getCompetencesByClient($clients);
+            $competencesUserRetour = [];
+            foreach ($competencesUser as $c) {
+                $competencesTabDTO = [];
+                foreach ($c["competences"] as $comp) {
+                    $competencesTabDTO[] = $comp->toDTO();
+                }
+                $competencesUserRetour[] = [
+                    "id_user" => $c["id_user"],
+                    "competences" => $competencesTabDTO
+                ];
+
             }
-            return $competencesDTO;
+            return $competencesUserRetour;
         } catch (Exception $e) {
             throw new GestionServiceException($e->getMessage());
         }

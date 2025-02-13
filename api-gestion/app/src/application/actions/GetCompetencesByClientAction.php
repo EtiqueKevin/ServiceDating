@@ -17,12 +17,11 @@ class GetCompetencesByClientAction extends AbstractAction
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
-        $id = $args['id'];
-        $competences = $this->gestion_service->getCompetencesByClient($id);
+        $competencesByClient = $this->gestion_service->getCompetencesByClient();
 
         $res  = [
           "type" => "collection",
-          "competences" => $competences
+          "competences_par_user" => $competencesByClient
         ];
 
         $rs->getBody()->write(json_encode($res));
