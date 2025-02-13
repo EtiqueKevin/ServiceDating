@@ -57,7 +57,7 @@ Et une image aussi :
 | 5              | Admin | ✅         |
 | 6              | Admin | ✅         |
 | 7              | Admin | ✅         |
-| 8              | Avancé / Admin |❌   |
+| 8              | Avancé / Admin |✅   |
 | 9              | Avancé | ✅         |
 | 10             | Admin |     ❌      |
 
