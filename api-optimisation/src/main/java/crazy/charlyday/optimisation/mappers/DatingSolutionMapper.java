@@ -2,7 +2,9 @@ package crazy.charlyday.optimisation.mappers;
 
 import crazy.charlyday.optimisation.dtos.DatingSolutionDto;
 import crazy.charlyday.optimisation.entities.DatingSolution;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
