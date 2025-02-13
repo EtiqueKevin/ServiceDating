@@ -19,7 +19,7 @@ public record DatingSolution(int score, Map<Salarie, Besoin> assignations) {
         for (int i = 1; i < lines.size(); i++) {
             String[] parts = lines.get(i).split(";");
             String clientName = parts[0];
-            String skill = parts[1];
+            String skill = parts[1].split(";")[0];
             String salarieName = parts[2];
 
             SkillType skillType = SkillType.valueOf(skill);
