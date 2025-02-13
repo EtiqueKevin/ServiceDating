@@ -1,6 +1,5 @@
 package crazy.charlyday.optimisation.dtos;
 
-import crazy.charlyday.optimisation.entities.SkillType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -15,5 +14,5 @@ public class BesoinDto {
     private String client;
 
     @Schema(name = "skills", example = "JD")
-    private List<SkillType> skills;
+    private List<String> skills;
 }

@@ -111,7 +111,7 @@ public class GloutonSolver implements Solver {
 
     int computeCompetence(Salarie salarie, Besoin besoin) {
         int competence = 0;
-        for (SkillType skill : besoin.skills()) {
+        for (String skill : besoin.skills()) {
             competence += salarie.competences().getOrDefault(skill, 0);
         }
         return competence;
