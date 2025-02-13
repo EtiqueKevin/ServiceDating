@@ -281,4 +281,27 @@ class PDOGestionRepository implements GestionRepositoryInterface
         }
         return $salaries;
     }
+
+    public function getCompetencesBySalarie(string $id): array
+    {
+        try {
+            $stmt = $this->pdo->prepare('SELECT * FROM salaries_competences WHERE salarie_id = ?');
+            $stmt->bindParam(1, $id);
+            $stmt->execute();
+            $data = $stmt->fetchAll();
+        }catch (\Exception $e) {
+            throw new GestionRepositoryNotFoundException('Aucune compétence trouvée');
+        }
+
+        $competences = [];
+        foreach ($data as $competence) {
+            $competences[] = [
+                'id' => $competence['competence_id'],
+                'interet' => $competence['interest']
+            ];
+        }
+        return $competences;
+    }
+
+
 }

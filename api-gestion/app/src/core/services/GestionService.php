@@ -12,6 +12,7 @@ use gestion\core\dto\InputCompetenceDTO;
 use gestion\core\dto\InputCompetenceSalarie;
 use gestion\core\dto\InputPutBesoinDTO;
 use gestion\core\dto\InputUtilisateurDTO;
+use gestion\core\dto\OutputGetSalariesDTO;
 use gestion\core\repositoryInterface\AuthRepositoryInterface;
 use gestion\core\repositoryInterface\GestionRepositoryInterface;
 use PHPUnit\Exception;
@@ -146,7 +147,8 @@ class GestionService implements GestionServiceInterface
             $salaries = $this->gestionRepository->getSalaries($salariesids);
             $salariesDTO = [];
             foreach ($salaries as $salarie) {
-                $salariesDTO[] = $salarie->toDTO();
+                $competences = $this->gestionRepository->getCompetencesBySalarie($salarie->getID());
+                $salariesDTO[] = new OutputGetSalariesDTO($competences, $salarie->id, $salarie->name, $salarie->surname, $salarie->phone);
             }
             return $salariesDTO;
         } catch (Exception $e) {
@@ -163,5 +165,26 @@ class GestionService implements GestionServiceInterface
         }else{
             return false;
         }
+    }
+
+    public function utilisateurBesoinVerification(string $idBesoin, string $token): bool
+    {
+
+        try {
+            $besoin = $this->gestionRepository->getBesoinsById($idBesoin);
+            $id = $this->authRepository->RecuperationIDUser($token);
+
+            if($besoin->client->getID() === $id ){
+                return true;
+            }else{
+                return false;
+            }
+
+
+        }catch (Exception $e) {
+            throw new GestionServiceException($e->getMessage());
+        }
+
+
     }
 }
