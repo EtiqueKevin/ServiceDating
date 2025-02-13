@@ -1,4 +1,4 @@
-package carzy.charlyday.optimisation;
+package crazy.charlyday.optimisation;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
