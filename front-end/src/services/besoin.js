@@ -38,10 +38,10 @@ export const useBesoin = () => {
         try {
             const res = await api.get(`users/besoins?page=${page}&limit=${limit}`);
             return {
-                besoins: res.data.besoins || [],
-                totalItems: res.data.totalItems || 0,
-                totalPages: res.data.totalPages || 1,
-                currentPage: res.data.currentPage || 1,
+                besoins: res.data.besoins,
+                totalItems: res.data.totalItems,
+                totalPages: res.data.totalPages,
+                currentPage: res.data.currentPage,
             };
         } catch (err) {
             toast.error('Erreur lors de la récupération de vos besoins');

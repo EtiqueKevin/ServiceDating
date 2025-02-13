@@ -172,7 +172,7 @@ class PDOGestionRepository implements GestionRepositoryInterface
         }
     }
 
-    public function getBesoinsByUserWithPagination(string $id, int $page = 1, int $limit = 5): array
+    public function getBesoinsByUserWithPagination(string $id, int $page, int $limit): array
     {
         try {
             $offset = ($page - 1) * $limit;

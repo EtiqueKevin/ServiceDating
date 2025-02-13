@@ -48,8 +48,7 @@ class GestionService implements GestionServiceInterface
     {
         try {
             //$besoins = $this->gestionRepository->getBesoinsByUser($id);
-            $offset = ($page - 1) * $limit;
-            $besoins = $this->gestionRepository->getBesoinsByUserWithPagination($id,$limit,$offset);
+            $besoins = $this->gestionRepository->getBesoinsByUserWithPagination($id,$page,$limit);
             $besoinsDTO = [];
             foreach ($besoins as $besoin) {
                 $besoinsDTO[] = $besoin->toDTO();
