@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref, watch} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {useBesoin} from "@/services/besoin.js";
 import BesoinForm from '@/components/forms/BesoinForm.vue';
 import { useToast } from 'vue-toastification';
@@ -33,6 +33,18 @@ const fetchBesoins = async () => {
   }
 };
 
+const filteredBesoins = computed(() => {
+  if (!besoins.value) return [];
+  if (filterStatus.value === 'all') return besoins.value;
+  return besoins.value.filter(b => b.status === parseInt(filterStatus.value));
+});
+
+const paginatedBesoins = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
+  return filteredBesoins.value.slice(start, end);
+});
+
 watch(filterStatus, () => {
   currentPage.value = 1;
   fetchBesoins();
@@ -65,8 +77,13 @@ const goToPage = (page) => {
     fetchBesoins();
   }
 };
-
-onMounted(fetchBesoins);
+onMounted(async () => {
+  try {
+    await fetchBesoins();
+  } catch (error) {
+    console.error(error);
+  }
+});
 </script>
 
 <template>
@@ -86,12 +103,12 @@ onMounted(fetchBesoins);
       <span>Chargement...</span>
     </div>
 
-    <div v-else-if="besoins.length === 0" class="empty-state">
+    <div v-else-if="filteredBesoins.length === 0" class="empty-state">
       Aucun besoin trouvé
     </div>
 
     <div v-else class="besoins-grid">
-      <div v-for="besoin in besoins" :key="besoin.id" class="card"> <!-- ✅ Utilise directement besoins -->
+      <div v-for="besoin in paginatedBesoins" :key="besoin.id" class="card">
         <div class="card-header">
           <h2>{{ besoin.competence.nom }}</h2>
         </div>
@@ -136,7 +153,7 @@ onMounted(fetchBesoins);
       </div>
     </div>
 
-    <div class="pagination" v-if="besoins.length > 0 && totalPages >= 1">
+    <div class="pagination" v-if="totalPages > 1">
       <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Précédent</button>
       <span>Page {{ currentPage }} sur {{ totalPages }}</span>
       <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Suivant</button>
@@ -162,6 +179,10 @@ onMounted(fetchBesoins);
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s;
+}
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 .pagination span {
