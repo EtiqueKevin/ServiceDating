@@ -46,7 +46,6 @@ router.beforeEach((to, from, next) => {
 
 
   // Vérification des droits d'accès
-
   const userStore = useUserStore()
   if(to.meta.requiresAuth && !userStore.isLogged) {
     next({ name: 'user-connect' })

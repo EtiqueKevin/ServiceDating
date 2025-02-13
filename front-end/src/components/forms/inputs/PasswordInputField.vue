@@ -44,10 +44,14 @@ const showPassword = ref(false)
 <style scoped>
 .password-container {
   position: relative;
+  width: 100%;
 }
 
 .input-field {
   display: block;
+  
+  box-sizing: border-box;
+
   width: 100%;
   margin-top: 0.25rem;
   padding: 0.5rem 0.75rem;
@@ -58,6 +62,7 @@ const showPassword = ref(false)
   color: var(--text-color);
   background-color: var(--background-color);
   transition: all 0.2s ease-in-out;
+  padding-right: 2.5rem; /* Added to make room for the eye icon */
 }
 
 .input-field:focus {
@@ -68,13 +73,18 @@ const showPassword = ref(false)
 
 .toggle-button {
   position: absolute;
-  right: 0;
+  right: 0.5rem;
   top: 50%;
   transform: translateY(-50%);
-  padding: 0 0.75rem;
-  color: var(--text-color);
   background: none;
   border: none;
   cursor: pointer;
+  color: var(--text-color);
+  opacity: 0.7;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.toggle-button:hover {
+  opacity: 1;
 }
 </style>
