@@ -19,20 +19,31 @@ use Slim\App;
 
 return function( App $app): App {
 
-    $app->get('/besoins[/]', GetBesoinsAdminAction::class);
+    $app->get('/besoins[/]', GetBesoinsAdminAction::class)
+        ->setName('GetBesoinsAdmin') ;
     $app->get('/users/besoins[/]', GetBesoinsByUserAction::class)
-        ->add(AuthMiddleware::class);
+        ->add(AuthMiddleware::class)
+        ->setName("GetBesoinsByUser");
     $app->post('/besoins[/]', PostBesoinAction::class)
-        ->add(AuthMiddleware::class);
+        ->add(AuthMiddleware::class)
+        ->setName('PostBesoin');
     $app->put('/besoins/{id}[/]', PutBesoinByIdAction::class)
-        ->add(AuthMiddleware::class);
-    $app->get('/salaries[/]', GetSalariesAction::class);
-    $app->get('/competences[/]', GetCompetencesAction::class);
-    $app->get('/competences/{id}[/]', GetCompetencesByIdAction::class);
-    $app->post('/competences[/]', PostCompetencesAction::class);
-    $app->put('/competences/{id}[/]', PutCompetencesAction::class);
-    $app->delete('/competences/{id}[/]', DeleteCompetencesAction::class);
-    $app->post('/utilisateur[/]',PostUtilisateurAction::class);
+        ->add(AuthMiddleware::class)
+        ->setName('PutBesoinById');
+    $app->get('/salaries[/]', GetSalariesAction::class)
+        ->setName('GetSalaries');
+    $app->get('/competences[/]', GetCompetencesAction::class)
+        ->setName('GetCompetences');
+    $app->get('/competences/{id}[/]', GetCompetencesByIdAction::class)
+    ->setName('GetCompetencesById');
+    $app->post('/competences[/]', PostCompetencesAction::class)
+        ->setName('PostCompetences');
+    $app->put('/competences/{id}[/]', PutCompetencesAction::class)
+        ->setName('PutCompetences');
+    $app->delete('/competences/{id}[/]', DeleteCompetencesAction::class)
+        ->setName('DeleteCompetences');
+    $app->post('/utilisateur[/]',PostUtilisateurAction::class)
+        ->setName('PostUtilisateur');
 
     return $app;
 };

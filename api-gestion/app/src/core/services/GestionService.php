@@ -60,7 +60,7 @@ class GestionService implements GestionServiceInterface
     public function creerBesoin(InputBesoinDTO $besoin): BesoinDTO
     {
         try {
-            $besoinEntity = $this->gestionRepository->creerBesoin();
+            $besoinEntity = $this->gestionRepository->creerBesoin($besoin->getClientId(), $besoin->getCompetenceId(), $besoin->getDescription());
             return $besoinEntity->toDTO();
         }catch (Exception $e) {
             throw new GestionServiceException($e->getMessage());

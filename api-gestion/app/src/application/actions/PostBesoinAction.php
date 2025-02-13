@@ -23,6 +23,14 @@ class PostBesoinAction extends AbstractAction
 
         $inputBesoinDTO = new InputBesoinDTO($id, $body['competence_id'], $body['description']);
 
-        $this->gestionService->creerBesoin($inputBesoinDTO);
+        $besoinDTO = $this->gestionService->creerBesoin($inputBesoinDTO);
+
+        $res = [
+            'type' => 'ressources',
+            'besoin' => $besoinDTO
+        ];
+
+        $rs->getBody()->write(json_encode($res));
+        return $rs->withHeader('Content-Type', 'application/json')->withStatus(201);
     }
 }

@@ -177,7 +177,7 @@ class PDOGestionRepository implements GestionRepositoryInterface
         try {
             $date = date('Y-m-d H:i:s');
             $status = 0;
-            $stmt = $this->pdo->prepare('INSERT INTO besoins (client_id, competence_id, description, status, date_init_besoin) VALUES (?, ?, ?, ?, ?) RETURNING id');
+            $stmt = $this->pdo->prepare('INSERT INTO besoins (client_id, competence_id, description, status, date_init_besoin) VALUES (?, ?, ?, ?, ?) RETURNING besoin_id');
             $stmt->bindParam(1, $id);
             $stmt->bindParam(2, $competence_id);
             $stmt->bindParam(3, $description);
@@ -208,7 +208,7 @@ class PDOGestionRepository implements GestionRepositoryInterface
             $utilisateur = $this->getUserById($data['client_id']);
             $competence = $this->getCompetenceById($data['competence_id']);
             $besoinEntity = new Besoin($utilisateur, $competence, $data['description'], $data['status'], $data['date_init_besoin']);
-            $besoinEntity->setId($data['id']);
+            $besoinEntity->setId($data['besoin_id']);
             return $besoinEntity;
         }catch (Exception) {
             throw new GestionRepositoryException('Erreur lors de la récupération du besoin');
