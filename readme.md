@@ -86,6 +86,8 @@ dans le dossier "api-optimisation", le dossier de test permet de lancer les algo
 
 nom du fichier de test : OptiBenchmark
 
+Pour ECJ il faut obligatoirement mettre un timeout.
+
 ### API ###
 Pour permettre à l'application d'utiliser les algorithmes de recommandation, nous avons mis en place une API Spring Boot.
 Cet API permet d'envoyer en entrée des clients et des salariés et de recevoir en sortie le salarié le plus adapté à chaque client, le tout en format JSON.
