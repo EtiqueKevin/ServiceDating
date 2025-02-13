@@ -142,7 +142,8 @@ class GestionService implements GestionServiceInterface
     public function getSalaries(): array
     {
         try {
-            $salaries = $this->gestionRepository->getSalaries();
+            $salariesids = $this->authRepository->getUsersByRoles(10);
+            $salaries = $this->gestionRepository->getSalaries($salariesids);
             $salariesDTO = [];
             foreach ($salaries as $salarie) {
                 $salariesDTO[] = $salarie->toDTO();
