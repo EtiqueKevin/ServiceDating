@@ -30,11 +30,18 @@ const logOut = async () => {
           <!-- Espace visible aux clients -->
           <MenuList :show-icon="true" v-if="userStore.isLogged" class="menu-text">
             <template #text>
-              Espace client
+              <span class="icon-text">Espace client</span>
             </template>
-            <RouterLink to="/besoin/create" class="nav-link" title="Créer un besoin">
+            <RouterLink to="/besoins/create" class="nav-link" title="Créer un besoin">
               <div class="button-content">
+                <i class="fas fa-plus-circle"></i>
                 <span class="icon-text">Créer un besoin</span>
+              </div>
+            </RouterLink>
+            <RouterLink to="/besoins" class="nav-link" title="Voir mes besoins">
+              <div class="button-content">
+                <i class="fas fa-list"></i>
+                <span class="icon-text">Voir mes Besoins</span>
               </div>
             </RouterLink>
           </MenuList>

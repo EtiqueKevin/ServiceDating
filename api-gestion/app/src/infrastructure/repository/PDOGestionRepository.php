@@ -138,7 +138,7 @@ class PDOGestionRepository implements GestionRepositoryInterface
             $stmt->bindParam(1, $id);
             $stmt->execute();
 
-            $stmt = $this->pdo->prepare('DELETE FROM "competences" WHERE "id" = ?');
+            $stmt = $this->pdo->prepare('DELETE FROM "competences" WHERE "competence_id" = ?');
             $stmt->bindParam(1, $id);
             $stmt->execute();
         }catch (\Exception $e) {

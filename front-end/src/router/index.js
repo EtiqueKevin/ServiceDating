@@ -21,14 +21,14 @@ const router = createRouter({
                     component: () => import('@/views/HomeView.vue'),
                 },
                 {
-                    path: 'besoin/create',
-                    name: 'besoin-create',
+                    path: 'besoins/create',
+                    name: 'besoins-create',
                     component: () => import('@/views/user/BesoinCreateView.vue'),
                     meta: {requiresAuth: true}
                 },
                 {
-                    path: 'besoin',
-                    name: 'besoin',
+                    path: 'besoins',
+                    name: 'besoins',
                     component: () => import('@/views/user/BesoinView.vue'),
                     meta: {requiresAuth: true}
                 }
