@@ -1,12 +1,13 @@
 package crazy.charlyday.optimisation.services;
 
-import crazy.charlyday.optimisation.entities.DatingProblem;
-import crazy.charlyday.optimisation.entities.DatingSolution;
+import crazy.charlyday.optimisation.entities.*;
 import crazy.charlyday.optimisation.interfaces.Solver;
-import crazy.charlyday.optimisation.services.score.ScoreFunction;
-import crazy.charlyday.optimisation.services.score.UniqueSalarieConstraint;
+import crazy.charlyday.optimisation.services.score.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ScoreCalculator implements Solver {
 
@@ -17,17 +18,20 @@ public class ScoreCalculator implements Solver {
 
     @Override
     public DatingSolution compute(DatingProblem datingProblem) {
-        return computeScore(solver.compute(datingProblem));
+        return computeScore(datingProblem, solver.compute(datingProblem));
     }
 
-    private DatingSolution computeScore(DatingSolution solution) {
+    private DatingSolution computeScore(DatingProblem problem, DatingSolution solution) {
         List<ScoreFunction> scoreFunctions = List.of(
-                new UniqueSalarieConstraint()
+                new AssignationsScore(),
+                new EveryoneServedConstraint(),
+                new UniqueSalarieConstraint(),
+                new EveryoneWorkConstraint()
         );
 
         int score = 0;
         for(ScoreFunction scoreFunction : scoreFunctions) {
-            score = scoreFunction.getScore(solution, score);
+            score = scoreFunction.getScore(problem, solution, score);
         }
 
         return new DatingSolution(score, solution.assignations());
