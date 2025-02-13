@@ -2,6 +2,8 @@
 
 namespace gestion\core\domain\entities;
 
+use gestion\core\dto\UtilisateurDTO;
+
 class Utilisateur extends Entity
 {
     protected  string $name;
@@ -12,6 +14,11 @@ class Utilisateur extends Entity
         $this->name = $name;
         $this->surname = $surname;
         $this->phone = $phone;
+    }
+
+    public function toDTO(): UtilisateurDTO
+    {
+        return new UtilisateurDTO($this);
     }
 
 }
