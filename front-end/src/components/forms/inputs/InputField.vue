@@ -19,15 +19,15 @@ defineEmits(['update:modelValue'])
 
 <template>
   <input
-    :value="modelValue"
-    @input="$emit('update:modelValue', $event.target.value)"
-    :type="type"
-    :id="id"
-    :required="required"
-    :autocomplete="autocomplete"
-    :placeholder="placeholder"
-    :title="placeholder"
-    class="input-field"
+      :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)"
+      :type="type"
+      :id="id"
+      :required="required"
+      :autocomplete="autocomplete"
+      :placeholder="placeholder"
+      :title="placeholder"
+      class="input-field"
   />
 </template>
 
@@ -50,4 +50,5 @@ defineEmits(['update:modelValue'])
   border-color: var(--primary-color);
   box-shadow: 0 0 0 2px rgba(44, 62, 80, 0.2);
 }
+
 </style>
