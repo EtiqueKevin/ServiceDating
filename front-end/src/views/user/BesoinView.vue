@@ -32,11 +32,9 @@ const fetchBesoins = async () => {
     isLoading.value = false;
   }
 };
-
 const filteredBesoins = computed(() => {
-  if (!besoins.value) return [];
   if (filterStatus.value === 'all') return besoins.value;
-  return besoins.value.filter(b => b.status === parseInt(filterStatus.value));
+  return besoins.value.filter(besoin => besoin.status === parseInt(filterStatus.value));
 });
 
 const paginatedBesoins = computed(() => {
@@ -77,13 +75,8 @@ const goToPage = (page) => {
     fetchBesoins();
   }
 };
-onMounted(async () => {
-  try {
-    await fetchBesoins();
-  } catch (error) {
-    console.error(error);
-  }
-});
+onMounted(fetchBesoins());
+
 </script>
 
 <template>
@@ -98,12 +91,7 @@ onMounted(async () => {
       </select>
     </div>
 
-    <div v-if="isLoading" class="loading">
-      <div class="spinner"></div>
-      <span>Chargement...</span>
-    </div>
-
-    <div v-else-if="filteredBesoins.length === 0" class="empty-state">
+    <div v-else-if="besoins.length === 0" class="empty-state">
       Aucun besoin trouvé
     </div>
 
@@ -154,9 +142,9 @@ onMounted(async () => {
     </div>
 
     <div class="pagination" v-if="totalPages > 1">
-      <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Précédent</button>
+      <button @click="goToPage(currentPage - 1)">Précédent</button>
       <span>Page {{ currentPage }} sur {{ totalPages }}</span>
-      <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Suivant</button>
+      <button @click="goToPage(currentPage + 1)">Suivant</button>
     </div>
   </div>
 </template>
