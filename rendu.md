@@ -48,7 +48,7 @@ Et une image aussi :
 ### IA ###
 
 Pour commencer la partie IA, nous devions d'abord convertir les fichiers CSV en objet java pour pouvoir les manipuler plus facilement et pour que ce soit compatible avec l'API.
-Pour sela nous avons implémenté les méthodes toCsv et fromCsv dans les classes 
+Pour sela, nous avons implémenté les méthodes toCsv et fromCsv dans les classes DatingProblem et DatingSolution avec les tests unitaires qui vont avec.
 
 ### API ###
 Pour permettre à l'application d'utiliser les algorithmes de recommandation, nous avons mis en place une API Spring Boot.
