@@ -37,18 +37,24 @@ class GeneriqueOptimisationAction extends AbstractAction
         // Handle request body for POST, PUT, PATCH methods
         if (in_array($method, ['POST', 'PUT', 'PATCH'])) {
             $contentType = $rq->getHeaderLine('Content-Type');
+            $body = $rq->getParsedBody();
+            
+            // Ensure body is an object/associative array, not a sequential array
+            if (is_array($body) && array_keys($body) === range(0, count($body) - 1)) {
+                $body = ['data' => $body]; // Wrap sequential array in an object
+            }
             
             if (strpos($contentType, 'application/json') !== false) {
-                $options['json'] = $rq->getParsedBody();
+                $options['json'] = $body;
             } else {
-                $options['form_params'] = $rq->getParsedBody();
+                $options['form_params'] = $body;
             }
         }
     
         try {
             $rs = $this->remote_api->request($method, $path, $options);
         } catch (ConnectException | ServerException $e) {
-            throw new HttpInternalServerErrorException($rq, "The remote server is not available". $e->getMessage());
+            throw new HttpInternalServerErrorException($rq, "The remote server is not available: " . $e->getMessage());
         } catch (ClientException $e) {
             match($e->getCode()) {
                 400 => throw new HttpBadRequestException($rq, "The request is invalid: " . $e->getMessage()),

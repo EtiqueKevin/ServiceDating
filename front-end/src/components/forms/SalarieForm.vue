@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import InputField from '@/components/forms/inputs/InputField.vue';
+import CompetenceForm from '@/components/forms/CompetenceForm.vue';
 import { useAdmin } from '@/services/admin';
 import { useToast } from 'vue-toastification';
 
@@ -32,6 +33,19 @@ const unselectedCompetences = computed(() => {
         !formData.value.competences.some(selected => selected.id === comp.id)
     );
 });
+
+const showCompetenceForm = ref(false);
+
+const handleCompetenceSuccess = async () => {
+    showCompetenceForm.value = false;
+    // Refresh the competences list
+    try {
+        availableCompetences.value = await getAllCompetences();
+    } catch (error) {
+        console.error('Error reloading competences:', error);
+        toast.error('Erreur lors du rechargement des compétences');
+    }
+};
 
 const addCompetence = () => {
     if (!selectedCompetenceId.value) return;
@@ -156,6 +170,13 @@ onMounted(async () => {
                     >
                         Ajouter
                     </button>
+                    <button 
+                        type="button" 
+                        class="create-competence-button"
+                        @click="showCompetenceForm = true"
+                    >
+                        Nouvelle compétence
+                    </button>
                 </div>
 
                 <div v-if="formData.competences.length === 0" class="no-competences">
@@ -201,6 +222,12 @@ onMounted(async () => {
                 </button>
             </div>
         </form>
+        <div v-if="showCompetenceForm" class="modal-overlay">
+            <CompetenceForm
+                @success="handleCompetenceSuccess"
+                @close="showCompetenceForm = false"
+            />
+        </div>
     </div>
 </template>
 
@@ -375,5 +402,30 @@ onMounted(async () => {
 
 .submit-button:hover {
     background-color: #2980b9;
+}
+.create-competence-button {
+    padding: 0.5rem 1rem;
+    background-color: #9b59b6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.create-competence-button:hover {
+    background-color: #8e44ad;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 </style>
