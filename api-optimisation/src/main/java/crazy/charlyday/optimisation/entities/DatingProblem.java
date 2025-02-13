@@ -2,6 +2,7 @@ package crazy.charlyday.optimisation.entities;
 
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public record DatingProblem(List<Client> clients, List<Salarie> salaries) {
+public record DatingProblem(List<Client> clients, List<Salarie> salaries) implements Serializable {
     public static DatingProblem fromCsv(String filePath) throws IOException {
         List<Client> clients = new ArrayList<>();
         List<Salarie> salaries = new ArrayList<>();

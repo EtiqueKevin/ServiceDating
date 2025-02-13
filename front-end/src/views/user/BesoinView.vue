@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, ref, watch} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {useBesoin} from "@/services/besoin.js";
 import BesoinForm from '@/components/forms/BesoinForm.vue';
 import { useToast } from 'vue-toastification';
@@ -11,30 +11,16 @@ const {getBesoins} = useBesoin();
 const showEditModal = ref(false);
 const selectedBesoin = ref(null);
 
-const isLoading = ref(false);
+const isLoading = computed(() => besoins.value === null);
 
 // Pagination
 const currentPage = ref(1);
 const itemsPerPage = ref(5);
-const totalPages = ref(1);
 
-const fetchBesoins = async () => {
-  isLoading.value = true;
-  try {
-    const { besoins: data, totalPages: pages, currentPage: page } = await getBesoins(currentPage.value, itemsPerPage.value, filterStatus.value);
-    besoins.value = data;
-    totalPages.value = pages;
-    currentPage.value = page;
-  } catch (error) {
-    console.error(error);
-    toast.error("Erreur lors de la récupération des besoins.");
-  } finally {
-    isLoading.value = false;
-  }
-};
 const filteredBesoins = computed(() => {
+  if (!besoins.value) return [];
   if (filterStatus.value === 'all') return besoins.value;
-  return besoins.value.filter(besoin => besoin.status === parseInt(filterStatus.value));
+  return besoins.value.filter(b => b.status === parseInt(filterStatus.value));
 });
 
 const paginatedBesoins = computed(() => {
@@ -43,18 +29,22 @@ const paginatedBesoins = computed(() => {
   return filteredBesoins.value.slice(start, end);
 });
 
-watch(filterStatus, () => {
-  currentPage.value = 1;
-  fetchBesoins();
+const totalPages = computed(() => {
+  return Math.ceil(filteredBesoins.value.length / itemsPerPage.value);
 });
 
-const formatDate = (dateString) => new Date(dateString).toLocaleDateString('fr-FR');
+const formatDate = (dateString) => {
+  return new Date(dateString).toLocaleDateString('fr-FR');
+};
 
 const getStatusLabel = (status) => {
   switch (status) {
-    case 0: return 'En attente';
-    case 1: return 'Terminé';
-    default: return 'Inconnu';
+    case 0:
+      return 'En attente';
+    case 1:
+      return 'Terminé';
+    default:
+      return 'Inconnu';
   }
 };
 
@@ -65,17 +55,27 @@ const handleEditClick = (besoin) => {
 
 const handleSuccess = async () => {
   showEditModal.value = false;
-  await fetchBesoins();
-  toast.success('Besoin mis à jour avec succès');
+  try {
+    besoins.value = await getBesoins();
+    toast.success('Besoin mis à jour avec succès');
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const goToPage = (page) => {
   if (page >= 1 && page <= totalPages.value) {
     currentPage.value = page;
-    fetchBesoins();
   }
 };
-onMounted(fetchBesoins());
+
+onMounted(async () => {
+  try {
+    besoins.value = await getBesoins();
+  } catch (error) {
+    console.error(error);
+  }
+});
 
 </script>
 
@@ -91,7 +91,12 @@ onMounted(fetchBesoins());
       </select>
     </div>
 
-    <div v-else-if="besoins.length === 0" class="empty-state">
+    <div v-if="isLoading" class="loading">
+      <div class="spinner"></div>
+      <span>Chargement...</span>
+    </div>
+
+    <div v-else-if="filteredBesoins.length === 0" class="empty-state">
       Aucun besoin trouvé
     </div>
 
@@ -142,13 +147,12 @@ onMounted(fetchBesoins());
     </div>
 
     <div class="pagination" v-if="totalPages > 1">
-      <button @click="goToPage(currentPage - 1)">Précédent</button>
+      <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Précédent</button>
       <span>Page {{ currentPage }} sur {{ totalPages }}</span>
-      <button @click="goToPage(currentPage + 1)">Suivant</button>
+      <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Suivant</button>
     </div>
   </div>
 </template>
-
 
 <style scoped>
 .pagination {
@@ -159,15 +163,11 @@ onMounted(fetchBesoins());
 }
 
 .pagination button {
-  margin: 0;
-  padding: 0.5rem 1rem;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  padding: 10px 15px;
+  margin: 0 5px;
   cursor: pointer;
-  transition: background-color 0.2s;
 }
+
 .pagination button:disabled {
   background-color: #ccc;
   cursor: not-allowed;

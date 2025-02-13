@@ -1,11 +1,12 @@
 package crazy.charlyday.optimisation.entities;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-public record DatingSolution(int score, LinkedHashMap<Salarie, Besoin> assignations) {
+public record DatingSolution(int score, LinkedHashMap<Salarie, Besoin> assignations) implements Serializable {
     public static DatingSolution fromCsv(String filePath) throws IOException {
         LinkedHashMap<Salarie, Besoin> matches = new LinkedHashMap<>();
         List<String> lines = Files.readAllLines(Paths.get(filePath));

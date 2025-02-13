@@ -19,7 +19,7 @@
 ## URL ##
 
 - git : https://github.com/EtiqueKevin/ServiceDating
-- de l'application finale : http://servicedating.paul-bruson.fr/acceuil
+- de l'application finale : http://servicedating.paul-bruson.fr/
 
 ##  Partie application Web ##
 
