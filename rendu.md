@@ -18,10 +18,10 @@
 
 ## URL ##
 
-- des dépôts git
-- de l'application finale
+- git : https://github.com/EtiqueKevin/ServiceDating
+- de l'application finale : http://servicedating.paul-bruson.fr/acceuil
 
-##  Partie application Web##
+##  Partie application Web ##
 
 ### Liste des numéros de fonctionnalités implantées ###
 
