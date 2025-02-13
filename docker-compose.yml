@@ -75,7 +75,7 @@ services:
       - api-gestion:/var/lib/postgresql/data
       - ./api-gestion/sql:/docker-entrypoint-initdb.d
 
-    db.auth.servicedating:
+  db.auth.servicedating:
     image: postgres:latest 
     ports:
       - "46245:5432"

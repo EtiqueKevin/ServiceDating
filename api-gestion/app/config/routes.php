@@ -14,14 +14,18 @@ use gestion\application\actions\PostCompetencesAction;
 use gestion\application\actions\PutCompetencesAction;
 use gestion\application\actions\DeleteCompetencesAction;
 
+use gestion\application\middlewares\AuthMiddleware;
 use Slim\App;
 
 return function( App $app): App {
 
     $app->get('/besoins[/]', GetBesoinsAdminAction::class);
-    $app->get('/users/besoins[/]', GetBesoinsByUserAction::class);
-    $app->post('/besoins[/]', PostBesoinAction::class);
-    $app->put('/besoins/{id}[/]', PutBesoinByIdAction::class);
+    $app->get('/users/besoins[/]', GetBesoinsByUserAction::class)
+        ->add(AuthMiddleware::class);
+    $app->post('/besoins[/]', PostBesoinAction::class)
+        ->add(AuthMiddleware::class);
+    $app->put('/besoins/{id}[/]', PutBesoinByIdAction::class)
+        ->add(AuthMiddleware::class);
     $app->get('/salaries[/]', GetSalariesAction::class);
     $app->get('/competences[/]', GetCompetencesAction::class);
     $app->get('/competences/{id}[/]', GetCompetencesByIdAction::class);
