@@ -2,6 +2,7 @@ package crazy.charlyday.optimisation.mappers;
 
 import crazy.charlyday.optimisation.dtos.SalarieDto;
 import crazy.charlyday.optimisation.entities.Salarie;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

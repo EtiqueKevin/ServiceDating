@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Data
@@ -13,5 +14,5 @@ public class DatingSolutionDto {
     private int score;
 
     @Schema(name = "assignations", example = "{Salarie1: {client: Hugues, skill: JD}}")
-    private Map<SalarieDto, BesoinDto> assignations;
+    private LinkedHashMap<SalarieDto, BesoinDto> assignations;
 }
