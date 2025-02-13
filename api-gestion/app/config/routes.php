@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use gestion\application\actions\GetBesoinsAdminAction;
 use gestion\application\actions\GetBesoinsByUserAction;
+use gestion\application\actions\GetCompetencesByClientAction;
 use gestion\application\actions\PostBesoinAction;
 use gestion\application\actions\PostUtilisateurAction;
 use gestion\application\actions\PutBesoinByIdAction;
@@ -43,6 +44,7 @@ return function( App $app): App {
         ->setName('DeleteCompetences');
     $app->post('/utilisateur[/]',PostUtilisateurAction::class)
         ->setName('PostUtilisateur');
-
+    $app->get('/competences/clients/{id}[/]', GetCompetencesByClientAction::class)
+        ->setName('GetCompetencesByClient');
     return $app;
 };
