@@ -6,15 +6,15 @@ CREATE TABLE "public"."utilisateurs" (
     "name" character varying(100) NOT NULL,
     "surname" character varying(100) NOT NULL,
     "phone" character varying(20),
-    CONSTRAINT "utilisateurs_id" PRIMARY KEY ("id")
+    CONSTRAINT "utilisateurs_id" PRIMARY KEY ("utilisateur_id")
 ) WITH (oids = false);
 
 DROP TABLE IF EXISTS "competences";
 CREATE TABLE "public"."competences" (
-    "competence_id" DEFAULT uuid_generate_v4() NOT NULL,
+    "competence_id" uuid DEFAULT uuid_generate_v4() NOT NULL,
     "name" character varying(100) NOT NULL,
     "description" character varying(255) NOT NULL,
-    CONSTRAINT "competences_id" PRIMARY KEY ("id")
+    CONSTRAINT "competences_id" PRIMARY KEY ("competence_id")
 ) WITH (oids = false);
 
 DROP TABLE IF EXISTS "salaries_competences";
@@ -30,7 +30,7 @@ CREATE TABLE "public"."salaries_competences" (
 
 DROP TABLE IF EXISTS "besoins";
 CREATE TABLE "public"."besoins" (
-    "besoin_id" DEFAULT uuid_generate_v4() NOT NULL,
+    "besoin_id" uuid DEFAULT uuid_generate_v4() NOT NULL,
     "client_id" uuid NOT NULL,
     "competence_id" uuid NOT NULL,
     "description" character varying(255) NOT NULL,
@@ -43,13 +43,13 @@ CREATE TABLE "public"."besoins" (
 
 DROP TABLE IF EXISTS "attributions";
 CREATE TABLE "public"."attributions" (
-    "attribution_id" DEFAULT uuid_generate_v4() NOT NULL,
+    "attribution_id" uuid DEFAULT uuid_generate_v4() NOT NULL,
     "besoin_id" uuid NOT NULL,
     "salarie_id" uuid NOT NULL,
     "date_attribution" date DEFAULT CURRENT_DATE,
     CONSTRAINT "attributions_besoin_id" FOREIGN KEY ("besoin_id") REFERENCES "besoins"("besoin_id"),
     CONSTRAINT "attributions_salarie_id" FOREIGN KEY ("salarie_id") REFERENCES "utilisateurs"("utilisateur_id"),
-    CONSTRAINT "attributions_id" PRIMARY KEY ("id"),
+    CONSTRAINT "attributions_id" PRIMARY KEY ("attribution_id")
 ) WITH (oids = false);
 
 -- INSERT TABLE UTILISATEURS
@@ -61,7 +61,7 @@ INSERT INTO "utilisateurs" ("utilisateur_id", "name", "surname", "phone") VALUES
 -- INSERT TABLE COMPETENCES
 -- 10 compétence dans des domaines différents 
 INSERT INTO "competences" ("competence_id", "name", "description") VALUES 
-('68295599-af70-4d44-a6e1-60a02909e2ce', 'Plomberie', "Réparation de fuite d'eau"),
+('68295599-af70-4d44-a6e1-60a02909e2ce', 'Plomberie', 'Réparation de fuite d eau'),
 ('c99c2369-a7d1-4892-ace9-cebce6551601', 'Electricité', 'Installation de prise électrique'),
 ('aee81d3f-52d4-4448-88ad-1a8482017480', 'Informatique', 'Installation de logiciel'),
 ('75850cc8-3e13-4b25-9dbe-3b8de2877d95', 'Jardinage', 'Tonte de pelouse'),
@@ -84,8 +84,8 @@ INSERT INTO "salaries_competences" ("salarie_id", "competence_id", "interest") V
 -- INSERT TABLE BESOINS
 -- Clément a 2 besoins
 INSERT INTO "besoins" ("besoin_id", "client_id", "competence_id", "description") VALUES 
-("b0a5ee4e-8c33-4f4e-8258-d817f346e93f",'fb276eac-c8f5-4327-bb09-163421ef1af3', '676e3b90-7638-4163-933d-820b2baf8dca', 'Construction de mur dans ma maison'),
-("d23da99a-ef66-45d2-8267-f0dd059f6a4c",'fb276eac-c8f5-4327-bb09-163421ef1af3', '75850cc8-3e13-4b25-9dbe-3b8de2877d95', 'Tonte de pelouse dans mon jardin');
+('b0a5ee4e-8c33-4f4e-8258-d817f346e93f','fb276eac-c8f5-4327-bb09-163421ef1af3', '676e3b90-7638-4163-933d-820b2baf8dca', 'Construction de mur dans ma maison'),
+('d23da99a-ef66-45d2-8267-f0dd059f6a4c','fb276eac-c8f5-4327-bb09-163421ef1af3', '75850cc8-3e13-4b25-9dbe-3b8de2877d95', 'Tonte de pelouse dans mon jardin');
 
 -- INSERT TABLE ATTRIBUTIONS
 -- Kevin a 1 attribution

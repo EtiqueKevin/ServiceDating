@@ -1,0 +1,101 @@
+# NETWORK SERVICEDATING
+networks:
+  servicedating.net:
+    driver: bridge
+
+#SERVICES
+services:
+  #FRONTEND
+  frontend.serviceating:
+    image: node:22
+    volumes:
+      - ./front-end:/app
+      - /app/node_modules
+    working_dir: /app
+    ports:
+      - "46240:5173"
+    command: sh -c "npm install && npm run dev -- --host"
+    networks:
+      - servicedating.net
+
+  #API
+  gateway.servicedating:
+    build:
+      context: gateway/build
+      dockerfile: 8.3-cli.Dockerfile
+    ports:
+      - '46241:80'
+    volumes:
+      - ./gateway:/var/php
+    working_dir: /var/php
+    networks:
+      - servicedating.net
+    command: php -S 0.0.0.0:80 -t /var/php/public
+
+  api.gestion.servicedating:
+    build:
+      context: api-gestion/build
+      dockerfile: 8.3-cli.Dockerfile
+    ports:
+      - '46242:80'
+    volumes:
+      - ./api-gestion/app:/var/php
+    env_file:
+      - ./api-gestion/env/gestion.env
+    working_dir: /var/php
+    networks:
+      - servicedating.net
+    command: php -S 0.0.0.0:80 -t /var/php/public
+
+  api.auth.servicedating:
+    build:
+      context: api-auth/build
+      dockerfile: 8.3-cli.Dockerfile
+    ports:
+      - '46243:80'
+    volumes:
+      - ./api-auth/app:/var/php
+    env_file:
+      - ./api-auth/env/auth.env
+    working_dir: /var/php
+    networks:
+      - servicedating.net
+    command: php -S 0.0.0.0:80 -t /var/php/public
+
+# DATABASE
+  db.gestion.servicedating:
+    image: postgres:latest
+    ports:
+      - '46244:5432'
+    networks:
+      - servicedating.net
+    env_file:
+      - ./api-gestion/env/db.env
+    volumes:
+      - api-gestion:/var/lib/postgresql/data
+      - ./api-gestion/sql:/docker-entrypoint-initdb.d
+
+  db.auth.servicedating:
+    image: postgres:latest 
+    ports:
+      - "46245:5432"
+    networks:
+      - servicedating.net
+    env_file: 
+      - ./api-auth/env/db.env
+    volumes:
+      - api-auth:/var/lib/postgresql/data
+      - ./api-auth/sql:/docker-entrypoint-initdb.d
+
+  adminer.servicedating:
+    image: adminer
+    ports:
+      - "46246:8080"
+    networks:
+      - servicedating.net
+    command: 'php -S 0.0.0.0:8080 -t /var/www/html'
+
+# VOLUMES
+volumes:
+  api-gestion:
+  api-auth:
