@@ -17,17 +17,10 @@ class RegisterSalarieAction extends AbstractAction
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
-        $authHeader = $rq->getHeaderLine('Authorization');
-        $authHeaderTab = explode(' ', $authHeader);
-        if ($authHeaderTab[0] !== 'Basic') {
-            throw new HttpUnauthorizedException($rq, 'Authorization header absent ou mal formé');
-        }
-        $encodedCredentials = $authHeaderTab[1];
-        $decodedCredentials = base64_decode($encodedCredentials);
-        $credentials = explode(':', $decodedCredentials);
 
-        $email = filter_var($credentials[0], FILTER_SANITIZE_EMAIL);
-        $mdp = $credentials[1];
+        $params = $rq->getParsedBody();
+        $email = $params['email'];
+        $mdp =  $params['mdp'];
 
 
         $id = $this->userService->createSalarier(new InputUserDTO($email, $mdp));

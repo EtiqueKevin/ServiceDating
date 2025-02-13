@@ -4,6 +4,7 @@ declare(strict_types=1);
 use gestion\application\actions\GetBesoinsAdminAction;
 use gestion\application\actions\GetBesoinsByUserAction;
 use gestion\application\actions\PostBesoinAction;
+use gestion\application\actions\PostUtilisateurAction;
 use gestion\application\actions\PutBesoinByIdAction;
 use gestion\application\actions\PostSalariesAction;
 use gestion\application\actions\GetSalariesAction;
@@ -27,7 +28,9 @@ return function( App $app): App {
     $app->get('/competences/{id}[/]', GetCompetencesByIdAction::class);
     $app->post('/competences[/]', PostCompetencesAction::class);
     $app->put('/competences/{id}[/]', PutCompetencesAction::class);
+    $app->post('/affectations[/]', PostAffectationsAction::class);
     $app->delete('/competences/{id}[/]', DeleteCompetencesAction::class);
+    $app->post('/utilisateur[/]',PostUtilisateurAction::class);
 
     return $app;
 };

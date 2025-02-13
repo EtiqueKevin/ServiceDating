@@ -35,7 +35,7 @@ return function( App $app): App {
     $app->post('/token/validate[/]',ValidateAction::class)
         ->setName('tokenValidate');
 
-    $app->get('/token/user/id[/]',GetUserIDAction::class);
+    $app->post('/token/user/id[/]',GetUserIDAction::class);
 
     $app->post('/register/salarie[/]',RegisterSalarieAction::class);
     return $app;

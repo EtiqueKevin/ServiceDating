@@ -219,7 +219,7 @@ class PDOGestionRepository implements GestionRepositoryInterface
         $phone = $utilisateur->phone;
         $id = $utilisateur->getID();
 
-        $stmt = $this->pdo->prepare('INSERT INTO "utilisateurs" ("id","name","surname","phone" ) VALUES (?, ?, ?, ?)');
+        $stmt = $this->pdo->prepare('INSERT INTO "utilisateurs" ("utilisateur_id","name","surname","phone" ) VALUES (?, ?, ?, ?)');
 
         $stmt->bindParam(1, $id);
         $stmt->bindParam(2, $name);
@@ -233,8 +233,8 @@ class PDOGestionRepository implements GestionRepositoryInterface
         $tab = $tabC;
 
         foreach ($tab as $competence) {
-            $idCompetence = $competence->id;
-            $interest = $competence->interest;
+            $idCompetence = $competence['id'];
+            $interest = $competence['interet'];
             try{
                 $stmt = $this->pdo->prepare('INSERT INTO "salaries_competences" ("salarie_id","competence_id","interest" ) VALUES (?, ?, ?)');
 

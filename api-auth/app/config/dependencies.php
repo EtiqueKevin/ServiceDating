@@ -11,12 +11,12 @@ use apiAuth\application\providers\auth\AuthProvider;
 use apiAuth\application\providers\auth\AuthProviderInterface;
 use apiAuth\application\providers\auth\JWTManager;
 use apiAuth\core\repositoryInterface\AuthRepositoryInterface;
-use apiAuth\core\repositoryInterface\UtilisateurRepositoryInterface;
+use apiAuth\core\repositoryInterface\GestionRepositoryInterface;
 use apiAuth\core\services\auth\AuthService;
 use apiAuth\core\services\auth\AuthServiceInterface;
 use apiAuth\core\services\user\UserService;
 use apiAuth\core\services\user\UserServiceInterface;
-use apiAuth\infrastructure\adaptater\AdaptaterUtilisateurRepository;
+use apiAuth\infrastructure\adaptater\AdaptaterGestionRepository;
 use apiAuth\infrastructure\repositories\PDOAuthRepository;
 use Psr\Container\ContainerInterface;
 
@@ -26,8 +26,8 @@ return [
         return new  PDOAuthRepository( $container->get('auth.pdo'));
     },
 
-    UtilisateurRepositoryInterface::class => function (ContainerInterface $container) {
-        return new AdaptaterUtilisateurRepository($container->get('client_gestion'));
+    GestionRepositoryInterface::class => function (ContainerInterface $container) {
+        return new AdaptaterGestionRepository($container->get('client_gestion'));
     },
 
     AuthServiceInterface::class => function(ContainerInterface $c){
@@ -35,7 +35,7 @@ return [
     },
 
     UserServiceInterface::class => function(ContainerInterface $c){
-    return new UserService($c->get(AuthRepositoryInterface::class),$c->get(UtilisateurRepositoryInterface::class));
+    return new UserService($c->get(AuthRepositoryInterface::class),$c->get(GestionRepositoryInterface::class));
     },
 
     AuthProviderInterface::class => function(ContainerInterface $c){

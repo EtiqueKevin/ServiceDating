@@ -1,6 +1,6 @@
 <?php
 
-namespace gestion\infrastructure\services;
+namespace gestion\infrastructure\adaptater;
 
 use Exception;
 use gestion\core\dto\AuthUserDTO;
@@ -25,12 +25,12 @@ class AdaptaterAuthRepository implements AuthRepositoryInterface
     }
 
     public function CreationUserReturnID(AuthUserDTO $aud) : string{
-
-        $response = $this->client->get('/token/user/id', [
-            'auth' => [$aud->email, $aud->password]
+        $response = $this->client->post('/register/salarie', [
+            'json' => ["email"=>$aud->email,"mdp"=> $aud->password]
         ]);
 
         $data = json_decode($response->getBody()->getContents(), true);
+
         return $data["userID"];
     }
 }
