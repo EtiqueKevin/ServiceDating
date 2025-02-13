@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use apiAuth\application\actions\GetUserIDAction;
+use apiAuth\application\actions\GetUserRoleAction;
 use apiAuth\application\actions\HomeAction;
 use apiAuth\application\actions\RefreshAction;
 use apiAuth\application\actions\RegisterAction;
@@ -38,5 +39,7 @@ return function( App $app): App {
     $app->post('/token/user/id[/]',GetUserIDAction::class);
 
     $app->post('/register/salarie[/]',RegisterSalarieAction::class);
+
+    $app->get('/token/user/role[/]',GetUserRoleAction::class);
     return $app;
 };

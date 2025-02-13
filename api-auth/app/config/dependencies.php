@@ -2,6 +2,7 @@
 
 
 use apiAuth\application\actions\GetUserIDAction;
+use apiAuth\application\actions\GetUserRoleAction;
 use apiAuth\application\actions\RefreshAction;
 use apiAuth\application\actions\RegisterAction;
 use apiAuth\application\actions\RegisterSalarieAction;
@@ -64,6 +65,10 @@ return [
 
     RegisterSalarieAction::class => function (ContainerInterface $c) {
         return new RegisterSalarieAction($c->get(UserServiceInterface::class));
+    },
+
+    GetUserRoleAction::class => function (ContainerInterface $c) {
+    return new GetUserRoleAction($c->get(AuthProviderInterface::class));
     },
 
     JWTManager::class => function(ContainerInterface $c){
