@@ -5,6 +5,7 @@ use apiAuth\application\providers\auth\AuthProviderInterface;
 use apiAuth\core\dto\user\InputUserDTO;
 use apiAuth\core\dto\user\ProviderUserDTO;
 use apiAuth\core\services\user\UserServiceInterface;
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpBadRequestException;
@@ -42,13 +43,13 @@ class RegisterAction extends AbstractAction
 
         try {
             $this->userService->createUser(new InputUserDTO($email, $params['mdp'], $name, $surname, $linkpic, $pseudo));
-        } catch (\apiAuth\application\actions\application\actions\Exception $e) {
+        } catch (Exception $e) {
             throw new HttpBadRequestException($rq, $e->getMessage());
         }
 
         try {
             $authRes = $this->authProvider->signIn(new ProviderUserDTO($email, $params['mdp']));
-        } catch (\apiAuth\application\actions\application\actions\Exception $e) {
+        } catch (Exception $e) {
             throw new HttpUnauthorizedException($rq, 'Identifiants incorrects ' . $e->getMessage());
         }
 

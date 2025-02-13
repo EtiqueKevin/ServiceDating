@@ -1,30 +1,22 @@
 <?php
 declare(strict_types=1);
 
-use apiCours\application\actions\lesson\DeleteLessonByIdAction;
-use apiCours\application\actions\lesson\GetLessonByIdAction;
-use apiCours\application\actions\lesson\GetLessonsAction;
-use apiCours\application\actions\lesson\PostLessonAction;
-use apiCours\application\actions\lesson\PutLessonByIdAction;
-use apiCours\application\actions\module\DeleteModuleByIdAction;
-use apiCours\application\actions\module\GetModuleByIdAction;
-use apiCours\application\actions\module\GetModulesAction;
-use apiCours\application\actions\module\PostModuleAction;
-use apiCours\application\actions\module\PutModuleByIdAction;
 use Slim\App;
 
 return function( App $app): App {
-    //module, lesson
-    $app->get('/modules[/]', GetModulesAction::class);
-    $app->post('/modules[/]', PostModuleAction::class);
-    $app->get('/modules/{id}[/]', GetModuleByIdAction::class);
-    $app->delete('/modules/{id}[/]', DeleteModuleByIdAction::class);
-    $app->put('/modules/{id}[/]', PutModuleByIdAction::class);
 
-    $app->get('/modules/{id}/lessons[/]', GetLessonsAction::class);
-    $app->post('/modules/{id}/lessons/[/]', PostLessonAction::class);
-    $app->get('/modules/{id_module}/lessons/{id_lesson}[/]', GetLessonByIdAction::class);
-    $app->delete('/modules/{id_module}/lessons/{id_lesson}[/]', DeleteLessonByIdAction::class);
-    $app->put('/modules/{id_module}/lessons/{id_lesson}[/]', PutLessonByIdAction::class);
+    $app->get('/besoins[/]', GetBesoinsAdminAction::class);
+    $app->get('/users/besoins[/]', GetBesoinsByUserAction::class);
+    $app->post('/besoins[/]', PostBesoinsAction::class);
+    $app->put('/besoins/{id}[/]', GetBesoinsByIdAction::class);
+    $app->post('/salaries[/]', PostSalariesAction::class);
+    $app->get('/salaries[/]', GetSalariesAction::class);
+    $app->get('/competences[/]', GetCompetencesAction::class);
+    $app->get('/competences/{id}[/]', GetCompetencesByIdAction::class);
+    $app->post('/competences[/]', PostCompetencesAction::class);
+    $app->put('/competences/{id}[/]', PutCompetencesAction::class);
+    $app->post('/affectations[/]', PostAffectationsAction::class);
+
+
     return $app;
 };
