@@ -126,8 +126,22 @@ class PDOGestionRepository implements GestionRepositoryInterface
         $stmt->execute();
     }
 
-    public function deleteCompetence(string $id):void{
-        //a faire
+    public function deleteCompetence(string $id): void {
+        try {
+            $stmt = $this->pdo->prepare('DELETE FROM "salaries_competences" WHERE "competence_id" = ?');
+            $stmt->bindParam(1, $id);
+            $stmt->execute();
+
+            $stmt = $this->pdo->prepare('DELETE FROM "besoins" WHERE "competence_id" = ?');
+            $stmt->bindParam(1, $id);
+            $stmt->execute();
+
+            $stmt = $this->pdo->prepare('DELETE FROM "competences" WHERE "id" = ?');
+            $stmt->bindParam(1, $id);
+            $stmt->execute();
+        }catch (\Exception $e) {
+            throw new GestionRepositoryException('Erreur lors de la suppression de la compétence');
+        }
     }
 
     public function getBesoinsByUser(string $id): array

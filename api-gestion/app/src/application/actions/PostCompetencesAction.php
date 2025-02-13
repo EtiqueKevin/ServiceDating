@@ -3,6 +3,7 @@
 namespace gestion\application\actions;
 
 use gestion\core\domain\entities\InputBesoinDTO;
+use gestion\core\dto\InputCompetenceDTO;
 use gestion\core\services\GestionServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

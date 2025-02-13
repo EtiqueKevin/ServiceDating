@@ -2,7 +2,7 @@
 
 namespace gestion\core\dto;
 
-class InputCompetenceSalarie extends DTO
+class InputCompetenceDTO extends DTO
 {
     public ?string $id;
     public string $name;
@@ -11,7 +11,7 @@ class InputCompetenceSalarie extends DTO
     public function __construct( string $name, string $description){
         $this->id = null;
         $this->name = $name;
-        $this->description = $description
+        $this->description = $description;
     }
 
     public function setId(string $id) {
