@@ -35,12 +35,16 @@ const logOut = async () => {
             <p>Rien pour l'instant</p>
           </MenuList>
 
-          <!-- Espace visible aux administrateurs -->
-          <MenuList :show-icon="true" v-if="userStore.isAdmin" class="menu-text">
-            <template #text>
-              Administration
-            </template>
-          </MenuList>
+          <!-- Espace visible aux admins -->
+          <template v-if="userStore.isAdmin">
+    <div class="separator"></div>
+    <RouterLink to="/admin" class="nav-link" title="Panel administrateur">
+        <div class="button-content">
+            <i class="fas fa-user-shield"></i>
+            <span class="icon-text">Backoffice</span>
+        </div> 
+    </RouterLink>
+</template>
 
           <div class="separator"></div>
           
