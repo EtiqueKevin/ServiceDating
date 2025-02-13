@@ -41,7 +41,6 @@ const handleSubmit = async () => {
                 required
                 autocomplete="email"
                 placeholder="Email"
-                class="input-field"
             />
             <PasswordInputField
                 v-model="password"
@@ -49,7 +48,6 @@ const handleSubmit = async () => {
                 required
                 autocomplete="current-password"
                 placeholder="Mot de passe"
-                class="input-field"
             />
             <button 
                 type="submit" 
@@ -107,15 +105,6 @@ const handleSubmit = async () => {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-}
-
-.input-field {
-    transition: all 0.3s;
-}
-
-.input-field:hover,
-.input-field:focus-within {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .submit-button {

@@ -12,6 +12,7 @@ export const useUserStore = defineStore('user', {
 
     actions: {
         async signIn(email, password) {
+            /*
             try {
                 const credentials = btoa(`${email}:${password}`);
                 const res = await this.$api.post('signin', {}, {
@@ -27,7 +28,12 @@ export const useUserStore = defineStore('user', {
             } catch (e) {
                 toast.error('Erreur lors de la connexion');
                 return false;
-            }
+            }*/
+            this.accessToken = "test";
+            this.refreshToken = "test";
+            this.role = 2;
+            toast.success('Connexion réussie');
+            return true;
         },
         
         async signUp(data) {
@@ -47,6 +53,7 @@ export const useUserStore = defineStore('user', {
             this.accessToken = null;
             this.refreshToken = null;
             this.role = null;
+            toast.success('Déconnexion réussie');
         },
         
         setTokens(accessToken, refreshToken) {

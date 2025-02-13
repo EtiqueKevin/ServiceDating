@@ -45,7 +45,7 @@ const logOut = async () => {
           <div class="separator"></div>
           
           <template v-if="!userStore.isLogged">
-              <RouterLink to="/user/connect" class="nav-link">
+              <RouterLink to="/user/connect" class="nav-link" title="Connexion">
                 <div class="button-content">
                   <i class="fas fa-sign-in-alt"></i>
                   <span class="icon-text">Connexion</span>
@@ -53,7 +53,12 @@ const logOut = async () => {
               </RouterLink>
           </template>
           <template v-else>
-            button deconnexion
+            <button @click="logOut" class="nav-link" title="Déconnexion">
+              <div class="button-content">
+                <i class="fas fa-sign-out-alt"></i>
+                <span class="icon-text">Déconnexion</span>
+              </div>
+            </button>
           </template>
         </div>
       </div>
@@ -127,9 +132,10 @@ const logOut = async () => {
 }
 
 .button-content {
+  font-size: 1rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.1rem;
 }
 
 .menu-text {
@@ -139,6 +145,8 @@ const logOut = async () => {
 .nav-link {
   text-decoration: none;
   color: var(--text-color);
+  border: none;
+  background-color: transparent;
   transition: color 0.2s ease;
 }
 
