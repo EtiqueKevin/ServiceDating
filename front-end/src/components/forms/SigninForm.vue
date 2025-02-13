@@ -1,11 +1,12 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import { useUserStore } from '@/stores/user';
 import InputField from '@/components/forms/inputs/InputField.vue'
 import PasswordInputField from '@/components/forms/inputs/PasswordInputField.vue';
 
+const route = useRoute();
 const router = useRouter();
 const userStore = useUserStore();
 const toast = useToast();
@@ -21,7 +22,8 @@ const handleSubmit = async () => {
     if (!formValid.value) return
     const success = await userStore.signIn(email.value, password.value);
     if (success) {
-        router.push({ name: 'home' });
+        const redirectPath = router.currentRoute.value.redirectedFrom?.name || 'home';
+        router.push({name : redirectPath});
     }
 };
 </script>

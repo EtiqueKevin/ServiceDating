@@ -34,8 +34,8 @@ const handleSubmit = async () => {
         
         const success = await userStore.signUp(userData);
         if (success) {
-            toast.success("Inscription réussie!");
-            router.push({ name: 'home' });
+            const redirectPath = router.currentRoute.value.redirectedFrom?.name || 'home';
+            router.push({name : redirectPath});
         }
 }
 </script>
