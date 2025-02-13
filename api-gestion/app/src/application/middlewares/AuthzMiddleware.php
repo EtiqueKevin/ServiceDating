@@ -26,6 +26,8 @@ class AuthzMiddleware
 
         $args = $route->getArguments();
 
+        $parsedBody = $rq->getParsedBody();
+
         $h = $rq->getHeader('Authorization')[0];
         $tokenstring = sscanf($h, "Bearer %s")[0];
 
@@ -47,9 +49,10 @@ class AuthzMiddleware
                 }
                 break;
             case 'PostUtilisateur':
-
-                if (!$this->gestion->adminVerification($tokenstring)) {
-                    throw new HttpUnauthorizedException($rq, 'Vous n\'avez pas les droits pour accéder à cette ressource');
+                if(!isset($parsedBody['id'])){
+                    if (!$this->gestion->adminVerification($tokenstring)) {
+                        throw new HttpUnauthorizedException($rq, 'Vous n\'avez pas les droits pour accéder à cette ressource');
+                    }
                 }
                 break;
             default:
