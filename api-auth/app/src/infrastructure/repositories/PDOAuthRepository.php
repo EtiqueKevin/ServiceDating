@@ -72,4 +72,22 @@ class PDOAuthRepository implements AuthRepositoryInterface
 
         return $id;
     }
+
+    public function getUsersByRole(string $role): array{
+
+        $r = intval($role);
+        try {
+            $stmt = $this->pdo->prepare('SELECT * FROM users WHERE role = ?');
+            $stmt->bindParam(1, $r);
+            $stmt->execute();
+            $rows = $stmt->fetchAll();
+            $users = [];
+            foreach ($rows as $row) {
+                $users[] = $row['id'];
+            }
+            return $users;
+        }catch (Exception $e) {
+            throw new AuthRepositoryException($e->getMessage());
+        }
+    }
 }

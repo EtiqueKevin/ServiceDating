@@ -1,6 +1,7 @@
 <?php
 
 
+use apiAuth\application\actions\GetUserByRoleAction;
 use apiAuth\application\actions\GetUserIDAction;
 use apiAuth\application\actions\GetUserRoleAction;
 use apiAuth\application\actions\RefreshAction;
@@ -69,6 +70,10 @@ return [
 
     GetUserRoleAction::class => function (ContainerInterface $c) {
     return new GetUserRoleAction($c->get(AuthProviderInterface::class));
+    },
+
+    GetUserByRoleAction::class => function (ContainerInterface $c) {
+        return new GetUserByRoleAction($c->get(UserServiceInterface::class));
     },
 
     JWTManager::class => function(ContainerInterface $c){
