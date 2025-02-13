@@ -3,7 +3,6 @@ package crazy.charlyday.optimisation.mappers;
 import crazy.charlyday.optimisation.dtos.AssignationDto;
 import crazy.charlyday.optimisation.dtos.BesoinDto;
 import crazy.charlyday.optimisation.dtos.DatingSolutionDto;
-import crazy.charlyday.optimisation.dtos.SalarieDto;
 import crazy.charlyday.optimisation.entities.Besoin;
 import crazy.charlyday.optimisation.entities.DatingSolution;
 import crazy.charlyday.optimisation.entities.Salarie;

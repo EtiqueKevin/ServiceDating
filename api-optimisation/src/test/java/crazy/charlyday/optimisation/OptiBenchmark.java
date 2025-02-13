@@ -85,16 +85,16 @@ public class OptiBenchmark {
 
         LinkedHashMap<Salarie, Besoin> assignations = new LinkedHashMap<>();
         assignations.put(
-                new Salarie("Charlotte", Map.of(SkillType.IF, 5)),
-                new Besoin("Cedric_C", List.of(SkillType.IF))
+                new Salarie("Charlotte", Map.of("IF", 5)),
+                new Besoin("Cedric_C", List.of("IF"))
         );
         assignations.put(
-                new Salarie("Alice", Map.of(SkillType.MN, 7)),
-                new Besoin("Antoine_C", List.of(SkillType.MN))
+                new Salarie("Alice", Map.of("MN", 7)),
+                new Besoin("Antoine_C", List.of("MN"))
         );
         assignations.put(
-                new Salarie("Bernard", Map.of(SkillType.BR, 5)),
-                new Besoin("Antoine_C", List.of(SkillType.BR))
+                new Salarie("Bernard", Map.of("BR", 5)),
+                new Besoin("Antoine_C", List.of("BR"))
         );
 
         int expectedScore = solution.score();

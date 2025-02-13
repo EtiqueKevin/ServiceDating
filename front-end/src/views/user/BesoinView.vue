@@ -1,22 +1,31 @@
 <script setup>
-import {computed, onMounted, ref} from "vue";
-import {useBesoin} from "@/services/besoin.js";
-import BesoinForm from '@/components/forms/BesoinForm.vue';
-import { useToast } from 'vue-toastification';
+import { computed, onMounted, ref } from "vue";
+import { useBesoin } from "@/services/besoin.js";
 
-const toast = useToast();
 const besoins = ref([]);
 const filterStatus = ref('all');
-const {getBesoins} = useBesoin();
-const showEditModal = ref(false);
-const selectedBesoin = ref(null);
+const { getBesoins } = useBesoin();
 
 const isLoading = computed(() => besoins.value === null);
+
+// Pagination
+const currentPage = ref(1);
+const itemsPerPage = ref(5);
 
 const filteredBesoins = computed(() => {
   if (!besoins.value) return [];
   if (filterStatus.value === 'all') return besoins.value;
   return besoins.value.filter(b => b.status === parseInt(filterStatus.value));
+});
+
+const paginatedBesoins = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
+  return filteredBesoins.value.slice(start, end);
+});
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredBesoins.value.length / itemsPerPage.value);
 });
 
 const formatDate = (dateString) => {
@@ -34,19 +43,10 @@ const getStatusLabel = (status) => {
   }
 };
 
-const handleEditClick = (besoin) => {
-    selectedBesoin.value = besoin;
-    showEditModal.value = true;
-};
-
-const handleSuccess = async () => {
-    showEditModal.value = false;
-    try {
-        besoins.value = await getBesoins();
-        toast.success('Besoin mis à jour avec succès');
-    } catch (error) {
-        console.error(error);
-    }
+const goToPage = (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+  }
 };
 
 onMounted(async () => {
@@ -80,7 +80,7 @@ onMounted(async () => {
     </div>
 
     <div v-else class="besoins-grid">
-      <div v-for="besoin in filteredBesoins" :key="besoin.id" class="card">
+      <div v-for="besoin in paginatedBesoins" :key="besoin.id" class="card">
         <div class="card-header">
           <h2>{{ besoin.competence.nom }}</h2>
         </div>
@@ -106,32 +106,51 @@ onMounted(async () => {
           <span :class="['status-badge', `status-${besoin.status}`]">
             {{ getStatusLabel(besoin.status) }}
           </span>
-          <button class="edit-button" @click="handleEditClick(besoin)">
-            <i class="fas fa-edit"></i>
-            Modifier
-          </button>
+          <button class="edit-button">Modifier</button>
         </div>
       </div>
     </div>
 
-    <!-- Modal -->
-    <div v-if="showEditModal" class="modal-overlay">
-      <div class="modal-content">
-        <BesoinForm
-          :besoin="selectedBesoin"
-          @success="handleSuccess"
-          @close="showEditModal = false"
-        />
-      </div>
+    <div class="pagination" v-if="totalPages > 1">
+      <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Précédent</button>
+      <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+      <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Suivant</button>
     </div>
   </div>
 </template>
 
 <style scoped>
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 10px 15px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  margin: 0 10px;
+  font-weight: bold;
+}
+
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
 .besoins-container {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 3rem;
+  width: 80%;
+  margin: 0 auto;
   height: 100%;
   overflow: auto;
 }
@@ -170,8 +189,12 @@ h1 {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .empty-state {
@@ -239,8 +262,6 @@ h3 {
 }
 
 .card-footer {
-  display: flex;
-  justify-content: space-between;
   padding: 1rem;
   border-top: 1px solid #eee;
 }
@@ -278,28 +299,5 @@ h3 {
   transition: background-color 0.2s;
 }
 
-.edit-button:hover {
-  background-color: #217dbb;
-}
 
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background-color: white;
-  border-radius: 8px;
-  max-width: 500px;
-  width: 90%;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
 </style>

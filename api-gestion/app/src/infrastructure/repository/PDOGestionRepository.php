@@ -172,6 +172,7 @@ class PDOGestionRepository implements GestionRepositoryInterface
         }
     }
 
+
     public function creerBesoin(string $id, string $competence_id, string $description): Besoin
     {
         try {
@@ -280,5 +281,51 @@ class PDOGestionRepository implements GestionRepositoryInterface
             $salaries[] = $salarie;
         }
         return $salaries;
+    }
+
+    public function getCompetencesBySalarie(string $id): array
+    {
+        try {
+            $stmt = $this->pdo->prepare('SELECT * FROM salaries_competences WHERE salarie_id = ?');
+            $stmt->bindParam(1, $id);
+            $stmt->execute();
+            $data = $stmt->fetchAll();
+        }catch (\Exception $e) {
+            throw new GestionRepositoryNotFoundException('Aucune compétence trouvée');
+        }
+
+        $competences = [];
+        foreach ($data as $competence) {
+            $competences[] = [
+                'id' => $competence['competence_id'],
+                'interet' => $competence['interest']
+            ];
+        }
+        return $competences;
+    }
+
+    public function getCompetencesByClient(array $clients): array
+    {
+        try {
+            $competencesById = [];
+            foreach ($clients as $client) {
+                $stmt = $this->pdo->prepare('SELECT DISTINCT * FROM besoins WHERE client_id = ?');
+                $stmt->bindParam(1, $client);
+                $stmt->execute();
+                $data = $stmt->fetchAll();
+                $competences = [];
+                foreach ($data as $besoin) {
+                    $competence = $this->getCompetenceById($besoin['competence_id']);
+                    $competences[] = $competence;
+                    $competencesById [] = [
+                        "id_user" => $client,
+                        "competences" => $competences
+                    ];
+                }
+            }
+            return $competencesById;
+        }catch (\Exception $e) {
+            throw new GestionRepositoryNotFoundException('Aucune compétence trouvée');
+        }
     }
 }

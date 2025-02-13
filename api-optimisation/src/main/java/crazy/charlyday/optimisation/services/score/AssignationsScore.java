@@ -3,7 +3,6 @@ package crazy.charlyday.optimisation.services.score;
 import crazy.charlyday.optimisation.entities.DatingProblem;
 import crazy.charlyday.optimisation.entities.DatingSolution;
 import crazy.charlyday.optimisation.entities.Salarie;
-import crazy.charlyday.optimisation.entities.SkillType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +24,7 @@ public class AssignationsScore implements ScoreFunction {
             var satisfaction = clientSatisfaction.getOrDefault(besoin.client(), 0);
 
             var skillScore = 0;
-            for(SkillType skill : besoin.skills()) {
+            for(String skill : besoin.skills()) {
                 skillScore += salarie.competences().get(skill);
             }
             if(skillScore >= 1) {

@@ -67,6 +67,12 @@ const router = createRouter({
                             name: 'backoffice-competences',
                             component: () => import('@/views/admin/AdminCompetencesView.vue'),
                             meta: { requiresAuth: true, requiresAdmin: true }
+                        },
+                        {
+                            path: 'affectations',
+                            name: 'backoffice-affectations',
+                            component: () => import('@/views/admin/AdminAffectationsView.vue'),
+                            meta: { requiresAuth: true, requiresAdmin: true }
                         }
                     ]
                 }

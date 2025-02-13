@@ -73,22 +73,22 @@ public class DatingProblemTest {
         // Création des clients avec leurs besoins
         List<Client> clients = new ArrayList<>(List.of(
                 new Client("Antoine_C", List.of(
-                        new Besoin("Antoine_C", List.of(SkillType.BR)),
-                        new Besoin("Antoine_C", List.of(SkillType.MN))
+                        new Besoin("Antoine_C", List.of("BR")),
+                        new Besoin("Antoine_C", List.of("MN"))
                 )),
                 new Client("Brigitte_C", List.of(
-                        new Besoin("Brigitte_C", List.of(SkillType.MN))
+                        new Besoin("Brigitte_C", List.of("MN"))
                 )),
                 new Client("Cedric_C", List.of(
-                        new Besoin("Cedric_C", List.of(SkillType.IF))
+                        new Besoin("Cedric_C", List.of("IF"))
                 ))
         ));
 
         // Création des salariés avec leurs compétences
         List<Salarie> salaries = new ArrayList<>(List.of(
-                new Salarie("Alice", Map.of(SkillType.BR, 4, SkillType.MN, 7, SkillType.AD, 1)),
-                new Salarie("Bernard", Map.of(SkillType.BR, 5, SkillType.AD, 7)),
-                new Salarie("Charlotte", Map.of(SkillType.JD, 8, SkillType.IF, 5, SkillType.AD, 4))
+                new Salarie("Alice", Map.of("BR", 4, "MN", 7, "AD", 1)),
+                new Salarie("Bernard", Map.of("BR", 5, "AD", 7)),
+                new Salarie("Charlotte", Map.of("JD", 8, "IF", 5, "AD", 4))
         ));
 
         // Tri des listes pour garantir un ordre identique à la lecture depuis CSV

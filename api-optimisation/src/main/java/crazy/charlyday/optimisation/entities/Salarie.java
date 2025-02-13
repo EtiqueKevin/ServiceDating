@@ -3,7 +3,7 @@ package crazy.charlyday.optimisation.entities;
 import java.io.Serializable;
 import java.util.Map;
 
-public record Salarie(String name, Map<SkillType, Integer> competences) implements Serializable {
+public record Salarie(String name, Map<String, Integer> competences) implements Serializable {
     @Override
     public int hashCode() {
         return name.hashCode();

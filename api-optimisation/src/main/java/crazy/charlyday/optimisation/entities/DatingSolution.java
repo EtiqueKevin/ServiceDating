@@ -22,7 +22,7 @@ public record DatingSolution(int score, LinkedHashMap<Salarie, Besoin> assignati
             String skill = parts[1];
             String clientName = parts[2];
 
-            SkillType skillType = SkillType.valueOf(skill);
+            String skillType = skill;
 
             if (!salariesMap.containsKey(salarieName)) {
                 salariesMap.put(salarieName, new Salarie(salarieName, new HashMap<>()));
