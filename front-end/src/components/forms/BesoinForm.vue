@@ -1,23 +1,33 @@
-
 <script setup>
-  import { computed, ref } from 'vue';
-  import InputField from "@/components/forms/inputs/InputField.vue";
+import {computed, ref} from 'vue';
+import InputField from "@/components/forms/inputs/InputField.vue";
+import {useBesoin} from "@/services/besoin.js";
 
-  const nom = ref('');
-  const libelle = ref('');
-  const competence = ref([]);
-  const selectedCompetence = ref(null);
+const nom = ref('');
+const libelle = ref('');
+const competence = ref([]);
 
-  const formData = ref({
+const formData = ref({
   nom: '',
   libelle: '',
   option_id: null,
 });
 
-  const formValid = computed(() => {
+const formValid = computed(() => {
   return formData.value.nom && formData.value.libelle && formData.value.option_id;
 });
 
+const {loadCompetence, postBesoin} = useBesoin();
+
+const loadCompetences = async () => {
+  competence.value = await loadCompetence();
+};
+
+const handleSubmit = async () => {
+  const res = await postBesoin(formData.value)
+}
+
+loadCompetences();
 </script>
 
 <template>
@@ -55,9 +65,9 @@
           'disabled': !formValid,
           'enabled': formValid
         }"
-          title="Valider"
+          title="Creer un besoin"
       >
-        Valider
+        Créer
       </button>
     </form>
   </div>
