@@ -34,5 +34,15 @@ export const useBesoin = () => {
         }
     }
 
-    return { getCompetences, createBesoin, getBesoins };
+    const updateBesoin = async (id, data) => {
+        try {
+            await api.put('besoins/'+id, data);
+            return true;
+        } catch (err) {
+            toast.error('Erreur lors de la mise à jour de votre besoin');
+            return false;
+        }
+    };
+
+    return { getCompetences, createBesoin, getBesoins, updateBesoin };
 };

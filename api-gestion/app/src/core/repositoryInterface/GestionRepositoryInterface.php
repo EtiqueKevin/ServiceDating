@@ -14,5 +14,6 @@ interface GestionRepositoryInterface
 
     public function saveUtilisateur(Utilisateur $utilisateur):void;
     public function modifierBesoin(string $id_besoin, string $id_user, string $competence_id, string $description):Besoin;
-    public function getSalaries(): array;
+    public function getSalaries(array $idUsers): array;
+    public function getCompetencesBySalarie(string $id): array;
 }

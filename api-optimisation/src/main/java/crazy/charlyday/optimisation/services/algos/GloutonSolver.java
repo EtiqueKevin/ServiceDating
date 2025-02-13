@@ -9,7 +9,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class GloutonSolver implements Solver {
-
     List<Salarie> salaries;
     List<Besoin> besoins = new ArrayList<>();
     LinkedHashMap<Salarie, Besoin> assignations = new LinkedHashMap<>();
@@ -17,8 +16,14 @@ public class GloutonSolver implements Solver {
     int bestAssignationsScore = 0;
     DatingProblem problem;
 
-    double timeout = 3000;
+    double timeout = 100;
     double startTime = 0;
+
+    public GloutonSolver() {}
+
+    public GloutonSolver(double timeout) {
+        this.timeout = timeout;
+    }
 
     @Override
     public DatingSolution compute(DatingProblem datingProblem) {
@@ -31,8 +36,21 @@ public class GloutonSolver implements Solver {
         problem = datingProblem;
         salaries = datingProblem.salaries();
 
-        for (Client client : datingProblem.clients()) {
-            besoins.addAll(client.besoins());
+        {
+            int i = 0;
+            boolean running = true;
+            var clients = datingProblem.clients();
+            while (running) {
+                running = false;
+                for (Client client : clients) {
+                    var clientsBesoins = client.besoins();
+                    if(clientsBesoins.size() > i) {
+                        besoins.add(clientsBesoins.get(i));
+                        running = true;
+                    }
+                }
+                i++;
+            }
         }
 
         assignSalaries(0);

@@ -24,28 +24,26 @@ class AuthzMiddleware
         $route = $routeContext->getRoute();
         $routeName = $route->getName();
 
+        $args = $route->getArguments();
+
         $h = $rq->getHeader('Authorization')[0];
         $tokenstring = sscanf($h, "Bearer %s")[0];
 
         // Vérification des droits d'accès selon la route
         switch ($routeName) {
-            case 'rdvsId':
+            case 'GetBesoinsAdmin':
+            case 'GetSalaries':
+            case 'PostCompetences':
+            case 'PutCompetences':
+            case 'DeleteCompetences':
                 if (!$this->gestion->adminVerification($tokenstring)) {
                     throw new HttpUnauthorizedException($rq, 'Vous n\'avez pas les droits pour accéder à cette ressource');
                 }
                 break;
-            case 'praticiensPlanning':
-                $idPraticien = $route->getArgument('id');
-                if (!$this->gestion->authorisePlanningAccess($userId, $idPraticien)) {
+            case 'PutBesoinById':
+                $idBesoin = $args['id'];
+                if (!$this->gestion->utilisateurBesoinVerification($idBesoin, $tokenstring)) {
                     throw new HttpUnauthorizedException($rq, 'Vous n\'avez pas les droits pour accéder à cette ressource');
-                }
-                break;
-            case 'rdvsAdd':
-                $body = $rq->getParsedBody();
-                $idPatient = $body['idPatient'] ?? null;
-                $idPraticien = $body['idPraticien'] ?? null;
-                if (!$this->gestion->authoriseCreateRDV($userId, $idPatient, $idPraticien)) {
-                    throw new HttpUnauthorizedException($rq, 'Vous n\'avez pas les droits pour créer cette ressource');
                 }
                 break;
             default:

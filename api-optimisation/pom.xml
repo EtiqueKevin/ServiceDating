@@ -37,6 +37,15 @@
 		</dependency>
 
 		<dependency>
+			<groupId>ecj</groupId>
+			<artifactId>ecj</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/ecj-27.jar</systemPath>
+		</dependency>
+
+
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>

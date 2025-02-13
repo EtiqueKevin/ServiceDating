@@ -3,6 +3,15 @@ import {computed, onMounted, ref} from 'vue';
 import {useBesoin} from "@/services/besoin.js";
 import { useRouter } from 'vue-router';
 
+const props = defineProps({
+  besoin: {
+    type: Object,
+    default: null,
+  },
+});
+
+const emit = defineEmits(['success', 'close']);
+
 const router = useRouter();
 const competences = ref([]);
 
@@ -15,22 +24,47 @@ const formValid = computed(() => {
   return formData.value.description && formData.value.option_id;
 });
 
-const {getCompetences, createBesoin} = useBesoin();
+const title = computed(() => {
+  return props.besoin ? 'Modifier le besoin' : 'Création d\'un besoin';
+});
+
+const buttonText = computed(() => {
+  return props.besoin ? 'Modifier' : 'Créer';
+});
+
+const {getCompetences, createBesoin, updateBesoin} = useBesoin();
+
+const handleClose = () => {
+  emit('close');
+};
 
 const handleSubmit = async () => {
-  const success = await createBesoin({
+  if (!formValid.value) return;
+  
+  const data = {
     description: formData.value.description,
     competence_id: formData.value.option_id,
-  });
+  };
 
-  if(success) {
-    router.push({name: 'besoins'});
+  let success;
+  if (props.besoin) {
+    success = await updateBesoin(props.besoin.id, data);
+  } else {
+    success = await createBesoin(data);
   }
 
+  if(success) {
+    emit('success');
+    router.push({name: 'besoins'});
+  }
 }
 
 const loadData = async () => {
   competences.value = await getCompetences();
+  if (props.besoin) {
+    formData.value.description = props.besoin.description;
+    formData.value.option_id = props.besoin.competence.id; 
+  }
 }
 
 onMounted(() => {
@@ -40,7 +74,7 @@ onMounted(() => {
 
 <template>
   <div class="form-container">
-    <h1 class="title">Création d'un besoin</h1>
+    <h1 class="title">{{ title }}</h1>
     <form @submit.prevent="handleSubmit" class="form">
       <textarea
           v-model="formData.description"
@@ -59,18 +93,28 @@ onMounted(() => {
         </option>
       </select>
 
-      <button
-          type="submit"
-          class="submit-button"
-          :disabled="!formValid"
-          :class="{
-          'disabled': !formValid,
-          'enabled': formValid
-        }"
-          title="Créer un besoin"
-      >
-        Créer
-      </button>
+      <div class="button-container">
+        <button
+            type="submit"
+            class="submit-button"
+            :disabled="!formValid"
+            :class="{
+            'disabled': !formValid,
+            'enabled': formValid
+          }"
+            :title="buttonText"
+        >
+          {{ buttonText }}
+        </button>
+        <button
+            v-if="props.besoin"
+            type="button"
+            class="close-button"
+            @click="handleClose"
+        >
+          Fermer
+        </button>
+      </div>
     </form>
   </div>
 </template>
@@ -182,5 +226,31 @@ onMounted(() => {
   color: var(--text-color);
   background-color: var(--background-color);
   transition: all 0.2s ease-in-out;
+}
+
+.button-container {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.close-button {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  color: white;
+  background-color: #6b7280;
+  transition: all 0.3s;
+}
+
+.close-button:hover {
+  background-color: #4b5563;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transform: scale(1.02);
+}
+
+.close-button:active {
+  transform: scale(0.98);
 }
 </style>

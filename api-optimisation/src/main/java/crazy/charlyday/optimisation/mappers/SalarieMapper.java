@@ -12,5 +12,6 @@ public interface SalarieMapper {
 
     SalarieDto mapToDTO(Salarie entity);
 
+    @InheritInverseConfiguration
     Salarie mapToEntity(SalarieDto dto);
 }

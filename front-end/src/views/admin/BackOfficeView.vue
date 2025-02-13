@@ -75,6 +75,7 @@ const route = useRoute();
 
 .admin-content {
   padding: 2rem;
+  overflow-y: auto;
   color: var(--text-color);
 }
 

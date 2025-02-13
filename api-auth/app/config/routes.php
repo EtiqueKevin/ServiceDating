@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use apiAuth\application\actions\GetUserByRoleAction;
 use apiAuth\application\actions\GetUserIDAction;
 use apiAuth\application\actions\GetUserRoleAction;
 use apiAuth\application\actions\HomeAction;
@@ -41,5 +42,7 @@ return function( App $app): App {
     $app->post('/register/salarie[/]',RegisterSalarieAction::class);
 
     $app->get('/token/user/role[/]',GetUserRoleAction::class);
+
+    $app->get('/users/role[/]',GetUserByRoleAction::class);
     return $app;
 };

@@ -12,4 +12,6 @@ interface AuthRepositoryInterface
     function findById(string $id):User;
 
     function save(User $auth): string;
+
+    public function getUsersByRole(string $role): array;
 }

@@ -267,16 +267,41 @@ class PDOGestionRepository implements GestionRepositoryInterface
         return $this->getBesoinsById($id_besoin);
     }
 
-    public function getSalaries(): array
+    public function getSalaries(array $idUsers): array
     {
-        $stmt = $this->pdo->query('SELECT * FROM utilisateurs where role = 10');
-        $data = $stmt->fetchAll();
         $salaries = [];
-        foreach ($data as $salarie) {
-            $user = new Utilisateur($salarie['name'], $salarie['surname'], $salarie['phone']);
-            $user->setId($salarie['utilisateur_id']);
-            $salaries[] = $user;
+        foreach ($idUsers as $idUser) {
+            $stmt = $this->pdo->prepare('SELECT * FROM utilisateurs WHERE utilisateur_id = ?');
+            $stmt->bindParam(1, $idUser);
+            $stmt->execute();
+            $data = $stmt->fetch();
+            $salarie = new Utilisateur($data['name'], $data['surname'], $data['phone']);
+            $salarie->setId($data['utilisateur_id']);
+            $salaries[] = $salarie;
         }
         return $salaries;
     }
+
+    public function getCompetencesBySalarie(string $id): array
+    {
+        try {
+            $stmt = $this->pdo->prepare('SELECT * FROM salaries_competences WHERE salarie_id = ?');
+            $stmt->bindParam(1, $id);
+            $stmt->execute();
+            $data = $stmt->fetchAll();
+        }catch (\Exception $e) {
+            throw new GestionRepositoryNotFoundException('Aucune compétence trouvée');
+        }
+
+        $competences = [];
+        foreach ($data as $competence) {
+            $competences[] = [
+                'id' => $competence['competence_id'],
+                'interet' => $competence['interest']
+            ];
+        }
+        return $competences;
+    }
+
+
 }
