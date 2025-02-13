@@ -303,5 +303,21 @@ class PDOGestionRepository implements GestionRepositoryInterface
         return $competences;
     }
 
+    public function getCompetencesByClient(string $id): array
+    {
+        try {
+            $stmt = $this->pdo->prepare('SELECT * FROM besoins WHERE client_id = ?');
+            $stmt->bindParam(1, $id);
+            $stmt->execute();
+            $data = $stmt->fetchAll();
+        }catch (\Exception $e) {
+            throw new GestionRepositoryNotFoundException('Aucune compétence trouvée');
+        }
 
+        $competences = [];
+        foreach ($data as $competence) {
+            $competences[] = $this->getCompetenceById($competence['competence_id']);
+        }
+        return $competences;
+    }
 }
