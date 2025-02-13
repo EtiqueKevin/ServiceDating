@@ -10,6 +10,7 @@ use gestion\core\dto\UtilisateurDTO;
 use gestion\core\services\GestionServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Exception\HttpBadRequestException;
 
 class PostUtilisateurAction extends AbstractAction
 {
@@ -27,7 +28,7 @@ class PostUtilisateurAction extends AbstractAction
         if(!isset($params['id'])){
 
 
-            $id = $this->service->createAuth(new AuthUserDTO($params['email'], $params['password']));
+            $id = $this->service->createAuth(new AuthUserDTO($params['email'], $params['mdp']));
             $this->service->createUtilisateur(new InputUtilisateurDTO($id,$params['name'],$params['surname'],$params['phone']));
             $this->service->associationSalarieCompetence(new InputCompetenceSalarie($id,$params['competences']));
         }else{

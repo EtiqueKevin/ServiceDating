@@ -2,27 +2,31 @@
 
 namespace gestion\application\actions;
 
-use gestion\core\dto\InputBesoinDTO;
+use gestion\core\repositoryInterface\GestionRepositoryInterface;
 use gestion\core\services\GestionServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class PostBesoinAction extends AbstractAction
+class GetCompetencesAction extends AbstractAction
 {
     private GestionServiceInterface $gestionService;
 
     public function __construct(GestionServiceInterface $gestionService)
     {
         $this->gestionService = $gestionService;
+
     }
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
-        $id = $rq->getAttribute('idUser');
-        $body = $rq->getParsedBody();
+        $competences = $this->gestionService->getCompetences();
 
-        $inputBesoinDTO = new InputBesoinDTO($id, $body['competence_id'], $body['description']);
+        $res = [
+            'type' => 'collections',
+            'competences' => $competences
+        ];
 
-        $this->gestionService->creerBesoin($inputBesoinDTO);
+        $rs->getBody()->write(json_encode($res));
+        return $rs->withHeader('Content-Type', 'application/json')->withStatus(200);
     }
 }

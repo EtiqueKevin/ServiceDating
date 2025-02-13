@@ -26,7 +26,7 @@ class RegisterAction extends AbstractAction
     {
         $params = $rq->getParsedBody() ?? null;
 
-        if (!isset($params['email']) || !isset($params['mdp']) || !isset($params['name']) || !isset($params['surname'])) {
+        if (!isset($params['email']) || !isset($params['mdp']) || !isset($params['name']) || !isset($params['surname'])  || !isset($params['phone'])) {
             throw new HttpBadRequestException($rq, 'Paramètres manquants');
         }
 

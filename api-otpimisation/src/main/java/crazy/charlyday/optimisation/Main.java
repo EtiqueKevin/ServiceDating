@@ -1,6 +1,7 @@
 package crazy.charlyday.optimisation;
 
 import crazy.charlyday.optimisation.entities.DatingProblem;
+import crazy.charlyday.optimisation.mappers.DatingProblemMapper;
 
 import java.io.IOException;
 

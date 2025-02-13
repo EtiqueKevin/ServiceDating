@@ -2,12 +2,11 @@
 
 namespace gestion\application\actions;
 
-use gestion\core\dto\InputBesoinDTO;
 use gestion\core\services\GestionServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class PostBesoinAction extends AbstractAction
+class DeleteCompetencesAction extends AbstractAction
 {
     private GestionServiceInterface $gestionService;
 
@@ -18,11 +17,10 @@ class PostBesoinAction extends AbstractAction
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
-        $id = $rq->getAttribute('idUser');
-        $body = $rq->getParsedBody();
+        $competenceId = $args['id'];
 
-        $inputBesoinDTO = new InputBesoinDTO($id, $body['competence_id'], $body['description']);
+        $this->gestionService->deleteCompetence($competenceId);
 
-        $this->gestionService->creerBesoin($inputBesoinDTO);
+        return $rs->withHeader('Content-Type', 'application/json')->withStatus(201);
     }
 }

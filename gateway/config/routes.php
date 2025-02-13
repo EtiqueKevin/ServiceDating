@@ -31,6 +31,7 @@ return function(App $app): App {
     $app->post('/besoins/', GeneriqueGestionAction::class);
     $app->get('/besoins/', GeneriqueGestionAction::class);
 
+
     /*************************
     * Routes de l'API Auth
     *************************/

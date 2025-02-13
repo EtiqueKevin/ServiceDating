@@ -3,12 +3,16 @@ package crazy.charlyday.optimisation.services;
 import crazy.charlyday.optimisation.entities.*;
 import crazy.charlyday.optimisation.interfaces.Solver;
 import crazy.charlyday.optimisation.services.score.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ScoreCalculator implements Solver {
+    private final Solver solver;
 
-    private Solver solver;
+    @Autowired
     public ScoreCalculator(Solver solver) {
         this.solver = solver;
     }

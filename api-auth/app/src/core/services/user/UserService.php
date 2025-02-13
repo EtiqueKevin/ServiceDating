@@ -6,7 +6,7 @@ use apiAuth\core\domain\entities\user\User;
 use apiAuth\core\dto\user\InputUserDTO;
 use apiAuth\core\dto\user\UserDTO;
 use apiAuth\core\repositoryInterface\AuthRepositoryInterface;
-use apiAuth\core\repositoryInterface\UtilisateurRepositoryInterface;
+use apiAuth\core\repositoryInterface\GestionRepositoryInterface;
 use apiAuth\core\services\user\UserServiceException;
 use apiAuth\core\services\user\UserServiceInterface;
 use Exception;
@@ -16,12 +16,12 @@ class UserService implements UserServiceInterface
 {
     private AuthRepositoryInterface $authRepository;
 
-    private UtilisateurRepositoryInterface $utilisateurRepository;
+    private GestionRepositoryInterface $gestionrepository;
 
-    public function __construct(AuthRepositoryInterface $authRepository, UtilisateurRepositoryInterface $utilisateurRepository)
+    public function __construct(AuthRepositoryInterface $authRepository, GestionRepositoryInterface $gestionrepository)
     {
         $this->authRepository = $authRepository;
-        $this->utilisateurRepository = $utilisateurRepository;
+        $this->gestionrepository = $gestionrepository;
     }
 
     public function createUser(InputUserDTO $input): void
@@ -50,9 +50,9 @@ class UserService implements UserServiceInterface
 
         try{
             if($id != ""){
-                $u = new User($input->email,$input->password,0,$input->name,$input->surname,$input->phono);
+                $u = new User($input->email,$input->password,0,$input->name,$input->surname,$input->phone);
                 $u->setId($id);
-                $this->utilisateurRepository->createUtilisateur($u);
+                $this->gestionrepository->createUtilisateur($u);
             }
         }catch (Exception $e){
             throw new UserServiceException($e->getMessage());
@@ -76,7 +76,7 @@ class UserService implements UserServiceInterface
             $user = new User(
                 $input->email,
                 password_hash($input->password, PASSWORD_DEFAULT),
-                1
+                10
             );
             $id = $this->authRepository->save($user);
             return $id;
