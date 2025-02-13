@@ -18,4 +18,5 @@ interface GestionServiceInterface
     public function createAuth(AuthUserDTO $auth):string;
     public function associationSalarieCompetence(InputCompetenceSalarie $inputCompetenceSalarie):void;
     public function modifierBesoin(InputPutBesoinDTO $inputPutBesoinDTO):BesoinDTO;
+    public function utilisateurID(string $token): string;
 }

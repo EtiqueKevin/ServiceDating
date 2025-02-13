@@ -129,4 +129,14 @@ class GestionService implements GestionServiceInterface
     public function deleteCompetence(string $id):void{
         $this->gestionRepository->deleteCompetence($id);
     }
+
+    public function utilisateurID(string $token): string
+    {
+        try {
+            return $this->authRepository->RecuperationIDUser($token);
+        } catch (Exception $e) {
+            throw new \Exception("Erreur lors de la récupération de l'id du joueur");
+        }
+    }
+
 }

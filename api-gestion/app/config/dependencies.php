@@ -5,6 +5,7 @@ use gestion\application\actions\GetBesoinsAdminAction;
 use gestion\application\actions\GetBesoinsByUserAction;
 use gestion\application\actions\PostBesoinAction;
 use gestion\application\actions\PostUtilisateurAction;
+use gestion\application\middlewares\AuthMiddleware;
 use gestion\core\repositoryInterface\AuthRepositoryInterface;
 
 use gestion\application\actions\GetCompetencesAction;
@@ -76,5 +77,9 @@ return [
 
     GestionRepositoryInterface::class => function(ContainerInterface $container) {
         return new PDOGestionRepository($container->get('pdo'));
+    },
+
+    AuthMiddleware::class => function(ContainerInterface $container) {
+        return new AuthMiddleware($container->get(GestionServiceInterface::class));
     }
 ];
