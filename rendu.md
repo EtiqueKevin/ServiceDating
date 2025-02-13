@@ -252,7 +252,7 @@ Voici uniquement les routes exposées.
 >> Permet de creer une compétence
 >>
 
->> [!WARNING]
+> [!WARNING]
 > il faut etre connecté en tant qu'Admin
 
 | nom attribut | type   | description           |
@@ -266,7 +266,7 @@ Voici uniquement les routes exposées.
 >> Permet de creer une compétence
 >>
 
->> [!WARNING]
+> [!WARNING]
 > il faut etre connecté en tant qu'Admin
 
 | nom attribut | type   | description           |
@@ -281,5 +281,5 @@ Voici uniquement les routes exposées.
 >> Permet de creer une compétence
 >>
 
->> [!WARNING]
+> [!WARNING]
 > il faut etre connecté en tant qu'Admin
