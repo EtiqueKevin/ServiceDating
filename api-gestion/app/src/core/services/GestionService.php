@@ -86,7 +86,7 @@ class GestionService implements GestionServiceInterface
     public function modifierBesoin(InputPutBesoinDTO $inputPutBesoinDTO): BesoinDTO
     {
         try {
-            $besoinEntity = $this->gestionRepository->modifierBesoin($inputPutBesoinDTO->id_besoin, $inputPutBesoinDTO->id_user, $inputPutBesoinDTO->competence_id, $inputPutBesoinDTO->description);
+            $besoinEntity = $this->gestionRepository->modifierBesoin($inputPutBesoinDTO->getIdBesoin(), $inputPutBesoinDTO->getIdUser(), $inputPutBesoinDTO->getCompetenceId(), $inputPutBesoinDTO->getDescription());
             return $besoinEntity->toDTO();
         }catch (Exception $e) {
             throw new GestionServiceException($e->getMessage());

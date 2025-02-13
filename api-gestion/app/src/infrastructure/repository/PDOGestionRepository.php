@@ -162,8 +162,8 @@ class PDOGestionRepository implements GestionRepositoryInterface
             foreach ($data as $besoin) {
                 $utilisateur = $this->getUserById($besoin['client_id']);
                 $competence = $this->getCompetenceById($besoin['competence_id']);
-                $besoinEntity = new Besoin($utilisateur, $competence, $besoin['description'], $besoin['status'], $besoin['date_demande']);
-                $besoinEntity->setId($besoin['id']);
+                $besoinEntity = new Besoin($utilisateur, $competence, $besoin['description'], $besoin['status'], $besoin['date_init_besoin']);
+                $besoinEntity->setId($besoin['besoin_id']);
                 $besoins[] = $besoinEntity;
             }
             return $besoins;
@@ -254,7 +254,7 @@ class PDOGestionRepository implements GestionRepositoryInterface
     public function modifierBesoin(string $id_besoin, string $id_user, string $competence_id, string $description): Besoin
     {
         try {
-            $stmt = $this->pdo->prepare('UPDATE besoins SET client_id = ?, competence_id = ?, description = ? WHERE id = ?');
+            $stmt = $this->pdo->prepare('UPDATE besoins SET client_id = ?, competence_id = ?, description = ? WHERE besoin_id = ?');
             $stmt->bindParam(1, $id_user);
             $stmt->bindParam(2, $competence_id);
             $stmt->bindParam(3, $description);
