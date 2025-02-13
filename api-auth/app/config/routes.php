@@ -5,6 +5,7 @@ use apiAuth\application\actions\GetUserIDAction;
 use apiAuth\application\actions\HomeAction;
 use apiAuth\application\actions\RefreshAction;
 use apiAuth\application\actions\RegisterAction;
+use apiAuth\application\actions\RegisterSalarieAction;
 use apiAuth\application\actions\SignInAction;
 use apiAuth\application\actions\ValidateAction;
 use Slim\App;
@@ -35,5 +36,7 @@ return function( App $app): App {
         ->setName('tokenValidate');
 
     $app->get('/token/user/id[/]',GetUserIDAction::class);
+
+    $app->post('/register/salarie[/]',RegisterSalarieAction::class);
     return $app;
 };

@@ -24,37 +24,6 @@ export default {
     api.interceptors.response.use((response) => {
       return response
     }, async (error) => {
-      if (error.response.status === 401) { // Unauthorized
-        const userStore = useUserStore();
-        const toast = useToast();
-
-        if(userStore.getRefreshToken === null) {
-          userStore.logout();
-          toast.error("Votre session a expiré. Veuillez vous reconnecter.");
-          router.push('/');
-          return Promise.reject(error);
-        }
-        
-        try { // on tente de rafraîchir le token
-          const res = await api.post('/refresh', {}, {
-            headers: {
-              Authorization: `Bearer ${userStore.getRefreshToken}`
-            }
-          });
-
-          // si le rafraîchissement a réussi, on met à jour les tokens et on relance la requête
-          userStore.setTokens(res.data.accessToken, res.data.refreshToken);
-          error.config.headers.Authorization = `Bearer ${res.data.accessToken}`;
-          return api(error.config);
-        
-        } catch(e) {
-          // si le rafraîchissement a échoué, on déconnecte l'utilisateur
-          userStore.logout();
-          toast.error("Votre session a expiré. Veuillez vous reconnecter.");
-          router.push('/');
-          return Promise.reject(error);
-        }
-      }
       return Promise.reject(error);
     });
 

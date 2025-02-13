@@ -33,16 +33,11 @@ class RegisterAction extends AbstractAction
         $email = filter_var($params['email'], FILTER_SANITIZE_EMAIL);
         $name = filter_var($params['name'], FILTER_SANITIZE_SPECIAL_CHARS);
         $surname = filter_var($params['surname'], FILTER_SANITIZE_SPECIAL_CHARS);
+        $phone = filter_var($params['phone'], FILTER_SANITIZE_SPECIAL_CHARS);
 
-        $pseudo = null;
-        if (isset($params['pseudo'])) {
-            $pseudo = filter_var($params['pseudo'], FILTER_SANITIZE_SPECIAL_CHARS);
-        }
-
-        $linkpic = "johndoe.jpg";
 
         try {
-            $this->userService->createUser(new InputUserDTO($email, $params['mdp'], $name, $surname, $linkpic, $pseudo));
+            $this->userService->createUser(new InputUserDTO($email, $params['mdp'], $name, $surname, $phone));
         } catch (Exception $e) {
             throw new HttpBadRequestException($rq, $e->getMessage());
         }

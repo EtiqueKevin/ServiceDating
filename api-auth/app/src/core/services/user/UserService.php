@@ -9,7 +9,7 @@ use apiAuth\core\repositoryInterface\AuthRepositoryInterface;
 use apiAuth\core\repositoryInterface\UtilisateurRepositoryInterface;
 use apiAuth\core\services\user\UserServiceException;
 use apiAuth\core\services\user\UserServiceInterface;
-use PHPUnit\Exception;
+use Exception;
 
 
 class UserService implements UserServiceInterface
@@ -50,7 +50,7 @@ class UserService implements UserServiceInterface
 
         try{
             if($id != ""){
-                $u = new User($input->email,$input->password,0,$input->name,$input->surname,$input->linkpic,$input->pseudo);
+                $u = new User($input->email,$input->password,0,$input->name,$input->surname,$input->phono);
                 $u->setId($id);
                 $this->utilisateurRepository->createUtilisateur($u);
             }
@@ -58,6 +58,31 @@ class UserService implements UserServiceInterface
             throw new UserServiceException($e->getMessage());
         }
 
+    }
+
+    public function createSalarier(InputUserDTO $input): string
+    {
+
+        try {
+            $user = $this->authRepository->findByEmail($input->email);
+        } catch (Exception $e) {
+            throw new UserServiceException('Erreur lors de la recherche de l\'utilisateur');
+        }
+        if ($user) {
+            throw new UserServiceException('Utilisateur déjà existant');
+        }
+
+        try {
+            $user = new User(
+                $input->email,
+                password_hash($input->password, PASSWORD_DEFAULT),
+                1
+            );
+            $id = $this->authRepository->save($user);
+            return $id;
+        } catch (\Exception $e) {
+            throw new UserServiceException('Erreur lors de la création de l\'utilisateur' . $e->getMessage());
+        }
     }
 
     public function findUserById(string $ID): UserDTO

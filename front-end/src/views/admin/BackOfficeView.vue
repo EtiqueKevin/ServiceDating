@@ -1,13 +1,23 @@
 <script setup>
-import { RouterView, RouterLink } from 'vue-router';
+import { RouterView, RouterLink, useRoute } from 'vue-router';
+const route = useRoute();
 </script>
 
 <template>
   <div class="back-office">
     <nav class="admin-nav">
-      <RouterLink to="/admin/users">
+      <h1 class="welcome-admin">Back Office</h1>
+      <RouterLink to="/admin/besoins">
+        <i class="fas fa-list"></i>
+        <span>Gérer les besoins</span>
+      </RouterLink>
+      <RouterLink to="/admin/salaries">
         <i class="fas fa-users"></i>
-        <span>Gérer Utilisateurs</span>
+        <span>Gérer les salariés</span>
+      </RouterLink>
+      <RouterLink to="/admin/competences">
+        <i class="fas fa-book"></i>
+        <span>Gérer les compétences</span>
       </RouterLink>
       <RouterLink to="/" class="menu-return">
         <i class="fas fa-arrow-left"></i>
@@ -16,15 +26,11 @@ import { RouterView, RouterLink } from 'vue-router';
     </nav>
     
     <div class="admin-content">
-      <RouterView>
-        <!-- Default content when no specific route is active -->
-        <template #default>
-          <div class="welcome-admin">
-            <h1>Bienvenue dans le Back Office</h1>
-            <p>Sélectionnez une option dans le menu pour commencer.</p>
-          </div>
-        </template>
-      </RouterView>
+      <div v-if="route.path === '/admin'" class="welcome-content">
+        <h2>Bienvenue dans l'espace administrateur</h2>
+        <p>Sélectionnez une option dans le menu pour commencer la gestion.</p>
+      </div>
+      <RouterView v-else />
     </div>
   </div>
 </template>
@@ -67,10 +73,6 @@ import { RouterView, RouterLink } from 'vue-router';
   color: white; 
 }
 
-.admin-nav a.router-link-active {
-  background: var(--accent-color);
-}
-
 .admin-content {
   padding: 2rem;
   color: var(--text-color);
@@ -86,15 +88,21 @@ import { RouterView, RouterLink } from 'vue-router';
 
 .welcome-admin {
   text-align: center;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--secondary-color);
+}
+
+.welcome-content {
+  text-align: center;
   padding: 2rem;
 }
 
-.welcome-admin h1 {
-  color: var(--accent-color);
+.welcome-content h2 {
+  color: var(--primary-color);
   margin-bottom: 1rem;
 }
 
-.welcome-admin p {
+.welcome-content p {
   color: var(--text-color);
   font-size: 1.1rem;
 }

@@ -5,6 +5,7 @@ namespace gestion\infrastructure\repository;
 use gestion\core\domain\entities\Besoin;
 use gestion\core\domain\entities\Competence;
 use gestion\core\domain\entities\Utilisateur;
+use gestion\core\dto\InputCompetenceSalarie;
 use gestion\core\repositoryInterface\GestionRepositoryException;
 use gestion\core\repositoryInterface\GestionRepositoryInterface;
 use gestion\core\repositoryInterface\GestionRepositoryNotFoundException;
@@ -46,41 +47,99 @@ class PDOGestionRepository implements GestionRepositoryInterface
 
     public function getUserById(string $id): Utilisateur
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM utilisateurs WHERE id = ?');
-        $stmt->bindParam(1, $id);
-        $stmt->execute();
-        $data = $stmt->fetch();
+        try {
+            $stmt = $this->pdo->prepare('SELECT * FROM utilisateurs WHERE id = ?');
+            $stmt->bindParam(1, $id);
+            $stmt->execute();
+            $data = $stmt->fetch();
 
-        $user = new Utilisateur($data['nom'], $data['prenom'], $data['phone']);
-        $user->setId($data['id']);
-        return $user;
+        }catch(\Exception $e) {
+            throw new GestionRepositoryNotFoundException('Aucun utilisateur trouvé');
+        }
+
+        try {
+            $user = new Utilisateur($data['nom'], $data['prenom'], $data['phone']);
+            $user->setId($data['id']);
+            return $user;
+        }catch (Exception) {
+            throw new GestionRepositoryException('Erreur lors de la récupération de l\'utilisateur');
+        }
     }
 
     public function getCompetenceById(string $id): Competence
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM competences WHERE id = ?');
-        $stmt->bindParam(1, $id);
-        $stmt->execute();
-        $data = $stmt->fetch();
+        try {
+            $stmt = $this->pdo->prepare('SELECT * FROM competences WHERE id = ?');
+            $stmt->bindParam(1, $id);
+            $stmt->execute();
+            $data = $stmt->fetch();
+        }catch (\Exception $e) {
+            throw new GestionRepositoryNotFoundException('Aucune compétence trouvée');
+        }
 
         return new Competence($data['nom'], $data['description']);
     }
 
     public function getBesoinsByUser(string $id): array
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM besoins WHERE client_id = ?');
-        $stmt->bindParam(1, $id);
-        $stmt->execute();
-        $data = $stmt->fetchAll();
-
-        $besoins = [];
-        foreach ($data as $besoin) {
-            $utilisateur = $this->getUserById($besoin['client_id']);
-            $competence = $this->getCompetenceById($besoin['competence_id']);
-            $besoinEntity = new Besoin($utilisateur, $competence, $besoin['description'], $besoin['status'], $besoin['date_demande']);
-            $besoinEntity->setId($besoin['id']);
-            $besoins[] = $besoinEntity;
+        try {
+            $stmt = $this->pdo->prepare('SELECT * FROM besoins WHERE client_id = ?');
+            $stmt->bindParam(1, $id);
+            $stmt->execute();
+            $data = $stmt->fetchAll();
+        }catch (\Exception $e) {
+            throw new GestionRepositoryNotFoundException('Aucun besoin trouvé');
         }
-        return $besoins;
+
+        try {
+            $besoins = [];
+            foreach ($data as $besoin) {
+                $utilisateur = $this->getUserById($besoin['client_id']);
+                $competence = $this->getCompetenceById($besoin['competence_id']);
+                $besoinEntity = new Besoin($utilisateur, $competence, $besoin['description'], $besoin['status'], $besoin['date_demande']);
+                $besoinEntity->setId($besoin['id']);
+                $besoins[] = $besoinEntity;
+            }
+            return $besoins;
+        }catch (Exception) {
+            throw new GestionRepositoryException('Erreur lors de la récupération des besoins');
+        }
     }
+
+    public function saveUtilisateur(Utilisateur $utilisateur):void{
+        $name = $utilisateur->name;
+        $surname = $utilisateur->surname;
+        $phone = $utilisateur->phone;
+        $id = $utilisateur->getID();
+
+        $stmt = $this->pdo->prepare('INSERT INTO "utilisateurs" ("id","name","surname","phone" ) VALUES (?, ?, ?, ?)');
+
+        $stmt->bindParam(1, $id);
+        $stmt->bindParam(2, $name);
+        $stmt->bindParam(3, $surname);
+        $stmt->bindParam(4, $phone);
+        $stmt->execute();
+    }
+
+    public function associationSalarieCompetence( string $idS, array $tabC):void{
+        $idSalarie = $idS;
+        $tab = $tabC;
+
+        foreach ($tab as $competence) {
+            $idCompetence = $competence->id;
+            $interest = $competence->interest;
+            try{
+                $stmt = $this->pdo->prepare('INSERT INTO "salaries_competences" ("salarie_id","competence_id","interest" ) VALUES (?, ?, ?)');
+
+                $stmt->bindParam(1, $idSalarie);
+                $stmt->bindParam(2, $idCompetence);
+                $stmt->bindParam(3, $interest);
+                $stmt->execute();
+            }catch (\Exception $e){
+                throw new GestionRepositoryException($e->getMessage());
+            }
+
+        }
+    }
+
 }
