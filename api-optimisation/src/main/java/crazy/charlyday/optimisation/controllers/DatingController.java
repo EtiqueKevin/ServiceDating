@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static crazy.charlyday.optimisation.interfaces.Solvers.*;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/affectations")
 public class DatingController {
@@ -37,11 +38,13 @@ public class DatingController {
         return DatingSolutionMapper.INSTANCE.mapToDTO(scoreCalculator.compute(DatingProblemMapper.INSTANCE.mapToEntity(datingProblemDto)));
     }
 
+    @CrossOrigin
     @PostMapping(value = {"/glouton/{timeout}", "/glouton"})
     public DatingSolutionDto getDatingSolutionGlouton(@RequestBody DatingProblemDto datingProblemDto, @PathVariable(required = false) Integer timeout) {
         return getSolution(datingProblemDto, timeout, GLOUTON);
     }
 
+    @CrossOrigin
     @PostMapping(value = {"/random/{timeout}", "/random"})
     public DatingSolutionDto getDatingSolutionRandom(@RequestBody DatingProblemDto datingProblemDto, @PathVariable(required = false) Integer timeout) {
         return getSolution(datingProblemDto, timeout, RANDOM);
