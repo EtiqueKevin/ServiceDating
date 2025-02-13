@@ -21,11 +21,6 @@ const router = createRouter({
                     component: () => import('@/views/HomeView.vue'),
                 },
                 {
-                    path: 'user/profile',
-                    name: 'user-profile',
-                    component: () => import('@/views/HomeView.vue'),
-                    meta: {requiresAuth: true}
-                }, {
                     path: 'besoin/create',
                     name: 'besoin-create',
                     component: () => import('@/views/user/BesoinView.vue'),
@@ -34,16 +29,22 @@ const router = createRouter({
             ]
         },
         {
-            path: '/',
-            component: BlankLayout,
-            children: [
-                {
-                    path: 'user/connect',
-                    name: 'user-connect',
-                    component: () => import('@/views/user/ConnexionView.vue'),
-                    meta: {requiresAuth: false}
-                },
-            ]
+          path: '/',
+          component: BlankLayout,
+          children: [
+            {
+              path: 'user/connect',
+              name: 'user-connect',
+              component: () => import('@/views/user/ConnexionView.vue'),
+              meta: { requiresAuth: false }
+            },
+            {
+              path: 'admin',
+              name: 'backoffice',
+              component: () => import('@/views/admin/BackOfficeView.vue'),
+              meta: { requiresAuth: true, requiresAdmin: true }
+            }
+          ]
         }
     ],
 })
