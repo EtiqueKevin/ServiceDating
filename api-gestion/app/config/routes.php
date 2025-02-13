@@ -39,6 +39,8 @@ return function( App $app): App {
     $app->get('/salaries[/]', GetSalariesAction::class)
         ->add(AuthzMiddleware::class)
         ->setName('GetSalaries');
+    $app->get('/competences/clients/[/]', GetCompetencesByClientAction::class)
+        ->setName('GetCompetencesByClient');
 
     $app->get('/competences[/]', GetCompetencesAction::class)
         ->setName('GetCompetences');

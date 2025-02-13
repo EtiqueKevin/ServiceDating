@@ -24,7 +24,7 @@ export const useBesoin = () => {
             return false;
         }
     };
-
+    /*
     const getBesoins = async () => {
         try  {
             const res = await api.get('users/besoins');
@@ -32,7 +32,23 @@ export const useBesoin = () => {
         }catch(err) {
             toast.error('Erreur lors de la récupération de vos besoin');
         }
-    }
+    }*/
+
+    const getBesoins = async (page = 1, limit = 5) => {
+        try {
+            const res = await api.get(`users/besoins?page=${page}&limit=${limit}`);
+            return {
+                besoins: res.data.besoins || [],
+                totalItems: res.data.totalItems || 0,
+                totalPages: res.data.totalPages || 1,
+                currentPage: res.data.currentPage || 1,
+            };
+        } catch (err) {
+            toast.error('Erreur lors de la récupération de vos besoins');
+            return { besoins: [], totalItems: 0, totalPages: 1, currentPage: 1 };
+        }
+    };
+
 
     const updateBesoin = async (id, data) => {
         try {
