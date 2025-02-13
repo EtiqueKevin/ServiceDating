@@ -43,7 +43,7 @@ class GeneriqueOptimisationAction extends AbstractAction
             
             $rs = $this->remote_api->request($method, $path,$options);
         } catch (ConnectException | ServerException $e) {
-            throw new HttpInternalServerErrorException($rq, "The remote server is not available");
+            throw new HttpInternalServerErrorException($rq, "The remote server is not available" . $e->getMessage());
         }catch (ClientException $e) {
             match($e->getCode()) {
                 400 => throw new HttpBadRequestException($rq, "The request is invalid"),

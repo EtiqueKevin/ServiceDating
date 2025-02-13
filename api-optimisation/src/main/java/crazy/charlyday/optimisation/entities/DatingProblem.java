@@ -15,7 +15,7 @@ public record DatingProblem(List<Client> clients, List<Salarie> salaries) {
         List<Salarie> salaries = new ArrayList<>();
 
         Map<String, List<Besoin>> clientMap = new HashMap<>();
-        Map<String, Map<SkillType, Integer>> salarieMap = new HashMap<>();
+        Map<String, Map<String, Integer>> salarieMap = new HashMap<>();
 
         List<String> lines = Files.readAllLines(Paths.get(filePath));
 
@@ -34,13 +34,13 @@ public record DatingProblem(List<Client> clients, List<Salarie> salaries) {
             if (isClientSection) {
                 // Client: index;name;skillType
                 String clientName = parts[1];
-                SkillType skillType = SkillType.valueOf(parts[2]);
+                String skillType = parts[2];
 
                 clientMap.computeIfAbsent(clientName, k -> new ArrayList<>()).add(new Besoin(clientName, List.of(skillType)));
             } else {
                 // Salarie: index;name;skillType;level
                 String salarieName = parts[1];
-                SkillType skillType = SkillType.valueOf(parts[2]);
+                String skillType = parts[2];
                 int level = Integer.parseInt(parts[3]);
 
                 salarieMap.computeIfAbsent(salarieName, k -> new HashMap<>()).put(skillType, level);

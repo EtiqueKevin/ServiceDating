@@ -22,9 +22,9 @@ return function(App $app): App {
     * Routes de l'API optimisation
     *************************/
 
-    $app->post('/affections[/]', GeneriqueOptimisationAction::class);
-    $app->post('/affections/glouton[/]', GeneriqueOptimisationAction::class);
-    $app->post('/affections/random[/]', GeneriqueOptimisationAction::class);
+    $app->post('/affectations[/]', GeneriqueOptimisationAction::class);
+    $app->post('/affectations/glouton[/]', GeneriqueOptimisationAction::class);
+    $app->post('/affectations/random[/]', GeneriqueOptimisationAction::class);
 
     /*************************
     * Routes de l'API
@@ -38,6 +38,7 @@ return function(App $app): App {
     $app->get('/salaries[/]', GeneriqueGestionAction::class);
 
     // Competences routes
+    $app->get('/competences/clients[/]', GeneriqueGestionAction::class);
     $app->get('/competences[/]', GeneriqueGestionAction::class);
     $app->get('/competences/{id}[/]', GeneriqueGestionAction::class);
     $app->post('/competences[/]', GeneriqueGestionAction::class);

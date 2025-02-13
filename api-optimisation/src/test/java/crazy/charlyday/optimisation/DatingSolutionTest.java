@@ -17,13 +17,13 @@ public class DatingSolutionTest {
     @DisplayName("DATING_SOLUTION_TEST_TO_CSV")
     @Test
     void toCsvTest() {
-        Salarie salarie1 = new Salarie("Charlotte", Map.of(SkillType.IF, 1));
-        Salarie salarie2 = new Salarie("Alice", Map.of(SkillType.MN, 1));
-        Salarie salarie3 = new Salarie("Bernard", Map.of(SkillType.BR, 1));
+        Salarie salarie1 = new Salarie("Charlotte", Map.of("IF", 1));
+        Salarie salarie2 = new Salarie("Alice", Map.of("MN", 1));
+        Salarie salarie3 = new Salarie("Bernard", Map.of("BR", 1));
 
-        Client client1 = new Client("Cedric_C", List.of(new Besoin("Cedric_C", List.of(SkillType.IF))));
-        Client client2 = new Client("Antoine_C", List.of(new Besoin("Antoine_C", List.of(SkillType.MN))));
-        Client client3 = new Client("Antoine_C", List.of(new Besoin("Antoine_C", List.of(SkillType.BR))));
+        Client client1 = new Client("Cedric_C", List.of(new Besoin("Cedric_C", List.of("IF"))));
+        Client client2 = new Client("Antoine_C", List.of(new Besoin("Antoine_C", List.of("MN"))));
+        Client client3 = new Client("Antoine_C", List.of(new Besoin("Antoine_C", List.of("BR"))));
 
         LinkedHashMap<Salarie, Besoin> map = new LinkedHashMap<>();
         map.put(salarie1, client1.besoins().getFirst());
@@ -52,13 +52,13 @@ public class DatingSolutionTest {
         String inputFilePath = "src/main/resources/problemes_test/01_pb_simples/Probleme_1_nbSalaries_3_nbClients_3_nbTaches_2_Sol.csv"; // Chemin vers le fichier CSV pour ce test
 
         // Création de l'objet DatingSolution attendu
-        Salarie salarie1 = new Salarie("Charlotte", Map.of(SkillType.IF, 1));
-        Salarie salarie2 = new Salarie("Alice", Map.of(SkillType.MN, 1));
-        Salarie salarie3 = new Salarie("Bernard", Map.of(SkillType.BR, 1));
+        Salarie salarie1 = new Salarie("Charlotte", Map.of("IF", 1));
+        Salarie salarie2 = new Salarie("Alice", Map.of("MN", 1));
+        Salarie salarie3 = new Salarie("Bernard", Map.of("BR", 1));
 
-        Client client1 = new Client("Cedric_C", List.of(new Besoin("Cedric_C", List.of(SkillType.IF))));
-        Client client2 = new Client("Antoine_C", List.of(new Besoin("Antoine_C", List.of(SkillType.MN))));
-        Client client3 = new Client("Antoine_C", List.of(new Besoin("Antoine_C", List.of(SkillType.BR))));
+        Client client1 = new Client("Cedric_C", List.of(new Besoin("Cedric_C", List.of("IF"))));
+        Client client2 = new Client("Antoine_C", List.of(new Besoin("Antoine_C", List.of("MN"))));
+        Client client3 = new Client("Antoine_C", List.of(new Besoin("Antoine_C", List.of("BR"))));
 
         LinkedHashMap<Salarie, Besoin> map = new LinkedHashMap<>();
         map.put(salarie1, client1.besoins().getFirst());
