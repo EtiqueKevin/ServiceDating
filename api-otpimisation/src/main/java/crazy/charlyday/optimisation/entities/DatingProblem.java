@@ -36,7 +36,7 @@ public record DatingProblem(List<Client> clients, List<Salarie> salaries) {
                 String clientName = parts[1];
                 SkillType skillType = SkillType.valueOf(parts[2]);
 
-                clientMap.computeIfAbsent(clientName, k -> new ArrayList<>()).add(new Besoin(clientName, skillType));
+                clientMap.computeIfAbsent(clientName, k -> new ArrayList<>()).add(new Besoin(clientName, List.of(skillType)));
             } else {
                 // Salarie: index;name;skillType;level
                 String salarieName = parts[1];
@@ -63,7 +63,7 @@ public record DatingProblem(List<Client> clients, List<Salarie> salaries) {
         sb.append("besoins;;;\n");
         for (Client client : clients) {
             for (Besoin besoin : client.besoins()) {
-                sb.append(client.name()).append(";").append(besoin.skill()).append("\n");
+                sb.append(client.name()).append(";").append(besoin.skillCSV()).append("\n");
             }
         }
         sb.append("competences;;;\n");

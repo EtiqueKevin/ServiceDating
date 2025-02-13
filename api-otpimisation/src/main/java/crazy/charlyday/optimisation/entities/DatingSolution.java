@@ -24,7 +24,7 @@ public record DatingSolution(int score, Map<Salarie, Besoin> assignations) {
 
             SkillType skillType = SkillType.valueOf(skill);
             Salarie salarie = new Salarie(salarieName, Map.of(skillType, 1));
-            Besoin besoin = new Besoin(clientName, skillType);
+            Besoin besoin = new Besoin(clientName, List.of(skillType));
 
             matches.put(salarie, besoin);
         }
@@ -36,7 +36,7 @@ public record DatingSolution(int score, Map<Salarie, Besoin> assignations) {
         sb.append(score).append("\n");
         assignations.forEach((salarie, besoin) -> {
             sb.append(besoin.client()).append(";")
-                    .append(besoin.skill()).append(";")
+                    .append(besoin.skillCSV())
                     .append(salarie.name()).append("\n");
         });
         return sb.toString();
