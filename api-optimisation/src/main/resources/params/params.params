@@ -1,67 +1,55 @@
-state =                                 ec.simple.SimpleEvolutionState
-init = ec.eda.cmaes.CMAESInitializer
-finish =                                ec.simple.SimpleFinisher
-exch =                                  ec.simple.SimpleExchanger
-eval =                                  ec.simple.SimpleEvaluator
-stat =                                  ec.simple.SimpleStatistics
-quit-on-run-complete =                  true
-pop =                                   ec.Population
-pop.subpops =                           1
-pop.subpop.0 =                          ec.Subpopulation
-stat.file                               $out.stat
+# Threads and Seeds
+evalthreads = 6
+breedthreads = 6
+seed.0 = time
+seed.1 = time
+seed.2 = time
+seed.3 = time
+seed.4 = time
+seed.5 = time
 
-pop = ec.Population
-pop.default-subpop = 0
-pop.subpop.0 = ec.Subpopulation
-
-breedthreads = 15
-evalthreads = 15
-
-seed.0 = 4357
-seed.1 = 3682
-seed.2 = 8962
-seed.3 = 6035
-seed.4 = 9015
-seed.5 = 5340
-seed.6 = 9804
-seed.7 = 0497
-seed.8 = 2706
-seed.9 = 6350
-seed.10 = 7890
-seed.11 = 7805
-seed.12 = 4680
-seed.13 = 2480
-seed.14 = time
-
+# Checkpointing
 checkpoint = false
-checkpoint-prefix = ec
 checkpoint-modulo = 1
+checkpoint-prefix = ec
 
-breed = ec.eda.cmaes.CMAESBreeder
+# The basic setup
+state = crazy.charlyday.optimisation.services.algos.ecj.EcjTimeoutEvolutionState
+init = ec.simple.SimpleInitializer
+finish = ec.simple.SimpleFinisher
+exch = ec.simple.SimpleExchanger
+breed = ec.simple.SimpleBreeder
+eval = ec.simple.SimpleEvaluator
+stat = crazy.charlyday.optimisation.services.algos.ecj.EcjDatingStats
+pop = ec.Population
 
-pop.subpop.0.size = 1
-pop.subpop.0.species.mutation-prob = 0
-pop.subpop.0.species.pipe = ec.breed.InitializationPipeline
-pop.subpop.0.species.mutation-type = reset
+# Basic parameters
+generations = 250
+pop.subpops = 1
+pop.subpop.0 = ec.Subpopulation
+pop.subpop.0.size = 125
+pop.subpop.0.duplicate-retries = 1
+
+breed.elite.0 = 0
+stat.file = $src/main/resources/ecj_output/out.stat
+
+# Representation
+pop.subpop.0.species = ec.vector.IntegerVectorSpecies
+pop.subpop.0.species.ind = ec.vector.IntegerVectorIndividual
+pop.subpop.0.species.genome-size = 100
+
+# Fitness
+pop.subpop.0.species.fitness = ec.simple.SimpleFitness
+
+# Pipeline
+pop.subpop.0.species.pipe = ec.vector.breed.VectorMutationPipeline
+pop.subpop.0.species.pipe.source.0 = ec.vector.breed.VectorMutationPipeline
+pop.subpop.0.species.pipe.source.0.source.0 = ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.1 = same
+select.tournament.size = 2
+
 pop.subpop.0.species.crossover-type = one
-# CMA-ES will almost certainly not generate duplicate individuals
-pop.subpop.0.duplicate-retries = 0
+pop.subpop.0.species.mutation-prob = 0.01
+pop.subpop.0.species.mutation-type = reset
 
-pop.subpop.0.species.mean = center
-
-generations = 1000
-
-eval.problem = ia.ecj.ECJ_CTFProblem
-
-pop.subpop.0.species =                  ec.vector.IntegerVectorSpecies
-pop.subpop.0.species.ind =              ec.vector.IntegerVectorIndividual
-pop.subpop.0.species.fitness =          ec.simple.SimpleFitness
-pop.subpop.0.species = ec.eda.cmaes.CMAESSpecies
-
-
-pop.subpop.0.species.sigma = 0.5
-pop.subpop.0.species.covariance = scaled
-pop.subpop.0.species.alternative-termination = true
-pop.subpop.0.species.alternative-generator = true
-pop.subpop.0.species.alternative-generator-tries = 100
-pop.subpop.0.species.fitness.maximize = true
+eval.problem = crazy.charlyday.optimisation.services.algos.ecj.EcjDatingProblem
