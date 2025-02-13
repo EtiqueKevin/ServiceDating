@@ -32,7 +32,11 @@ const logOut = async () => {
             <template #text>
               Espace client
             </template>
-            <p>Rien pour l'instant</p>
+            <RouterLink to="/besoin/create" class="nav-link" title="Créer un besoin">
+              <div class="button-content">
+                <span class="icon-text">Créer un besoin</span>
+              </div>
+            </RouterLink>
           </MenuList>
 
           <!-- Espace visible aux admins -->
