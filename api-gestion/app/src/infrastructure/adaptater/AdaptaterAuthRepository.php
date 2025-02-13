@@ -17,7 +17,7 @@ class AdaptaterAuthRepository implements AuthRepositoryInterface
 
     public function RecuperationIDUser(string $token): string
     {
-        $response = $this->client->get('/token/user/id', [
+        $response = $this->client->post('/token/user/id', [
             'headers' => ['Authorization' => 'Bearer '.$token]
         ]);
         $data = json_decode($response->getBody()->getContents(), true);

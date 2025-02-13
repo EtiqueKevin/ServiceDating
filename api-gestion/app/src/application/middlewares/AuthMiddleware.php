@@ -47,7 +47,7 @@ class AuthMiddleware
             $playerID = $this->gestion->utilisateurID($tokenstring);
             $rq = $rq->withAttribute('userId',$playerID);
         }catch (Exception $e){
-            throw new HttpForbiddenException($rq,"Vous n'êtes pas l'auteur de cette résource");
+            throw new HttpForbiddenException($rq,"Vous n'êtes pas l'auteur de cette ressource " . $e->getMessage());
         }
 
         return $next->handle($rq);
