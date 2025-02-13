@@ -16,11 +16,6 @@ public class DatingSolutionTest {
     @DisplayName("DATING_SOLUTION_TEST_TO_CSV")
     @Test
     void toCsvTest() {
-        // 6;
-        //Charlotte;IF;Cedric_C;
-        //Alice;MN;Antoine_C;
-        //Bernard;BR;Antoine_C;
-
         Salarie salarie1 = new Salarie("Charlotte", Map.of(SkillType.IF, 1));
         Salarie salarie2 = new Salarie("Alice", Map.of(SkillType.MN, 1));
         Salarie salarie3 = new Salarie("Bernard", Map.of(SkillType.BR, 1));
