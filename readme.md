@@ -43,6 +43,32 @@ Et une image aussi :
 
 ![Texte alternatif](boite_cuisine.png "Logo officiel")
 
+##  Partie Front-end ##
+
+### Fonctionnalité de base ###
+
+
+| Fonctionnalité | Type  | Fait ou non |
+|----------------|-------|-----------|
+| 1              | Basique | ✅         |
+| 2              | Avancé | ✅         |
+| 3              | Avancé | ✅         |
+| 4              | Admin | ✅         |
+| 5              | Admin | ✅         |
+| 6              | Admin | ✅         |
+| 7              | Admin | ✅         |
+| 8              | Avancé / Admin |❌   |
+| 9              | Avancé | ✅         |
+| 10             | Admin |     ❌      |
+
+### Fonctionnalité de avancé ###
+
+| Fonctionnalité | Type    | Fait ou non    |
+|----------------|---------|----------------|
+| 11             | Basique | ✅              |
+| 14             | Basique | 🟠 partiellement |
+
+
 ##  Partie Optimisation ##
 
 ### IA ###
@@ -83,3 +109,177 @@ Pour cette partie, nous avons suivi l'approche :
 
 - les explications...
 - ...de ce qu'on a fait
+
+## Partie Backend Web
+
+Voici uniquement les routes exposées.
+
+### API AUTH
+
+> POST /signin[/]
+>
+>> Authentifie un utilisateur
+>>
+>> En-tête de la requête (Header) :
+
+| nom attribut | type   | description                   |
+|--------------|--------|-------------------------------|
+| Authorization Basic |  | email et mot de passe |
+
+--------------------------------------
+
+> POST /register[/]
+>
+>> Creation de compte
+>>
+>> Body :
+
+| nom attribut | type   | description                   |
+|--------------|--------|-------------------------------|
+| email        | string | email                         |
+| mdp          | string | mot de passe                  |
+| name         | string | nom de l'user                 |
+| surname      | string | nom de famille de l'user      |
+| surname      | string | nom de famille de l'user      |
+| phone        | string | numero de telephone de l'user |
+
+--------------------------------------
+
+### API GESTION
+
+> POST /utilisateur[/]
+>
+>> Creation compte d'un salarié 
+>>
+>> Body :
+
+| nom attribut | type   | description                   |
+|--------------|--------|-------------------------------|
+| email        | string | email                         |
+| mdp          | string | mot de passe                  |
+| name         | string | nom de l'user                 |
+| surname      | string | nom de famille de l'user      |
+| surname      | string | nom de famille de l'user      |
+| phone        | string | numero de telephone de l'user |
+
+--------------------------------------
+
+
+> GET /besoins[/]
+>
+>> Permet de récupérer tous les besoin de tous les clients
+>>
+
+> [!WARNING]
+> il faut etre connecté en tant qu'Admin
+
+--------------------------------------
+
+> GET /users/besoins[/]
+>
+>> Permet de récupérer tous les besoin d'un utilisateur
+>> On récupère l'id de l'utilisateur via son token JWT
+
+> [!NOTE]
+> il faut etre connecté en tant que client
+
+--------------------------------------
+
+
+> POST /besoins[/]
+>
+>> Permet de créer un besoin
+>> On récupère l'id de l'utilisateur via son token JWT
+
+> [!NOTE]
+> il faut etre connecté en tant que client
+>
+
+| nom attribut  | type   | description         |
+|---------------|--------|---------------------|
+| competence_id | string | id de la competence |
+| description   | string |                |
+
+--------------------------------------
+
+> PUT /besoins/{id}[/]
+>
+>> Permet de modifier un besoin
+>> On récupère l'id de l'utilisateur via son token JWT
+
+> [!NOTE]
+> il faut etre connecté en tant que client
+
+> [!IMPORTANT]
+> Il faut que ce soit le besoin du client qui veut modifier
+
+
+| nom attribut  | type   | description         |
+|---------------|--------|---------------------|
+| competence_id | string | id de la competence |
+| description   | string |                |
+
+--------------------------------------
+
+> GET /salaries[/]
+>
+>> Permet d'afficher tous les salaries
+>>
+
+> [!WARNING]
+> il faut etre connecté en tant qu'Admin
+> 
+--------------------------------------
+
+> GET /competences[/]
+>
+>> Permet de récupérer toutes les compétences
+>> 
+
+
+--------------------------------------
+
+> GET /competences/{id}[/]
+>
+>> Permet de récupérer une compétence via son id renseigné dans la query
+>>
+
+--------------------------------------
+
+
+> POST /competences[/]
+>
+>> Permet de creer une compétence
+>>
+
+> [!WARNING]
+> il faut etre connecté en tant qu'Admin
+
+| nom attribut | type   | description           |
+|--------------|--------|-----------------------|
+| name         | string | nom de la description |
+| description  | string |                       |
+--------------------------------------
+
+> PUT /competences/{id}[/]
+>
+>> Permet de creer une compétence
+>>
+
+> [!WARNING]
+> il faut etre connecté en tant qu'Admin
+
+| nom attribut | type   | description           |
+|--------------|--------|-----------------------|
+| name         | string | nom de la description |
+| description  | string |                       |
+
+--------------------------------------
+
+> DELETE /competences/{id}[/]
+>
+>> Permet de creer une compétence
+>>
+
+> [!WARNING]
+> il faut etre connecté en tant qu'Admin
