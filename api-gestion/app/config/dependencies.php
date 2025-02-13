@@ -6,6 +6,7 @@ use gestion\application\actions\GetBesoinsByUserAction;
 use gestion\application\actions\PostBesoinAction;
 use gestion\application\actions\PostUtilisateurAction;
 use gestion\application\middlewares\AuthMiddleware;
+use gestion\application\middlewares\AuthzMiddleware;
 use gestion\core\repositoryInterface\AuthRepositoryInterface;
 
 use gestion\application\actions\GetCompetencesAction;
@@ -81,5 +82,9 @@ return [
 
     AuthMiddleware::class => function(ContainerInterface $container) {
         return new AuthMiddleware($container->get(GestionServiceInterface::class));
+    },
+
+    AuthzMiddleware::class => function(ContainerInterface $container) {
+    return new AuthzMiddleware($container->get(GestionServiceInterface::class));
     }
 ];
