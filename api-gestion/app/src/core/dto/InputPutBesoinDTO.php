@@ -17,4 +17,26 @@ class InputPutBesoinDTO extends DTO
         $this->competence_id = $competence_id;
         $this->description = $description;
     }
+
+    public function getIdBesoin(): string
+    {
+        return $this->id_besoin;
+    }
+
+    public function getIdUser(): string
+    {
+        return $this->id_user;
+    }
+
+    public function getCompetenceId(): string
+    {
+        return $this->competence_id;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+
 }

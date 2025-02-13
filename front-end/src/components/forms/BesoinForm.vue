@@ -16,14 +16,14 @@ const formData = ref({
 const formValid = computed(() => {
   return formData.value.nom && formData.value.libelle && formData.value.option_id;
 });
-const {loadCompetences, createBesoin} = useBesoin();
+const {getCompetences, createBesoin} = useBesoin();
 
 const handleSubmit = async () => {
   await createBesoin(formValid.value)
 }
 
 const loadData = async () => {
-  competences = await loadCompetences();
+  competences = await getCompetences();
 }
 
 

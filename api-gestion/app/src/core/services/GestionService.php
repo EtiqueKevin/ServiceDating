@@ -60,7 +60,7 @@ class GestionService implements GestionServiceInterface
     public function creerBesoin(InputBesoinDTO $besoin): BesoinDTO
     {
         try {
-            $besoinEntity = $this->gestionRepository->creerBesoin();
+            $besoinEntity = $this->gestionRepository->creerBesoin($besoin->getClientId(), $besoin->getCompetenceId(), $besoin->getDescription());
             return $besoinEntity->toDTO();
         }catch (Exception $e) {
             throw new GestionServiceException($e->getMessage());
@@ -86,7 +86,7 @@ class GestionService implements GestionServiceInterface
     public function modifierBesoin(InputPutBesoinDTO $inputPutBesoinDTO): BesoinDTO
     {
         try {
-            $besoinEntity = $this->gestionRepository->modifierBesoin($inputPutBesoinDTO->id_besoin, $inputPutBesoinDTO->id_user, $inputPutBesoinDTO->competence_id, $inputPutBesoinDTO->description);
+            $besoinEntity = $this->gestionRepository->modifierBesoin($inputPutBesoinDTO->getIdBesoin(), $inputPutBesoinDTO->getIdUser(), $inputPutBesoinDTO->getCompetenceId(), $inputPutBesoinDTO->getDescription());
             return $besoinEntity->toDTO();
         }catch (Exception $e) {
             throw new GestionServiceException($e->getMessage());
@@ -136,6 +136,20 @@ class GestionService implements GestionServiceInterface
             return $this->authRepository->RecuperationIDUser($token);
         } catch (Exception $e) {
             throw new \Exception("Erreur lors de la récupération de l'id du joueur");
+        }
+    }
+
+    public function getSalaries(): array
+    {
+        try {
+            $salaries = $this->gestionRepository->getSalaries();
+            $salariesDTO = [];
+            foreach ($salaries as $salarie) {
+                $salariesDTO[] = $salarie->toDTO();
+            }
+            return $salariesDTO;
+        } catch (Exception $e) {
+            throw new GestionServiceException($e->getMessage());
         }
     }
 

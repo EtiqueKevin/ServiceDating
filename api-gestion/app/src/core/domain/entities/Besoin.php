@@ -21,6 +21,31 @@ class Besoin extends Entity
         $this->date_demande = $date_demande;
     }
 
+    public function getClient(): Utilisateur
+    {
+        return $this->client;
+    }
+
+    public function getCompetence(): Competence
+    {
+        return $this->competence;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function getStatus(): int
+    {
+        return $this->status;
+    }
+
+    public function getDateDemande(): string
+    {
+        return $this->date_demande;
+    }
+
     public function toDTO(): BesoinDTO
     {
         return new BesoinDTO(
