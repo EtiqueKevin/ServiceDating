@@ -16,10 +16,10 @@ const formData = ref({
 const formValid = computed(() => {
   return formData.value.nom && formData.value.libelle && formData.value.option_id;
 });
-const {loadCompetences, postBesoin} = useBesoin();
+const {loadCompetences, createBesoin} = useBesoin();
 
 const handleSubmit = async () => {
-  await postBesoin(formValid.value)
+  await createBesoin(formValid.value)
 }
 
 const loadData = async () => {

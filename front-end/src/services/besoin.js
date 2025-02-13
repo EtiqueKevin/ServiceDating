@@ -15,7 +15,7 @@ export const useBesoin = () => {
         }
     };
 
-    const postBesoin = async (data) => {
+    const createBesoin = async (data) => {
         try {
             const res = await api.post('besoin', data);
             return true;
@@ -25,5 +25,5 @@ export const useBesoin = () => {
         }
     };
 
-    return { loadCompetences, postBesoin };
+    return { loadCompetences, createBesoin };
 };
