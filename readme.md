@@ -1,4 +1,4 @@
-# Dépôt du projet de l'équipe xxx #
+# Dépôt du projet de l'équipe `les gros jéson` #
 
 <!-- Supprimez les exemples dont vous n'avez pas besoin, gardez la -->
 <!-- structure générale du document et répondez aux questions posées -->
