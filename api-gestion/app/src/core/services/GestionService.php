@@ -44,10 +44,12 @@ class GestionService implements GestionServiceInterface
         }
     }
 
-    public function getBesoinsByUser(string $id): array
+    public function getBesoinsByUser(string $id,int $page = 1, int $limit = 5): array
     {
         try {
-            $besoins = $this->gestionRepository->getBesoinsByUser($id);
+            //$besoins = $this->gestionRepository->getBesoinsByUser($id);
+            $offset = ($page - 1) * $limit;
+            $besoins = $this->gestionRepository->getBesoinsByUserWithPagination($id,$limit,$offset);
             $besoinsDTO = [];
             foreach ($besoins as $besoin) {
                 $besoinsDTO[] = $besoin->toDTO();

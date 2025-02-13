@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {useBesoin} from "@/services/besoin.js";
 import BesoinForm from '@/components/forms/BesoinForm.vue';
 import { useToast } from 'vue-toastification';
@@ -16,6 +16,7 @@ const isLoading = computed(() => besoins.value === null);
 // Pagination
 const currentPage = ref(1);
 const itemsPerPage = ref(5);
+const totalPages = ref(1);
 
 const filteredBesoins = computed(() => {
   if (!besoins.value) return [];
@@ -23,16 +24,28 @@ const filteredBesoins = computed(() => {
   return besoins.value.filter(b => b.status === parseInt(filterStatus.value));
 });
 
+
+const fetchBesoins = async () => {
+  isLoading.value = true;
+  try {
+    const { besoins: data, totalPages: pages, currentPage: page } = await getBesoins(currentPage.value, itemsPerPage.value);
+    besoins.value = data;
+    totalPages.value = pages;
+    currentPage.value = page;
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isLoading.value = false;
+  }
+};
+
 const paginatedBesoins = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value;
   const end = start + itemsPerPage.value;
   return filteredBesoins.value.slice(start, end);
 });
 
-const totalPages = computed(() => {
-  return Math.ceil(filteredBesoins.value.length / itemsPerPage.value);
-});
-
+watch(filterStatus, fetchBesoins);
 const formatDate = (dateString) => {
   return new Date(dateString).toLocaleDateString('fr-FR');
 };
@@ -56,7 +69,7 @@ const handleEditClick = (besoin) => {
 const handleSuccess = async () => {
     showEditModal.value = false;
     try {
-        besoins.value = await getBesoins();
+        await fetchBesoins();
         toast.success('Besoin mis à jour avec succès');
     } catch (error) {
         console.error(error);
@@ -66,12 +79,13 @@ const handleSuccess = async () => {
 const goToPage = (page) => {
   if (page >= 1 && page <= totalPages.value) {
     currentPage.value = page;
+    fetchBesoins();
   }
 };
 
 onMounted(async () => {
   try {
-    besoins.value = await getBesoins();
+    await fetchBesoins();
   } catch (error) {
     console.error(error);
   }
@@ -163,9 +177,14 @@ onMounted(async () => {
 }
 
 .pagination button {
-  padding: 10px 15px;
-  margin: 0 5px;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .pagination button:disabled {
