@@ -40,7 +40,7 @@ const handleClose = () => {
 
 const handleSubmit = async () => {
   if (!formValid.value) return;
-  
+
   const data = {
     description: formData.value.description,
     competence_id: formData.value.option_id,
@@ -63,7 +63,7 @@ const loadData = async () => {
   competences.value = await getCompetences();
   if (props.besoin) {
     formData.value.description = props.besoin.description;
-    formData.value.option_id = props.besoin.competence.id; 
+    formData.value.option_id = props.besoin.competence.id;
   }
 }
 

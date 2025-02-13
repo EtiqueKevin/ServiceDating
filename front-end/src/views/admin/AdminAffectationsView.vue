@@ -16,7 +16,8 @@ const getCompetenceDetails = (skillId) => {
 const methods = [
     { value: '', label: 'Par défaut' },
     { value: 'glouton', label: 'Glouton' },
-    { value: 'random', label: 'Aléatoire' }
+    { value: 'random', label: 'Aléatoire' },
+    { value: 'evolution', label: 'Evolution' }
 ];
 
 const handleSubmit = async () => {
