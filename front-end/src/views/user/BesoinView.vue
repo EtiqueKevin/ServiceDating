@@ -91,11 +91,6 @@ onMounted(fetchBesoins());
       </select>
     </div>
 
-    <div v-if="isLoading" class="loading">
-      <div class="spinner"></div>
-      <span>Chargement...</span>
-    </div>
-
     <div v-else-if="filteredBesoins.length === 0" class="empty-state">
       Aucun besoin trouvé
     </div>
