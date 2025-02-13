@@ -1,14 +1,17 @@
 package crazy.charlyday.optimisation;
 
-import crazy.charlyday.optimisation.entities.DatingProblem;
-import crazy.charlyday.optimisation.entities.DatingSolution;
+import crazy.charlyday.optimisation.entities.*;
 import crazy.charlyday.optimisation.interfaces.SolverFactory;
+import crazy.charlyday.optimisation.services.ScoreCalculator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -70,15 +73,32 @@ public class OptiBenchmark {
         }
     }
 
-    @Order(2)
+    @Order(3)
     @DisplayName("Score comparison")
     @ParameterizedTest
     @CsvSource({
             "Probleme_1_nbSalaries_3_nbClients_3_nbTaches_2.csv, Probleme_1_nbSalaries_3_nbClients_3_nbTaches_2_Sol.csv",
     })
     void runTests3(String inputFile, String assertFile) throws IOException {
-        int score = getScore(inputDirectory1 + inputFile);
-        int expectedScore = DatingSolution.fromCsv(inputDirectory1 + assertFile).score();
+        DatingSolution solution = DatingSolution.fromCsv(inputDirectory1 + assertFile);
+        DatingProblem problem = DatingProblem.fromCsv(inputDirectory1 + inputFile);
+
+        LinkedHashMap<Salarie, Besoin> assignations = new LinkedHashMap<>();
+        assignations.put(
+                new Salarie("Charlotte", Map.of(SkillType.IF, 5)),
+                new Besoin("Cedric_C", List.of(SkillType.IF))
+        );
+        assignations.put(
+                new Salarie("Alice", Map.of(SkillType.MN, 7)),
+                new Besoin("Antoine_C", List.of(SkillType.MN))
+        );
+        assignations.put(
+                new Salarie("Bernard", Map.of(SkillType.BR, 5)),
+                new Besoin("Antoine_C", List.of(SkillType.BR))
+        );
+
+        int expectedScore = solution.score();
+        int score = ScoreCalculator.computeScore(problem, new DatingSolution(0, assignations)).score();
 
         System.out.printf("%s: %d %d\n", inputFile, score, expectedScore);
 
@@ -90,8 +110,8 @@ public class OptiBenchmark {
 
 
     int getScore(String inputFile) throws IOException {
-        return SolverFactory.getSolver()
-                .compute(DatingProblem.fromCsv(inputFile))
-                .score();
+        var solution = SolverFactory.getSolver()
+                .compute(DatingProblem.fromCsv(inputFile));
+        return solution.score();
     }
 }

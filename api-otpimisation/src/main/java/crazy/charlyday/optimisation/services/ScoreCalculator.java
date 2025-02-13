@@ -4,10 +4,7 @@ import crazy.charlyday.optimisation.entities.*;
 import crazy.charlyday.optimisation.interfaces.Solver;
 import crazy.charlyday.optimisation.services.score.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ScoreCalculator implements Solver {
 
@@ -21,12 +18,12 @@ public class ScoreCalculator implements Solver {
         return computeScore(datingProblem, solver.compute(datingProblem));
     }
 
-    private DatingSolution computeScore(DatingProblem problem, DatingSolution solution) {
+    public static DatingSolution computeScore(DatingProblem problem, DatingSolution solution) {
         List<ScoreFunction> scoreFunctions = List.of(
                 new AssignationsScore(),
                 new EveryoneServedConstraint(),
-                new UniqueSalarieConstraint(),
-                new EveryoneWorkConstraint()
+                new EveryoneWorkConstraint(),
+                new UniqueSalarieConstraint()
         );
 
         int score = 0;
