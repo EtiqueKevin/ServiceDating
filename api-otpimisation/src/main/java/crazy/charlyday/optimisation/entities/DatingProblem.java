@@ -1,4 +1,6 @@
 package crazy.charlyday.optimisation.entities;
 
-public class DatingProblem {
-}
+
+import java.util.List;
+
+public record DatingProblem(List<Client> clients, List<Salarie> salaries) {}
