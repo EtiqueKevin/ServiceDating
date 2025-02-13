@@ -302,4 +302,6 @@ class PDOGestionRepository implements GestionRepositoryInterface
         }
         return $competences;
     }
+
+
 }

@@ -166,4 +166,25 @@ class GestionService implements GestionServiceInterface
             return false;
         }
     }
+
+    public function utilisateurBesoinVerification(string $idBesoin, string $token): bool
+    {
+
+        try {
+            $besoin = $this->gestionRepository->getBesoinsById($idBesoin);
+            $id = $this->authRepository->RecuperationIDUser($token);
+
+            if($besoin->client->getID() === $id ){
+                return true;
+            }else{
+                return false;
+            }
+
+
+        }catch (Exception $e) {
+            throw new GestionServiceException($e->getMessage());
+        }
+
+
+    }
 }
