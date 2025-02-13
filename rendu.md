@@ -45,10 +45,13 @@ Et une image aussi :
 
 ##  Partie Optimisation ##
 
-Pour cette partie, nous avons suivi l'approche :
 
-- les explications...
-- ...de ce qu'on a fait
+### API ###
+Pour permettre à l'application d'utiliser les algorithmes de recommandation, nous avons mis en place une API Spring Boot.
+Cet API permet d'envoyer en entrée des clients et des salariés et de recevoir en sortie le salarié le plus adapté à chaque client, le tout en format JSON.
+
+![Image de la doc de l'API](images_rendu/illustration_doc_api.png "Doc de l'API")
+
 
 ##  Déploiement ##
 
