@@ -79,6 +79,7 @@ class GestionService implements GestionServiceInterface
         $this->gestionRepository->associationSalarieCompetence($inputCompetenceSalarie->idSalarie,$inputCompetenceSalarie->tabIdCompetences);
     }
 
+
     public function modifierBesoin(InputPutBesoinDTO $inputPutBesoinDTO): BesoinDTO
     {
         try {
@@ -87,5 +88,42 @@ class GestionService implements GestionServiceInterface
         }catch (Exception $e) {
             throw new GestionServiceException($e->getMessage());
         }
+    }
+
+    public function getCompetences():array{
+        try {
+            $competences = $this->gestionRepository->getCompetences();
+            $competencesDTO = [];
+            foreach ($competences as $competence) {
+                $competencesDTO[] = $competence->toDTO();
+            }
+            return $competencesDTO;
+        } catch (Exception $e) {
+            throw new GestionServiceException($e->getMessage());
+        }
+    }
+
+    public function getCompetenceById(string $id): CompetenceDTO{
+        try {
+            $competence = $this->gestionRepository->getCompetenceById($id);
+            return $competence->toDTO();
+        } catch (Exception $e) {
+            throw new GestionServiceException($e->getMessage());
+        }
+    }
+
+    public function createCompetence(InputCompetenceDTO $competence):void{
+        $competenceEntity = new Competence($competence->name,$competence->description);
+        $this->gestionRepository->saveCompetence($competenceEntity);
+    }
+
+    public function updateCompetence(InputCompetenceDTO $competence):void{
+        $competenceEntity = new Competence($competence->name,$competence->description);
+        $competenceEntity->setID($competence->id);
+        $this->gestionRepository->updateCompetence($competenceEntity);
+    }
+
+    public function deleteCompetence(string $id):void{
+        $this->gestionRepository->deleteCompetence($id);
     }
 }

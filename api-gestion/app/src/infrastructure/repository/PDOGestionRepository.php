@@ -80,6 +80,56 @@ class PDOGestionRepository implements GestionRepositoryInterface
         return new Competence($data['nom'], $data['description']);
     }
 
+    public function getCompetences(): array
+    {
+        try {
+            $stmt = $this->pdo->query('SELECT * FROM competences');
+            $data = $stmt->fetchAll();
+        }catch (\Exception $e) {
+            throw new GestionRepositoryNotFoundException('Aucune compétence trouvée');
+        }
+
+        try {
+            $competences = [];
+            foreach ($data as $competence) {
+                $competenceEntity = new Competence($competence['nom'], $competence['description']);
+                $competenceEntity->setId($competence['id']);
+                $competences[] = $competenceEntity;
+            }
+            return $competences;
+        }catch (Exception) {
+            throw new GestionRepositoryException('Erreur lors de la récupération des compétences');
+        }
+    }
+
+    public function saveCompetence(Competence $competence):void{
+        $name = $competence->name;
+        $description = $competence->description;
+
+        $stmt = $this->pdo->prepare('INSERT INTO "competences" ("name","description" ) VALUES ( ?, ?)');
+
+        $stmt->bindParam(1, $name);
+        $stmt->bindParam(2, $description);
+        $stmt->execute();
+    }
+
+    public function updateCompetence(Competence $competence):void{
+        $name = $competence->name;
+        $description = $competence->description;
+        $id = $competence->getID();
+
+        $stmt = $this->pdo->prepare('UPDATE "competences" SET "name" = ?, "description" = ? WHERE "id" = ?');
+
+        $stmt->bindParam(1, $name);
+        $stmt->bindParam(2, $description);
+        $stmt->bindParam(3, $id);
+        $stmt->execute();
+    }
+
+    public function deleteCompetence(string $id):void{
+        //a faire
+    }
+
     public function getBesoinsByUser(string $id): array
     {
         try {
