@@ -34,18 +34,13 @@ export const useBesoin = () => {
         }
     }*/
 
-    const getBesoins = async (page = 1, limit = 5) => {
+    const getBesoins = async () => {
         try {
-            const res = await api.get(`users/besoins?page=${page}&limit=${limit}`);
-            return {
-                besoins: res.data.besoins,
-                totalItems: res.data.totalItems,
-                totalPages: res.data.totalPages,
-                currentPage: res.data.currentPage,
-            };
+            const res = await api.get(`users/besoins`);
+            return res.data.besoins
         } catch (err) {
             toast.error('Erreur lors de la récupération de vos besoins');
-            return { besoins: [], totalItems: 0, totalPages: 1, currentPage: 1 };
+            return { besoins: []};
         }
     };
 
