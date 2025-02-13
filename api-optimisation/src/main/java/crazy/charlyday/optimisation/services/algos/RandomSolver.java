@@ -11,9 +11,19 @@ import java.util.List;
 import java.util.Random;
 
 public class RandomSolver implements Solver {
+
+    double timeout = 100;
+    double startTime = 0;
+
+    public RandomSolver() {}
+    public RandomSolver(double timeout) {
+        this.timeout = timeout;
+    }
+
     @Override
     public DatingSolution compute(DatingProblem datingProblem) {
         Random random = new Random();
+        startTime = System.currentTimeMillis();
 
         List<Besoin> besoins = new ArrayList<>();
         for(Client client : datingProblem.clients()) {
@@ -28,7 +38,8 @@ public class RandomSolver implements Solver {
         }
 
         DatingSolution solution = getSolution(datingProblem, besoins, input);
-        for(int i = 0; i < 500000; i++) {
+
+        while (System.currentTimeMillis() - startTime < timeout) {
             for(int j = 0; j < 10; j++) {
                 int index = random.nextInt(input.length);
                 input[index] = random.nextInt(maxValue);
@@ -37,9 +48,6 @@ public class RandomSolver implements Solver {
             if(solution.score() < otherSolution.score()) {
                 solution = otherSolution;
             }
-        }
-        for(int i = 0; i < besoins.size(); i++) {
-            input[i] = random.nextInt(maxValue);
         }
 
         return solution;
