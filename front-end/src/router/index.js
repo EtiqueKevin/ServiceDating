@@ -19,6 +19,12 @@ const router = createRouter({
           path: 'acceuil',
           name: 'acceuil',
           component: () => import('@/views/HomeView.vue'),
+        },
+        {
+          path: 'user/profile',
+          name: 'user-profile',
+          component: () => import('@/views/HomeView.vue'),
+          meta: { requiresAuth: true }
         }
       ]
     },
@@ -46,10 +52,11 @@ router.beforeEach((to, from, next) => {
 
 
   // Vérification des droits d'accès
-
   const userStore = useUserStore()
   if(to.meta.requiresAuth && !userStore.isLogged) {
-    next({ name: 'user-connect' })
+    next({
+      name: 'user-connect',
+    })
     return
   } 
 

@@ -34,8 +34,8 @@ const handleSubmit = async () => {
         
         const success = await userStore.signUp(userData);
         if (success) {
-            toast.success("Inscription réussie!");
-            router.push({ name: 'home' });
+            const redirectPath = router.currentRoute.value.redirectedFrom?.name || 'home';
+            router.push({name : redirectPath});
         }
 }
 </script>
@@ -54,7 +54,6 @@ const handleSubmit = async () => {
                 required
                 autocomplete="email"
                 placeholder="Email"
-                class="input-field"
             />
             <PasswordInputField
                 v-model="password"
@@ -62,7 +61,6 @@ const handleSubmit = async () => {
                 required
                 autocomplete="new-password"
                 placeholder="Mot de passe"
-                class="input-field"
             />
             <div class="password-group">
                 <PasswordInputField
@@ -71,7 +69,6 @@ const handleSubmit = async () => {
                     required
                     autocomplete="new-password"
                     placeholder="Confirmer le mot de passe"
-                    class="input-field"
                     :class="{ 
                         'invalid-input': !passwordsMatch && password2, 
                         'valid-input': passwordsMatch && password2 
@@ -138,15 +135,6 @@ const handleSubmit = async () => {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-}
-
-.input-field {
-    transition: all 0.3s;
-}
-
-.input-field:hover,
-.input-field:focus-within {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .password-group {
