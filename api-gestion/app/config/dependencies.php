@@ -5,6 +5,13 @@ use gestion\application\actions\GetBesoinsAdminAction;
 use gestion\application\actions\GetBesoinsByUserAction;
 use gestion\application\actions\PostBesoinAction;
 use gestion\application\actions\PostUtilisateurAction;
+
+use gestion\application\actions\GetCompetencesAction;
+use gestion\application\actions\GetCompetencesByIdAction;
+use gestion\application\actions\PostCompetencesAction;
+use gestion\application\actions\PutCompetencesAction;
+use gestion\application\actions\DeleteCompetencesAction;
+
 use gestion\core\repositoryInterface\GestionRepositoryInterface;
 use gestion\core\services\GestionService;
 use gestion\core\services\GestionServiceInterface;
@@ -35,6 +42,26 @@ return [
 
     PostUtilisateurAction::class => function(ContainerInterface $container) {
         return new PostUtilisateurAction($container->get(GestionServiceInterface::class));
+    },
+
+    GetCompetencesAction::class => function(ContainerInterface $container) {
+        return new GetCompetencesAction($container->get(GestionServiceInterface::class));
+    },
+
+    GetCompetencesByIdAction::class => function(ContainerInterface $container) {
+        return new GetCompetencesByIdAction($container->get(GestionServiceInterface::class));
+    },
+
+    PostCompetencesAction::class => function(ContainerInterface $container) {
+        return new PostCompetencesAction($container->get(GestionServiceInterface::class));
+    },
+
+    PutCompetencesAction::class => function(ContainerInterface $container) {
+        return new PutCompetencesAction($container->get(GestionServiceInterface::class));
+    },
+
+    DeleteCompetencesAction::class => function(ContainerInterface $container) {
+        return new DeleteCompetencesAction($container->get(GestionServiceInterface::class));
     },
 
     GestionServiceInterface::class => function(ContainerInterface $container) {

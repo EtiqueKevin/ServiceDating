@@ -13,4 +13,5 @@ interface GestionRepositoryInterface
     public function creerBesoin(string $id, string $competence_id, string $description): Besoin;
 
     public function saveUtilisateur(Utilisateur $utilisateur):void;
+    public function modifierBesoin(string $id_besoin, string $id_user, string $competence_id, string $description):Besoin;
 }
