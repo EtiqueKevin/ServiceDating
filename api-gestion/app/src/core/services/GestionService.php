@@ -7,7 +7,10 @@ use gestion\core\dto\AuthUserDTO;
 use gestion\core\dto\InputCompetenceSalarie;
 use gestion\core\dto\InputUtilisateurDTO;
 use gestion\core\repositoryInterface\AuthRepositoryInterface;
+use gestion\core\domain\entities\InputBesoinDTO;
+use gestion\core\dto\BesoinDTO;
 use gestion\core\repositoryInterface\GestionRepositoryInterface;
+use PHPUnit\Exception;
 
 class GestionService implements GestionServiceInterface
 {
@@ -24,22 +27,40 @@ class GestionService implements GestionServiceInterface
 
     public function getBesoinsAdmin(): array
     {
-        $besoins  = $this->gestionRepository->getBesoinsAdmin();
-        $besoinsDTO = [];
-        foreach ($besoins as $besoin) {
-            $besoinsDTO[] = $besoin->toDTO();
+        try {
+            $besoins  = $this->gestionRepository->getBesoinsAdmin();
+            $besoinsDTO = [];
+            foreach ($besoins as $besoin) {
+                $besoinsDTO[] = $besoin->toDTO();
+            }
+            return $besoinsDTO;
+        }catch (Exception $e) {
+            throw new GestionServiceException($e->getMessage());
         }
-        return $besoinsDTO;
     }
 
     public function getBesoinsByUser(string $id): array
     {
-        $besoins = $this->gestionRepository->getBesoinsByUser($id);
-        $besoinsDTO = [];
-        foreach ($besoins as $besoin) {
-            $besoinsDTO[] = $besoin->toDTO();
+        try {
+            $besoins = $this->gestionRepository->getBesoinsByUser($id);
+            $besoinsDTO = [];
+            foreach ($besoins as $besoin) {
+                $besoinsDTO[] = $besoin->toDTO();
+            }
+            return $besoinsDTO;
+        }catch (Exception $e) {
+            throw new GestionServiceException($e->getMessage());
         }
-        return $besoinsDTO;
+    }
+
+    public function creerBesoin(InputBesoinDTO $besoin): BesoinDTO
+    {
+        try {
+            $besoinEntity = $this->gestionRepository->creerBesoin();
+            return $besoinEntity->toDTO();
+        }catch (Exception $e) {
+            throw new GestionServiceException($e->getMessage());
+        }
     }
 
     public function createUtilisateur(InputUtilisateurDTO $iud):void{
