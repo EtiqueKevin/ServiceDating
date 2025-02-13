@@ -76,7 +76,7 @@ class UserService implements UserServiceInterface
             $user = new User(
                 $input->email,
                 password_hash($input->password, PASSWORD_DEFAULT),
-                1
+                10
             );
             $id = $this->authRepository->save($user);
             return $id;
