@@ -33,18 +33,6 @@ const fetchBesoins = async () => {
   }
 };
 
-const filteredBesoins = computed(() => {
-  if (!besoins.value) return [];
-  if (filterStatus.value === 'all') return besoins.value;
-  return besoins.value.filter(b => b.status === parseInt(filterStatus.value));
-});
-
-const paginatedBesoins = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value;
-  const end = start + itemsPerPage.value;
-  return filteredBesoins.value.slice(start, end);
-});
-
 watch(filterStatus, () => {
   currentPage.value = 1;
   fetchBesoins();
