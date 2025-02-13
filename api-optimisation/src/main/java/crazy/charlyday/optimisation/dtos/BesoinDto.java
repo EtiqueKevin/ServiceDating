@@ -2,15 +2,14 @@ package crazy.charlyday.optimisation.dtos;
 
 import crazy.charlyday.optimisation.entities.SkillType;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
 @Data
 @NoArgsConstructor
-@ToString
+@AllArgsConstructor
+@Getter
 public class BesoinDto {
     @Schema(name = "client", example = "Hugues")
     private String client;

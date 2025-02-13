@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -14,5 +13,5 @@ public class DatingSolutionDto {
     private int score;
 
     @Schema(name = "assignations", example = "{Salarie1: {client: Hugues, skill: JD}}")
-    private LinkedHashMap<SalarieDto, BesoinDto> assignations;
+    private LinkedHashMap<String, AssignationDto> assignations;
 }

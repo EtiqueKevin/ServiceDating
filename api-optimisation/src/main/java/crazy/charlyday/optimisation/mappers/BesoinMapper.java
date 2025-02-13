@@ -2,6 +2,7 @@ package crazy.charlyday.optimisation.mappers;
 
 import crazy.charlyday.optimisation.dtos.BesoinDto;
 import crazy.charlyday.optimisation.entities.Besoin;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -11,5 +12,6 @@ public interface BesoinMapper {
 
     BesoinDto mapToDTO(Besoin entity);
 
+    @InheritInverseConfiguration
     Besoin mapToEntity(BesoinDto dto);
 }
