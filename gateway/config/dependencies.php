@@ -10,14 +10,14 @@ use Psr\Http\Client\ClientInterface;
 return [
 
     'client_optimisation' => function (ContainerInterface $c){
-        return new Client(['base_uri' => 'http://api.optimisation:80']);
+        return new Client(['base_uri' => 'http://api.optimisation.servicedating:80']);
     },
 
     'client_gestion' => function (ContainerInterface $c){
-        return new Client(['base_uri' => 'http://api.gestion:80']);
+        return new Client(['base_uri' => 'http://api.gestion.servicedating:80']);
     },
 
     'client_auth' => function (ContainerInterface $c){
-        return new Client(['base_uri' => 'http://api.auth:80']);
+        return new Client(['base_uri' => 'http://db.auth.servicedating:80']);
     },
 ];
