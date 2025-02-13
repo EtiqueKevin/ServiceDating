@@ -185,4 +185,19 @@ class PDOGestionRepository implements GestionRepositoryInterface
         }
     }
 
+    public function modifierBesoin(string $id_besoin, string $id_user, string $competence_id, string $description): Besoin
+    {
+        try {
+            $stmt = $this->pdo->prepare('UPDATE besoins SET client_id = ?, competence_id = ?, description = ? WHERE id = ?');
+            $stmt->bindParam(1, $id_user);
+            $stmt->bindParam(2, $competence_id);
+            $stmt->bindParam(3, $description);
+            $stmt->bindParam(4, $id_besoin);
+            $stmt->execute();
+        }catch (\Exception $e) {
+            throw new GestionRepositoryException('Erreur lors de la modification du besoin');
+        }
+
+        return $this->getBesoinsById($id_besoin);
+    }
 }

@@ -3,11 +3,11 @@
 namespace gestion\core\services;
 
 use gestion\core\dto\AuthUserDTO;
-use gestion\core\dto\InputCompetenceSalarie;
-use gestion\core\dto\InputUtilisateurDTO;
-
-use gestion\core\domain\entities\InputBesoinDTO;
 use gestion\core\dto\BesoinDTO;
+use gestion\core\dto\InputBesoinDTO;
+use gestion\core\dto\InputCompetenceSalarie;
+use gestion\core\dto\InputPutBesoinDTO;
+use gestion\core\dto\InputUtilisateurDTO;
 
 interface GestionServiceInterface
 {
@@ -17,4 +17,5 @@ interface GestionServiceInterface
     public function createUtilisateur(InputUtilisateurDTO $iud):void;
     public function createAuth(AuthUserDTO $auth):string;
     public function associationSalarieCompetence(InputCompetenceSalarie $inputCompetenceSalarie):void;
+    public function modifierBesoin(InputPutBesoinDTO $inputPutBesoinDTO):BesoinDTO;
 }

@@ -4,11 +4,12 @@ namespace gestion\core\services;
 
 use gestion\core\domain\entities\Utilisateur;
 use gestion\core\dto\AuthUserDTO;
+use gestion\core\dto\BesoinDTO;
+use gestion\core\dto\InputBesoinDTO;
 use gestion\core\dto\InputCompetenceSalarie;
+use gestion\core\dto\InputPutBesoinDTO;
 use gestion\core\dto\InputUtilisateurDTO;
 use gestion\core\repositoryInterface\AuthRepositoryInterface;
-use gestion\core\domain\entities\InputBesoinDTO;
-use gestion\core\dto\BesoinDTO;
 use gestion\core\repositoryInterface\GestionRepositoryInterface;
 use PHPUnit\Exception;
 
@@ -76,5 +77,15 @@ class GestionService implements GestionServiceInterface
 
     public function associationSalarieCompetence(InputCompetenceSalarie $inputCompetenceSalarie):void{
         $this->gestionRepository->associationSalarieCompetence($inputCompetenceSalarie->idSalarie,$inputCompetenceSalarie->tabIdCompetences);
+    }
+
+    public function modifierBesoin(InputPutBesoinDTO $inputPutBesoinDTO): BesoinDTO
+    {
+        try {
+            $besoinEntity = $this->gestionRepository->modifierBesoin($inputPutBesoinDTO->id_besoin, $inputPutBesoinDTO->id_user, $inputPutBesoinDTO->competence_id, $inputPutBesoinDTO->description);
+            return $besoinEntity->toDTO();
+        }catch (Exception $e) {
+            throw new GestionServiceException($e->getMessage());
+        }
     }
 }

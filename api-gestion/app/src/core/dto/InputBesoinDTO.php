@@ -1,8 +1,6 @@
 <?php
 
-namespace gestion\core\domain\entities;
-
-use gestion\core\dto\DTO;
+namespace gestion\core\dto;
 
 class InputBesoinDTO extends DTO
 {
