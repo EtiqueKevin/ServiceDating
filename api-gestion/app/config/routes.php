@@ -18,8 +18,8 @@ return function( App $app): App {
     $app->get('/competences/{id}[/]', GetCompetencesByIdAction::class);
     $app->post('/competences[/]', PostCompetencesAction::class);
     $app->put('/competences/{id}[/]', PutCompetencesAction::class);
-    $app->post('/affectations[/]', PostAffectationsAction::class);
 
+    $app->delete('/competences/{id}[/]', DeleteCompetencesAction::class);
 
     return $app;
 };

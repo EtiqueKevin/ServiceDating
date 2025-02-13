@@ -13,12 +13,18 @@ const toast = useToast();
 const email = ref('');
 const password = ref('');
 const password2 = ref('');
+const name = ref('');
+const surname = ref('');
+const phone = ref('');
 const passwordsMatch = ref(true);
 
 const formValid = computed(() => {
     return passwordsMatch.value && 
            password.value && 
-           email.value
+           email.value &&
+           name.value &&
+           surname.value &&
+           phone.value
 })
 
 watch([password, password2], ([newPass, newPass2]) => {
@@ -28,15 +34,18 @@ watch([password, password2], ([newPass, newPass2]) => {
 const handleSubmit = async () => {
     if (!formValid.value) return
     const userData = {
-            email: email.value,
-            mdp: password.value,
-        };
+        email: email.value,
+        mdp: password.value,
+        name: name.value,
+        surname: surname.value,
+        phone: phone.value
+    };
         
-        const success = await userStore.signUp(userData);
-        if (success) {
-            const redirectPath = router.currentRoute.value.redirectedFrom?.name || 'home';
-            router.push({name : redirectPath});
-        }
+    const success = await userStore.signUp(userData);
+    if (success) {
+        const redirectPath = router.currentRoute.value.redirectedFrom?.name || 'home';
+        router.push({name : redirectPath});
+    }
 }
 </script>
 
@@ -48,12 +57,36 @@ const handleSubmit = async () => {
         <h1 class="title">Inscription</h1>
         <form @submit.prevent="handleSubmit" class="form">
             <InputField
+                v-model="name"
+                type="text"
+                id="name"
+                required
+                autocomplete="given-name"
+                placeholder="Prénom"
+            />
+            <InputField
+                v-model="surname"
+                type="text"
+                id="surname"
+                required
+                autocomplete="family-name"
+                placeholder="Nom"
+            />
+            <InputField
                 v-model="email"
                 type="email"
                 id="email"
                 required
                 autocomplete="email"
                 placeholder="Email"
+            />
+            <InputField
+                v-model="phone"
+                type="tel"
+                id="phone"
+                required
+                autocomplete="tel"
+                placeholder="Téléphone"
             />
             <PasswordInputField
                 v-model="password"
