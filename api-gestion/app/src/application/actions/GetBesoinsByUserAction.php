@@ -17,10 +17,10 @@ class GetBesoinsByUserAction extends AbstractAction
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
+        $page = $rq->getQueryParams()['page'] ?? null;
         $limit = $rq->getQueryParams()['limit'] ?? null;
-        $offset = $rq->getQueryParams()['offset'] ?? null;
         $id = $rq->getAttribute('idUser');
-        $besoins = $this->gestion_service->getBesoinsByUser($id, $limit, $offset);
+        $besoins = $this->gestion_service->getBesoinsByUser($id, $page, $limit);
 
         $res = [
             'type' => 'ressources',
