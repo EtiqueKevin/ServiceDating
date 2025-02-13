@@ -1,6 +1,7 @@
 <?php
 
 
+use apiAuth\application\actions\GetUserIDAction;
 use apiAuth\application\actions\RefreshAction;
 use apiAuth\application\actions\RegisterAction;
 use apiAuth\application\actions\SignInAction;
@@ -54,6 +55,10 @@ return [
 
     ValidateAction::class => function(ContainerInterface $c){
         return new ValidateAction($c->get(AuthProviderInterface::class));
+    },
+
+    GetUserIDAction::class => function (ContainerInterface $c) {
+        return new GetUserIDAction($c->get(AuthProviderInterface::class));
     },
 
     JWTManager::class => function(ContainerInterface $c){
