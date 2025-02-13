@@ -2,12 +2,11 @@
 
 namespace gestion\application\actions;
 
-use gestion\core\dto\InputBesoinDTO;
 use gestion\core\services\GestionServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class PostBesoinAction extends AbstractAction
+class GetSalariesAction extends AbstractAction
 {
     private GestionServiceInterface $gestionService;
 
@@ -18,19 +17,12 @@ class PostBesoinAction extends AbstractAction
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
-        $id = $rq->getAttribute('idUser');
-        $body = $rq->getParsedBody();
-
-        $inputBesoinDTO = new InputBesoinDTO($id, $body['competence_id'], $body['description']);
-
-        $besoinDTO = $this->gestionService->creerBesoin($inputBesoinDTO);
-
+        $salaries = $this->gestionService->getSalaries();
         $res = [
             'type' => 'ressources',
-            'besoin' => $besoinDTO
+            'salaries' => $salaries
         ];
-
         $rs->getBody()->write(json_encode($res));
-        return $rs->withHeader('Content-Type', 'application/json')->withStatus(201);
+        return $rs->withHeader('Content-Type', 'application/json');
     }
 }

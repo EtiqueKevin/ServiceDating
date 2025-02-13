@@ -6,7 +6,7 @@ export const useBesoin = () => {
     const toast = useToast();
     const api = inject('api');
 
-    const loadCompetences = async () => {
+    const getCompetences = async () => {
         try {
             const res = await api.get('competences');
             return res.data;
@@ -17,7 +17,7 @@ export const useBesoin = () => {
 
     const createBesoin = async (data) => {
         try {
-            const res = await api.post('besoin', data);
+            await api.post('besoins', data);
             return true;
         } catch (err) {
             toast.error('Erreur lors de la mise en ligne de votre besoin');
@@ -25,5 +25,14 @@ export const useBesoin = () => {
         }
     };
 
-    return { loadCompetences, createBesoin };
+    const getBesoin = async () => {
+        try  {
+            const res = await api.get('users/besoins');
+            return res.data;
+        }catch(err) {
+            toast.error('Erreur lors de la récupération de vos besoin');
+        }
+    }
+
+    return { getCompetences, createBesoin, getBesoin };
 };

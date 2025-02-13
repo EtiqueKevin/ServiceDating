@@ -5,9 +5,8 @@ export const useAdmin = () => {
 
     const getAllBesoins = async () => {
         try {
-            const res = await api.get('admin/besoins');
-            console.log(res);
-            return res.data;
+            const res = await api.get('/besoins');
+            return res.data.besoins;
         } catch (e) {
             return [];
         }
@@ -15,7 +14,7 @@ export const useAdmin = () => {
 
     const createSalarie = async (data) => {
         try {
-            await api.post('admin/salaries', data);
+            await api.post('/salaries', data);
             return true;
         } catch (e) {
             return false;
@@ -24,7 +23,7 @@ export const useAdmin = () => {
 
     const getAllSalaries = async () => {
         try {
-            const res = await api.get('admin/salaries');
+            const res = await api.get('/salaries');
             return res.data;
         } catch (e) {
             return [];
@@ -33,8 +32,8 @@ export const useAdmin = () => {
 
     const getAllCompetences = async () => {
         try {
-            const res = await api.get('admin/competences');
-            return res.data;
+            const res = await api.get('/competences');
+            return res.data.competences;
         } catch (e) {
             return [];
         }
@@ -42,7 +41,7 @@ export const useAdmin = () => {
 
     const createCompetence = async (data) => {
         try {
-            await api.post('admin/competences', data);
+            await api.post('/competences', data);
             return true;
         } catch (e) {
             return false;
@@ -51,7 +50,7 @@ export const useAdmin = () => {
 
     const updateCompetence = async (id, data) => {
         try {
-            await api.put(`admin/competences/${id}`, data);
+            await api.put(`/competences/${id}`, data);
             return true;
         } catch (e) {
             return false;
@@ -60,7 +59,7 @@ export const useAdmin = () => {
 
     const deleteCompetence = async (id) => {
         try {
-            await api.delete(`admin/competences/${id}`);
+            await api.delete(`/competences/${id}`);
             return true;
         } catch (e) {
             return false;

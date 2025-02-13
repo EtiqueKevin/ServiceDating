@@ -26,6 +26,7 @@ interface GestionServiceInterface
     public function createCompetence(InputCompetenceDTO $competence): void;
     public function updateCompetence(InputCompetenceDTO $competence): void;
     public function deleteCompetence(string $id): void;
-    
+    public function getSalaries(): array;
+
 
 }

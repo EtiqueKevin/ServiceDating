@@ -18,6 +18,18 @@ return [
     },
 
     'client_auth' => function (ContainerInterface $c){
-        return new Client(['base_uri' => 'http://db.auth.servicedating:80']);
+        return new Client(['base_uri' => 'http://api.auth.servicedating:80']);
+    },
+
+    GeneriqueOptimisationAction::class => function (ContainerInterface $c){
+        return new GeneriqueOptimisationAction($c->get('client_optimisation'));
+    },
+
+    GeneriqueGestionAction::class => function (ContainerInterface $c){
+        return new GeneriqueGestionAction($c->get('client_gestion'));
+    },
+
+    GeneriqueAuthAction::class => function (ContainerInterface $c){
+        return new GeneriqueAuthAction($c->get('client_auth'));
     },
 ];

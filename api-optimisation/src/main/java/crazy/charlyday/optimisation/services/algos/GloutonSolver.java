@@ -17,12 +17,16 @@ public class GloutonSolver implements Solver {
     int bestAssignationsScore = 0;
     DatingProblem problem;
 
+    double timeout = 3000;
+    double startTime = 0;
+
     @Override
     public DatingSolution compute(DatingProblem datingProblem) {
         bestAssignations.clear();
         assignations.clear();
         besoins.clear();
         bestAssignationsScore = 0;
+        startTime = System.currentTimeMillis();
 
         problem = datingProblem;
         salaries = datingProblem.salaries();
@@ -37,6 +41,8 @@ public class GloutonSolver implements Solver {
     }
 
     void assignSalaries(int index) {
+        if(System.currentTimeMillis() - startTime > timeout) return;
+
         if (index == besoins.size()) {
             int score = ScoreCalculator.computeScore(problem, new DatingSolution(0, new LinkedHashMap<>(assignations))).score();
 

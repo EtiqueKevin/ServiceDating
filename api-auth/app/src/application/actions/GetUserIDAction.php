@@ -6,6 +6,7 @@ use apiAuth\application\providers\auth\AuthProviderInterface;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Exception\HttpBadRequestException;
 
 class GetUserIDAction extends AbstractAction
 {
@@ -22,7 +23,7 @@ class GetUserIDAction extends AbstractAction
             $tokenstring = sscanf($headers[0], "Bearer %s")[0];
             $userID = $this->authProvider->getUserID($tokenstring);
         }catch (Exception $e){
-            throw new HttpBadRequestException($rq,"erreur lors de la récupération de l'id");
+            throw new HttpBadRequestException($rq,"erreur lors de la récupération de l'id" . $e->getMessage());
         }
         $response = [
             'type' => 'ressource',
