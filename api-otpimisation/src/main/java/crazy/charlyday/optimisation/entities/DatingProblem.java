@@ -57,21 +57,4 @@ public record DatingProblem(List<Client> clients, List<Salarie> salaries) {
 
         return new DatingProblem(clients, salaries);
     }
-
-    public String toCsv() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("besoins;;;\n");
-        for (Client client : clients) {
-            for (Besoin besoin : client.besoins()) {
-                sb.append(client.name()).append(";").append(besoin.skillCSV()).append("\n");
-            }
-        }
-        sb.append("competences;;;\n");
-        for (Salarie salarie : salaries) {
-            for (Map.Entry<SkillType, Integer> entry : salarie.competences().entrySet()) {
-                sb.append(salarie.name()).append(";").append(entry.getKey()).append(";").append(entry.getValue()).append("\n");
-            }
-        }
-        return sb.toString();
-    }
 }

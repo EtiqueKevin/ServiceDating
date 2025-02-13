@@ -7,9 +7,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public record DatingSolution(int score, Map<Salarie, Besoin> assignations) {
+public record DatingSolution(int score, LinkedHashMap<Salarie, Besoin> assignations) {
     public static DatingSolution fromCsv(String filePath) throws IOException {
-        Map<Salarie, Besoin> matches = new LinkedHashMap<>();
+        LinkedHashMap<Salarie, Besoin> matches = new LinkedHashMap<>();
         List<String> lines = Files.readAllLines(Paths.get(filePath));
 
         // Récupérer la première ligne pour le score
@@ -32,12 +32,16 @@ public record DatingSolution(int score, Map<Salarie, Besoin> assignations) {
 
     public String toCsv() {
         StringBuilder sb = new StringBuilder();
-        sb.append(score).append("\n");
-        assignations.forEach((salarie, besoin) -> {
-            sb.append(besoin.client()).append(";")
-                    .append(besoin.skillCSV())
-                    .append(salarie.name()).append("\n");
-        });
+        sb.append(score).append(";\n");
+
+        for (Map.Entry<Salarie, Besoin> entry : assignations.entrySet()) {
+            Salarie salarie = entry.getKey();
+            Besoin besoin = entry.getValue();
+            sb.append(salarie.name()).append(";")
+                .append(besoin.skillCSV())
+                .append(besoin.client()).append(";\n");
+        }
+
         return sb.toString();
     }
 }
