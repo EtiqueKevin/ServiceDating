@@ -2,10 +2,13 @@
 
 namespace gestion\core\services;
 
+use gestion\core\domain\entities\Competence;
 use gestion\core\domain\entities\Utilisateur;
 use gestion\core\dto\AuthUserDTO;
 use gestion\core\dto\BesoinDTO;
+use gestion\core\dto\CompetenceDTO;
 use gestion\core\dto\InputBesoinDTO;
+use gestion\core\dto\InputCompetenceDTO;
 use gestion\core\dto\InputCompetenceSalarie;
 use gestion\core\dto\InputPutBesoinDTO;
 use gestion\core\dto\InputUtilisateurDTO;

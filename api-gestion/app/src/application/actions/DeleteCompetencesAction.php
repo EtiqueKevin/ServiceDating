@@ -2,12 +2,11 @@
 
 namespace gestion\application\actions;
 
-use gestion\core\domain\entities\InputBesoinDTO;
 use gestion\core\services\GestionServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class PostCompetencesAction extends AbstractAction
+class DeleteCompetencesAction extends AbstractAction
 {
     private GestionServiceInterface $gestionService;
 
@@ -20,7 +19,7 @@ class PostCompetencesAction extends AbstractAction
     {
         $competenceId = $args['id'];
 
-        $updatedCompetence = $this->competenceService->deleteCompetence($competenceId);
+        $this->gestionService->deleteCompetence($competenceId);
 
         return $rs->withHeader('Content-Type', 'application/json')->withStatus(201);
     }

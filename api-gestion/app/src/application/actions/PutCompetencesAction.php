@@ -3,6 +3,7 @@
 namespace gestion\application\actions;
 
 use gestion\core\domain\entities\InputBesoinDTO;
+use gestion\core\dto\InputCompetenceDTO;
 use gestion\core\services\GestionServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -21,11 +22,11 @@ class PutCompetencesAction extends AbstractAction
         $competenceId = $args['id'];
         $body = $rq->getParsedBody();
 
-        $inputCompetenceDTO = new InputCompetenceDTO($parsedBody['name'], $parsedBody['description']);
+        $inputCompetenceDTO = new InputCompetenceDTO($body['name'], $body['description']);
 
         $inputCompetenceDTO->setId($competenceId);
 
-        $updatedCompetence = $this->competenceService->updateCompetence($competenceDTO);
+        $this->gestionService->updateCompetence($inputCompetenceDTO);
 
         return $rs->withHeader('Content-Type', 'application/json')->withStatus(201);
     }
