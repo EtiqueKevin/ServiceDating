@@ -25,6 +25,8 @@ const fetchBesoins = async () => {
     besoins.value = data;
     totalPages.value = pages;
     currentPage.value = page;
+
+    console.log("Total Pages:", totalPages.value, "Besoins:", besoins.value.length);
   } catch (error) {
     console.error(error);
     toast.error("Erreur lors de la récupération des besoins.");
@@ -55,7 +57,7 @@ const handleEditClick = (besoin) => {
 
 const handleSuccess = async () => {
   showEditModal.value = false;
-  fetchBesoins();
+  await fetchBesoins();
   toast.success('Besoin mis à jour avec succès');
 };
 
@@ -136,7 +138,7 @@ onMounted(fetchBesoins);
       </div>
     </div>
 
-    <div class="pagination" v-if="totalPages > 1">
+    <div class="pagination" v-if="totalPages >= 1">
       <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Précédent</button>
       <span>Page {{ currentPage }} sur {{ totalPages }}</span>
       <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Suivant</button>
