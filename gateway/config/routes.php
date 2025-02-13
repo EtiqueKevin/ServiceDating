@@ -22,9 +22,9 @@ return function(App $app): App {
     * Routes de l'API optimisation
     *************************/
 
-    $app->post('/affectations[/]', GeneriqueOptimisationAction::class);
     $app->post('/affectations/glouton[/]', GeneriqueOptimisationAction::class);
     $app->post('/affectations/random[/]', GeneriqueOptimisationAction::class);
+    $app->post('/affectations[/]', GeneriqueOptimisationAction::class);
 
     /*************************
     * Routes de l'API

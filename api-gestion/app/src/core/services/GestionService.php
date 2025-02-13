@@ -196,12 +196,13 @@ class GestionService implements GestionServiceInterface
             $competencesUser = $this->gestionRepository->getCompetencesByClient($clients);
             $competencesUserRetour = [];
             foreach ($competencesUser as $c) {
+                $client = $this->gestionRepository->getUserById($c["id_user"]);
                 $competencesTabDTO = [];
                 foreach ($c["competences"] as $comp) {
                     $competencesTabDTO[] = $comp->toDTO();
                 }
                 $competencesUserRetour[] = [
-                    "id_user" => $c["id_user"],
+                    "user" => $client->toDTO(),
                     "competences" => $competencesTabDTO
                 ];
 
