@@ -84,9 +84,10 @@ onMounted(async () => {
           </div>
         </div>
         <div class="card-footer">
-                    <span :class="['status-badge', `status-${besoin.status}`]">
-                        {{ getStatusLabel(besoin.status) }}
-                    </span>
+          <span :class="['status-badge', `status-${besoin.status}`]">
+            {{ getStatusLabel(besoin.status) }}
+          </span>
+          <button class="edit-button">Modifier</button>
         </div>
       </div>
     </div>
@@ -98,7 +99,7 @@ onMounted(async () => {
   width: 80%;
   margin: 0 auto;
   height: 100%;
-  overflow-y: scroll;
+  overflow: auto;
 }
 
 h1 {
@@ -217,6 +218,32 @@ h3 {
   border-radius: 1rem;
   font-size: 0.875rem;
   font-weight: 500;
+}
+
+.status-0 {
+  background: #ffeeba;
+  color: #856404;
+}
+
+.status-1 {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-2 {
+  background: #d4edda;
+  color: #155724;
+}
+
+.edit-button {
+  margin: 0;
+  padding: 0.5rem 1rem;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 
