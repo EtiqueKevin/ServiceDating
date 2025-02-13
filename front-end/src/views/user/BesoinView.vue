@@ -91,7 +91,7 @@ onMounted(fetchBesoins());
       </select>
     </div>
 
-    <div v-else-if="filteredBesoins.length === 0" class="empty-state">
+    <div v-else-if="besoins.length === 0" class="empty-state">
       Aucun besoin trouvé
     </div>
 
