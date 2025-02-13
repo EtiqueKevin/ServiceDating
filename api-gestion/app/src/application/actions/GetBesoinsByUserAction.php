@@ -20,7 +20,7 @@ class GetBesoinsByUserAction extends AbstractAction
         $limit = $rq->getQueryParams()['limit'] ?? null;
         $offset = $rq->getQueryParams()['offset'] ?? null;
         $id = $rq->getAttribute('idUser');
-        $besoins = $this->gestion_service->getBesoinsByUser($id);
+        $besoins = $this->gestion_service->getBesoinsByUser($id, $limit, $offset);
 
         $res = [
             'type' => 'ressources',
