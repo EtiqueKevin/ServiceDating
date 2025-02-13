@@ -73,8 +73,18 @@ Et une image aussi :
 
 ### IA ###
 
-Pour commencer la partie IA, nous devions d'abord convertir les fichiers CSV en objet java pour pouvoir les manipuler plus facilement et pour que ce soit compatible avec l'API.
-Pour sela, nous avons implémenté les méthodes toCsv et fromCsv dans les classes DatingProblem et DatingSolution avec les tests unitaires qui vont avec.
+Nous avons mis en place un algorithme de backtracking utilisant des heuristiques : 
+
+- La liste des besoins est générée en prenant le premier besoin de chaque personne, puis les seconds... afin de s'assurer que tout les besoins seront satisfaits et réduire les malus
+- Ensuite, le backtracking va essayé toutes les possibilité, pour cela il va remplir les besoins dans l'ordre de la liste. Il va pour ça essayé uniquement des employés possédant la/les compétances ("Besoins aux compétences multiples" à été implémenté) pour la tâche, en commençant par ceux avec le moins de compétances en premier (car ils peuvent être assigné à moins de tâches). En cas d'égalité, c'est l'employé avec les meilleurs compétences qui sera assigné
+- Une fois toutes les besoins remplis ou tout les employés assigné, l'algorithme va dépiler ses choix et en faire de nouveaux pour tenté de s'améliorer
+- L'algorithme s'arrête quand il a essayé toutes les possibilité ou quand il s'est executé pour un temps maximum donné
+
+Nous avons également implémenté un algorithme génétique à l'aide de la librairie ECJ, cet algorithme génère des populations aléatoires et les croises pour tenté de résoudre le problème.
+
+dans le dossier "api-optimisation", le dossier de test permet de lancer les algorithmes sur chaque problèmes donné. Tout les algorithmes implémente une interface. Il faut changer l'algorithme utilisé dans "interfaces/solverFactory" dans les tests
+
+nom du fichier de test : OptiBenchmark
 
 ### API ###
 Pour permettre à l'application d'utiliser les algorithmes de recommandation, nous avons mis en place une API Spring Boot.
