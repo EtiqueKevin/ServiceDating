@@ -52,7 +52,6 @@ const handleSubmit = async () => {
 
         competences.value = await getAllCompetences();
         result.value = await getAffectations(data, selectedMethod.value || '');
-        console.log('Résultat des affectations:', result.value);
     } catch (error) {
         console.error('Erreur lors de la récupération des affectations:', error);
     } finally {
