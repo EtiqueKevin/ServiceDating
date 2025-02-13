@@ -46,6 +46,12 @@ class AuthzMiddleware
                     throw new HttpUnauthorizedException($rq, 'Vous n\'avez pas les droits pour accéder à cette ressource');
                 }
                 break;
+            case 'PostUtilisateur':
+
+                if (!$this->gestion->adminVerification($tokenstring)) {
+                    throw new HttpUnauthorizedException($rq, 'Vous n\'avez pas les droits pour accéder à cette ressource');
+                }
+                break;
             default:
                 throw new HttpUnauthorizedException($rq, 'Route non autorisée');
         }
