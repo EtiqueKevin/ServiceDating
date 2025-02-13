@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use gestion\application\actions\GetBesoinsAdminAction;
 use Slim\App;
 
 return function( App $app): App {

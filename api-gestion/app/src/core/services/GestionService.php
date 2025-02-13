@@ -23,4 +23,14 @@ class GestionService implements GestionServiceInterface
         }
         return $besoinsDTO;
     }
+
+    public function getBesoinsByUser(string $id): array
+    {
+        $besoins = $this->gestionRepository->getBesoinsByUser($id);
+        $besoinsDTO = [];
+        foreach ($besoins as $besoin) {
+            $besoinsDTO[] = $besoin->toDTO();
+        }
+        return $besoinsDTO;
+    }
 }
