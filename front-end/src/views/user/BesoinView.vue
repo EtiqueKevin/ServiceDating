@@ -1,40 +1,21 @@
 <script setup>
-import {computed, onMounted, ref, watch} from "vue";
-import {useBesoin} from "@/services/besoin.js";
-import BesoinForm from '@/components/forms/BesoinForm.vue';
-import { useToast } from 'vue-toastification';
+import { computed, onMounted, ref } from "vue";
+import { useBesoin } from "@/services/besoin.js";
 
-const toast = useToast();
 const besoins = ref([]);
 const filterStatus = ref('all');
-const {getBesoins} = useBesoin();
-const showEditModal = ref(false);
-const selectedBesoin = ref(null);
+const { getBesoins } = useBesoin();
 
-const isLoading = ref(false);
+const isLoading = computed(() => besoins.value === null);
 
 // Pagination
 const currentPage = ref(1);
 const itemsPerPage = ref(5);
-const totalPages = ref(1);
 
-const fetchBesoins = async () => {
-  isLoading.value = true;
-  try {
-    const { besoins: data, totalPages: pages, currentPage: page } = await getBesoins(currentPage.value, itemsPerPage.value, filterStatus.value);
-    besoins.value = data;
-    totalPages.value = pages;
-    currentPage.value = page;
-  } catch (error) {
-    console.error(error);
-    toast.error("Erreur lors de la récupération des besoins.");
-  } finally {
-    isLoading.value = false;
-  }
-};
 const filteredBesoins = computed(() => {
+  if (!besoins.value) return [];
   if (filterStatus.value === 'all') return besoins.value;
-  return besoins.value.filter(besoin => besoin.status === parseInt(filterStatus.value));
+  return besoins.value.filter(b => b.status === parseInt(filterStatus.value));
 });
 
 const paginatedBesoins = computed(() => {
@@ -43,40 +24,38 @@ const paginatedBesoins = computed(() => {
   return filteredBesoins.value.slice(start, end);
 });
 
-watch(filterStatus, () => {
-  currentPage.value = 1;
-  fetchBesoins();
+const totalPages = computed(() => {
+  return Math.ceil(filteredBesoins.value.length / itemsPerPage.value);
 });
 
-const formatDate = (dateString) => new Date(dateString).toLocaleDateString('fr-FR');
+const formatDate = (dateString) => {
+  return new Date(dateString).toLocaleDateString('fr-FR');
+};
 
 const getStatusLabel = (status) => {
   switch (status) {
-    case 0: return 'En attente';
-    case 1: return 'Terminé';
-    default: return 'Inconnu';
+    case 0:
+      return 'En attente';
+    case 1:
+      return 'Terminé';
+    default:
+      return 'Inconnu';
   }
-};
-
-const handleEditClick = (besoin) => {
-  selectedBesoin.value = besoin;
-  showEditModal.value = true;
-};
-
-const handleSuccess = async () => {
-  showEditModal.value = false;
-  await fetchBesoins();
-  toast.success('Besoin mis à jour avec succès');
 };
 
 const goToPage = (page) => {
   if (page >= 1 && page <= totalPages.value) {
     currentPage.value = page;
-    fetchBesoins();
   }
 };
-onMounted(fetchBesoins());
 
+onMounted(async () => {
+  try {
+    besoins.value = await getBesoins();
+  } catch (error) {
+    console.error(error);
+  }
+});
 </script>
 
 <template>
@@ -91,7 +70,12 @@ onMounted(fetchBesoins());
       </select>
     </div>
 
-    <div v-else-if="besoins.length === 0" class="empty-state">
+    <div v-if="isLoading" class="loading">
+      <div class="spinner"></div>
+      <span>Chargement...</span>
+    </div>
+
+    <div v-else-if="filteredBesoins.length === 0" class="empty-state">
       Aucun besoin trouvé
     </div>
 
@@ -122,33 +106,18 @@ onMounted(fetchBesoins());
           <span :class="['status-badge', `status-${besoin.status}`]">
             {{ getStatusLabel(besoin.status) }}
           </span>
-          <button class="edit-button" @click="handleEditClick(besoin)">
-            <i class="fas fa-edit"></i>
-            Modifier
-          </button>
+          <button class="edit-button">Modifier</button>
         </div>
       </div>
     </div>
 
-    <!-- Modal -->
-    <div v-if="showEditModal" class="modal-overlay">
-      <div class="modal-content">
-        <BesoinForm
-            :besoin="selectedBesoin"
-            @success="handleSuccess"
-            @close="showEditModal = false"
-        />
-      </div>
-    </div>
-
     <div class="pagination" v-if="totalPages > 1">
-      <button @click="goToPage(currentPage - 1)">Précédent</button>
+      <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Précédent</button>
       <span>Page {{ currentPage }} sur {{ totalPages }}</span>
-      <button @click="goToPage(currentPage + 1)">Suivant</button>
+      <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Suivant</button>
     </div>
   </div>
 </template>
-
 
 <style scoped>
 .pagination {
@@ -159,15 +128,11 @@ onMounted(fetchBesoins());
 }
 
 .pagination button {
-  margin: 0;
-  padding: 0.5rem 1rem;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  padding: 10px 15px;
+  margin: 0 5px;
   cursor: pointer;
-  transition: background-color 0.2s;
 }
+
 .pagination button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
@@ -184,9 +149,8 @@ onMounted(fetchBesoins());
 }
 
 .besoins-container {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 3rem;
+  width: 80%;
+  margin: 0 auto;
   height: 100%;
   overflow: auto;
 }
@@ -225,8 +189,12 @@ h1 {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .empty-state {
@@ -294,8 +262,6 @@ h3 {
 }
 
 .card-footer {
-  display: flex;
-  justify-content: space-between;
   padding: 1rem;
   border-top: 1px solid #eee;
 }
@@ -333,28 +299,5 @@ h3 {
   transition: background-color 0.2s;
 }
 
-.edit-button:hover {
-  background-color: #217dbb;
-}
 
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background-color: white;
-  border-radius: 8px;
-  max-width: 500px;
-  width: 90%;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
 </style>

@@ -172,37 +172,6 @@ class PDOGestionRepository implements GestionRepositoryInterface
         }
     }
 
-    public function getBesoinsByUserWithPagination(string $id, int $page, int $limit): array
-    {
-        try {
-            $offset = ($page - 1) * $limit;
-
-            $stmt = $this->pdo->prepare('SELECT * FROM besoins WHERE client_id = ? LIMIT ? OFFSET ?');
-            $stmt->bindParam(1, $id);
-            $stmt->bindParam(2, $limit);
-            $stmt->bindParam(3, $offset);
-            $stmt->execute();
-            $data = $stmt->fetchAll();
-
-        } catch (\Exception $e) {
-            throw new GestionRepositoryNotFoundException('Aucun besoin trouvé');
-        }
-
-        try {
-            $besoins = [];
-            foreach ($data as $besoin) {
-                $utilisateur = $this->getUserById($besoin['client_id']);
-                $competence = $this->getCompetenceById($besoin['competence_id']);
-                $besoinEntity = new Besoin($utilisateur, $competence, $besoin['description'], $besoin['status'], $besoin['date_init_besoin']);
-                $besoinEntity->setId($besoin['besoin_id']);
-                $besoins[] = $besoinEntity;
-            }
-            return $besoins;
-        } catch (Exception) {
-            throw new GestionRepositoryException('Erreur lors de la récupération des besoins');
-        }
-    }
-
 
     public function creerBesoin(string $id, string $competence_id, string $description): Besoin
     {
