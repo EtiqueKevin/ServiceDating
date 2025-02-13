@@ -32,6 +32,16 @@ const fetchBesoins = async () => {
     isLoading.value = false;
   }
 };
+const filteredBesoins = computed(() => {
+  if (filterStatus.value === 'all') return besoins.value;
+  return besoins.value.filter(besoin => besoin.status === parseInt(filterStatus.value));
+});
+
+const paginatedBesoins = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
+  return filteredBesoins.value.slice(start, end);
+});
 
 watch(filterStatus, () => {
   currentPage.value = 1;
@@ -65,13 +75,8 @@ const goToPage = (page) => {
     fetchBesoins();
   }
 };
-onMounted(async () => {
-  try {
-    await fetchBesoins();
-  } catch (error) {
-    console.error(error);
-  }
-});
+onMounted(fetchBesoins());
+
 </script>
 
 <template>
@@ -142,9 +147,9 @@ onMounted(async () => {
     </div>
 
     <div class="pagination" v-if="totalPages > 1">
-      <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Précédent</button>
+      <button @click="goToPage(currentPage - 1)">Précédent</button>
       <span>Page {{ currentPage }} sur {{ totalPages }}</span>
-      <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Suivant</button>
+      <button @click="goToPage(currentPage + 1)">Suivant</button>
     </div>
   </div>
 </template>
