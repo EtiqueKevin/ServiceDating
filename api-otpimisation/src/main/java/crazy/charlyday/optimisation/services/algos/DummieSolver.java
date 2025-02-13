@@ -1,4 +1,4 @@
-package crazy.charlyday.optimisation.interfaces.algos;
+package crazy.charlyday.optimisation.services.algos;
 
 import crazy.charlyday.optimisation.entities.Besoin;
 import crazy.charlyday.optimisation.entities.DatingProblem;

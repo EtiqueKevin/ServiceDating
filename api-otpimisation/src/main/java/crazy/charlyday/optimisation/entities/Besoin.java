@@ -1,3 +1,3 @@
 package crazy.charlyday.optimisation.entities;
 
-public record Besoin(Client client, SkillType skill) {}
+public record Besoin(String client, SkillType skill) {}

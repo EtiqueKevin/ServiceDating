@@ -1,6 +1,7 @@
 package crazy.charlyday.optimisation.interfaces;
 
-import crazy.charlyday.optimisation.interfaces.algos.DummieSolver;
+import crazy.charlyday.optimisation.services.ScoreCalculator;
+import crazy.charlyday.optimisation.services.algos.DummieSolver;
 
 public class SolverFactory {
     public static Solver getSolver() {

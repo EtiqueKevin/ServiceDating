@@ -1,7 +1,8 @@
-package crazy.charlyday.optimisation.interfaces;
+package crazy.charlyday.optimisation.services;
 
 import crazy.charlyday.optimisation.entities.DatingProblem;
 import crazy.charlyday.optimisation.entities.DatingSolution;
+import crazy.charlyday.optimisation.interfaces.Solver;
 
 public class ScoreCalculator implements Solver {
 
