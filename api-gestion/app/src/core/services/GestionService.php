@@ -153,4 +153,14 @@ class GestionService implements GestionServiceInterface
         }
     }
 
+    public function adminVerification(string $token): bool
+    {
+        $roleStr = $this->authRepository->RecuperationRoleUser($token);
+        $role = intval($roleStr);
+        if ($role === 100) {
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

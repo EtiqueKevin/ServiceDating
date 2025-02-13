@@ -12,4 +12,6 @@ interface AuthProviderInterface
     public function getSignIn(string $token): UserDTO;
 
     public function getUserID(string $token): string;
+
+    public function getUserRole(string $token): string;
 }
