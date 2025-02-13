@@ -5,6 +5,7 @@ use gestion\application\actions\GetBesoinsAdminAction;
 use gestion\application\actions\GetBesoinsByUserAction;
 use gestion\application\actions\PostBesoinAction;
 use gestion\application\actions\PostUtilisateurAction;
+use gestion\core\repositoryInterface\AuthRepositoryInterface;
 
 use gestion\application\actions\GetCompetencesAction;
 use gestion\application\actions\GetCompetencesByIdAction;
@@ -16,6 +17,7 @@ use gestion\core\repositoryInterface\GestionRepositoryInterface;
 use gestion\core\services\GestionService;
 use gestion\core\services\GestionServiceInterface;
 use gestion\infrastructure\repository\PDOGestionRepository;
+use gestion\infrastructure\adaptater\AdaptaterAuthRepository;
 use Psr\Container\ContainerInterface;
 
 return [
@@ -26,6 +28,10 @@ return [
         $user = $config['username'];
         $password = $config['password'];
         return new \PDO($dsn, $user, $password, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
+    },
+
+    AuthRepositoryInterface::class => function(ContainerInterface $container) {
+        return new AdaptaterAuthRepository($container->get('client_auth'));
     },
 
     GetBesoinsAdminAction::class => function(ContainerInterface $container) {
@@ -65,7 +71,7 @@ return [
     },
 
     GestionServiceInterface::class => function(ContainerInterface $container) {
-        return new GestionService($container->get(GestionRepositoryInterface::class));
+        return new GestionService($container->get(GestionRepositoryInterface::class), $container->get(AuthRepositoryInterface::class));
     },
 
     GestionRepositoryInterface::class => function(ContainerInterface $container) {

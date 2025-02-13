@@ -6,10 +6,10 @@ use gestion\core\domain\entities\Utilisateur;
 
 class InputUtilisateurDTO extends DTO
 {
-    private string $id;
-    private string $name;
-    private string $surname;
-    private string $phone;
+    protected string $id;
+    protected string $name;
+    protected string $surname;
+    protected string $phone;
 
     public function __construct(string $id, string $name, string $surname, string $phone) {
         $this->id = $id;
