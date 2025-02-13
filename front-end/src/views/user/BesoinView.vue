@@ -26,7 +26,6 @@ const filteredBesoins = computed(() => {
 
 
 const fetchBesoins = async () => {
-  isLoading.value = true;
   try {
     const { besoins: data, totalPages: pages, currentPage: page } = await getBesoins(currentPage.value, itemsPerPage.value);
     besoins.value = data;
@@ -34,8 +33,6 @@ const fetchBesoins = async () => {
     currentPage.value = page;
   } catch (error) {
     console.error(error);
-  } finally {
-    isLoading.value = false;
   }
 };
 
