@@ -22,7 +22,9 @@ return function(App $app): App {
     * Routes de l'API optimisation
     *************************/
 
-
+    $app->post('/affections[/]', GeneriqueOptimisationAction::class);
+    $app->post('/affections/glouton[/]', GeneriqueOptimisationAction::class);
+    $app->post('/affections/random[/]', GeneriqueOptimisationAction::class);
 
     /*************************
     * Routes de l'API
@@ -44,8 +46,6 @@ return function(App $app): App {
 
     // Utilisateur routes
     $app->post('/utilisateur[/]', GeneriqueGestionAction::class);
-
-
 
     /*************************
     * Routes de l'API Auth

@@ -14,7 +14,7 @@ export const useAdmin = () => {
 
     const createSalarie = async (data) => {
         try {
-            await api.post('/salaries', data);
+            await api.post('/utilisateur', data);
             return true;
         } catch (e) {
             return false;
@@ -24,7 +24,7 @@ export const useAdmin = () => {
     const getAllSalaries = async () => {
         try {
             const res = await api.get('/salaries');
-            return res.data;
+            return res.data.salaries;
         } catch (e) {
             return [];
         }
@@ -66,5 +66,14 @@ export const useAdmin = () => {
         }
     }
 
-    return { getAllBesoins, createSalarie, getAllSalaries, getAllCompetences, createCompetence, updateCompetence, deleteCompetence };
+    const getAffections = async (data, methode) => {
+        try {
+            const res = await api.post('/affections/'+methode, data);
+            return res.data;
+        } catch (e) {
+            return [];
+        }
+    }
+
+    return { getAllBesoins, createSalarie, getAllSalaries, getAllCompetences, createCompetence, updateCompetence, deleteCompetence, getAffections };
 }
