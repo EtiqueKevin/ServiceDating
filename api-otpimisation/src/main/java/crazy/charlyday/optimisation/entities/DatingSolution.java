@@ -3,14 +3,13 @@ package crazy.charlyday.optimisation.entities;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public record DatingSolution(int score, Map<Salarie, Besoin> assignations) {
     public static DatingSolution fromCsv(String filePath) throws IOException {
-        Map<Salarie, Besoin> matches = new HashMap<>();
+        Map<Salarie, Besoin> matches = new LinkedHashMap<>();
         List<String> lines = Files.readAllLines(Paths.get(filePath));
 
         // Récupérer la première ligne pour le score
