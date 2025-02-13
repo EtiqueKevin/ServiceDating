@@ -1,3 +1,5 @@
 package crazy.charlyday.optimisation.entities;
 
-public record Besoin(String client, SkillType skill) {}
+import java.util.List;
+
+public record Besoin(String client, List<SkillType> skills) {}

@@ -1,18 +1,15 @@
 package crazy.charlyday.optimisation.services.score;
 
-import crazy.charlyday.optimisation.entities.Besoin;
 import crazy.charlyday.optimisation.entities.DatingProblem;
 import crazy.charlyday.optimisation.entities.DatingSolution;
+import crazy.charlyday.optimisation.entities.Salarie;
 
-import java.util.HashSet;
-
-public class UniqueSalarieConstraint implements ScoreFunction {
+public class EveryoneWorkConstraint implements ScoreFunction {
+    @Override
     public int getScore(DatingProblem problem, DatingSolution solution, int currentScore) {
-        HashSet<Besoin> seen = new HashSet<>();
-
-        for (Besoin besoin : solution.assignations().values()) {
-            if (!seen.add(besoin)) {
-                return -1000000;
+        for(Salarie salarie : problem.salaries()) {
+            if(!solution.assignations().containsKey(salarie)) {
+                currentScore -= 10;
             }
         }
 
