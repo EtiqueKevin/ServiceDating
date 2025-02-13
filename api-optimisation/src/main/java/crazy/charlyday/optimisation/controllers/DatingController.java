@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import static crazy.charlyday.optimisation.interfaces.Solvers.*;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/affectations")
 public class DatingController {
