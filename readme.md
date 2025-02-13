@@ -283,3 +283,22 @@ Voici uniquement les routes exposées.
 
 > [!WARNING]
 > il faut etre connecté en tant qu'Admin
+
+## Partie déploiment
+
+### Déploiment
+
+Le déploiment est fait sur un serveur personnel, avec une redirection faite avec un nom de domaine lui aussi personel.
+
+- URL déploillé :
+    - http://servicedating.paul-bruson.fr/
+    - http://servicedating.gateway.paul-bruson.fr/
+    - http://servicedating.optimisation.paul-bruson.fr/
+
+### Dificulté
+
+- Tantative de mettre le site en https avec un certificat ssl mais le frontend qui était en https faisait appelle à des url en http ce qui causait des erreur 
+- Problème de Cors et de connection entre le frontend et la gateway
+
+### Docker
+Création de Dockerfile et d'un docker compose personalisé
