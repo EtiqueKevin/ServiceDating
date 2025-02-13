@@ -5,6 +5,7 @@ namespace gestion\infrastructure\repository;
 use gestion\core\domain\entities\Besoin;
 use gestion\core\domain\entities\Competence;
 use gestion\core\domain\entities\Utilisateur;
+use gestion\core\dto\InputCompetenceSalarie;
 use gestion\core\repositoryInterface\GestionRepositoryException;
 use gestion\core\repositoryInterface\GestionRepositoryInterface;
 use gestion\core\repositoryInterface\GestionRepositoryNotFoundException;
@@ -104,4 +105,41 @@ class PDOGestionRepository implements GestionRepositoryInterface
             throw new GestionRepositoryException('Erreur lors de la récupération des besoins');
         }
     }
+
+    public function saveUtilisateur(Utilisateur $utilisateur):void{
+        $name = $utilisateur->name;
+        $surname = $utilisateur->surname;
+        $phone = $utilisateur->phone;
+        $id = $utilisateur->getID();
+
+        $stmt = $this->pdo->prepare('INSERT INTO "utilisateurs" ("id","name","surname","phone" ) VALUES (?, ?, ?, ?)');
+
+        $stmt->bindParam(1, $id);
+        $stmt->bindParam(2, $name);
+        $stmt->bindParam(3, $surname);
+        $stmt->bindParam(4, $phone);
+        $stmt->execute();
+    }
+
+    public function associationSalarieCompetence( string $idS, array $tabC):void{
+        $idSalarie = $idS;
+        $tab = $tabC;
+
+        foreach ($tab as $competence) {
+            $idCompetence = $competence->id;
+            $interest = $competence->interest;
+            try{
+                $stmt = $this->pdo->prepare('INSERT INTO "salaries_competences" ("salarie_id","competence_id","interest" ) VALUES (?, ?, ?)');
+
+                $stmt->bindParam(1, $idSalarie);
+                $stmt->bindParam(2, $idCompetence);
+                $stmt->bindParam(3, $interest);
+                $stmt->execute();
+            }catch (\Exception $e){
+                throw new GestionRepositoryException($e->getMessage());
+            }
+
+        }
+    }
+
 }

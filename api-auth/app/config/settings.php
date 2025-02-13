@@ -21,7 +21,7 @@ return  [
         return $log;
     },
 
-    'auth.jeancademydb.pdo' => function (ContainerInterface $c) {
+    'auth.pdo' => function (ContainerInterface $c) {
         $config = parse_ini_file('iniconf/auth.db.ini');
         $dsn = "{$config['driver']}:host={$config['host']};port={$config['port']};dbname={$config['database']};";
         $user = $config['username'];
@@ -29,8 +29,8 @@ return  [
         return new \PDO($dsn, $user, $password, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
     },
 
-    'client_utilisateur' => function (ContainerInterface $c){
-        return new Client(['base_uri' => 'http://api.utilisateur.jeancademie:8889']);
+    'client_gestion' => function (ContainerInterface $c){
+        return new Client(['base_uri' => 'http://api.gestion:8889']);
     },
 
     'SECRET_KEY' => getenv('JWT_SECRET_KEY'),

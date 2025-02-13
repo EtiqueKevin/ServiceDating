@@ -2,6 +2,11 @@
 
 namespace gestion\core\services;
 
+use gestion\core\domain\entities\Utilisateur;
+use gestion\core\dto\AuthUserDTO;
+use gestion\core\dto\InputCompetenceSalarie;
+use gestion\core\dto\InputUtilisateurDTO;
+use gestion\core\repositoryInterface\AuthRepositoryInterface;
 use gestion\core\repositoryInterface\GestionRepositoryInterface;
 
 class GestionService implements GestionServiceInterface
@@ -9,9 +14,12 @@ class GestionService implements GestionServiceInterface
 
     private GestionRepositoryInterface $gestionRepository;
 
-    public function __construct(GestionRepositoryInterface $gestionRepository)
+    private AuthRepositoryInterface $authRepository;
+
+    public function __construct(GestionRepositoryInterface $gestionRepository, AuthRepositoryInterface $authRepository)
     {
         $this->gestionRepository = $gestionRepository;
+        $this->authRepository = $authRepository;
     }
 
     public function getBesoinsAdmin(): array
@@ -32,5 +40,20 @@ class GestionService implements GestionServiceInterface
             $besoinsDTO[] = $besoin->toDTO();
         }
         return $besoinsDTO;
+    }
+
+    public function createUtilisateur(InputUtilisateurDTO $iud):void{
+        $utilisateur = new Utilisateur($iud->name,$iud->surname,$iud->phone);
+        $utilisateur->setID($iud->id);
+        $this->gestionRepository->saveUtilisateur($utilisateur);
+    }
+
+    public function createAuth(AuthUserDTO $auth):string{
+        $id = $this->authRepository->CreationUserReturnID($auth);
+        return $id;
+    }
+
+    public function associationSalarieCompetence(InputCompetenceSalarie $inputCompetenceSalarie):void{
+        $this->gestionRepository->associationSalarieCompetence($inputCompetenceSalarie->idSalarie,$inputCompetenceSalarie->tabIdCompetences);
     }
 }

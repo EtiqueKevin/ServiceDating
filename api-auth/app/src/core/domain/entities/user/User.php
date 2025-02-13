@@ -12,18 +12,16 @@ class User extends Entity
     protected string $password;
     protected ?string $name;
     protected ?string $surname;
-    protected ?string $linkpic;
-    protected ?string $pseudo;
+    protected ?string $phone;
 
-    public function __construct(string $email, string $password, int $role, ?string $name = null, ?string $surname = null, ?string $linkpic = null, ?string $pseudo = null)
+    public function __construct(string $email, string $password, int $role, ?string $name = null, ?string $surname = null, ?string $phone = null)
     {
         $this->email = $email;
         $this->password = $password;
         $this->role = $role;
         $this->name = $name;
         $this->surname = $surname;
-        $this->linkpic = $linkpic;
-        $this->pseudo = $pseudo;
+        $this->phone = $phone;
     }
 
     public function toDTO(): UserDTO

@@ -4,6 +4,7 @@
 use apiAuth\application\actions\GetUserIDAction;
 use apiAuth\application\actions\RefreshAction;
 use apiAuth\application\actions\RegisterAction;
+use apiAuth\application\actions\RegisterSalarieAction;
 use apiAuth\application\actions\SignInAction;
 use apiAuth\application\actions\ValidateAction;
 use apiAuth\application\providers\auth\AuthProvider;
@@ -22,11 +23,11 @@ use Psr\Container\ContainerInterface;
 return [
 
     AuthRepositoryInterface::class => function (ContainerInterface $container) {
-        return new  PDOAuthRepository( $container->get('auth.jeancademydb.pdo'));
+        return new  PDOAuthRepository( $container->get('auth.pdo'));
     },
 
     UtilisateurRepositoryInterface::class => function (ContainerInterface $container) {
-        return new AdaptaterUtilisateurRepository($container->get('client_utilisateur'));
+        return new AdaptaterUtilisateurRepository($container->get('client_gestion'));
     },
 
     AuthServiceInterface::class => function(ContainerInterface $c){
@@ -59,6 +60,10 @@ return [
 
     GetUserIDAction::class => function (ContainerInterface $c) {
         return new GetUserIDAction($c->get(AuthProviderInterface::class));
+    },
+
+    RegisterSalarieAction::class => function (ContainerInterface $c) {
+        return new RegisterSalarieAction($c->get(UserServiceInterface::class));
     },
 
     JWTManager::class => function(ContainerInterface $c){

@@ -8,18 +8,15 @@ class InputUserDTO extends DTO
 {
     protected string $email;
     protected string $password;
-    protected string $name;
-    protected string $surname;
-    protected ?string $pseudo;
-    protected string $linkpic;
+    protected ?string $name;
+    protected ?string $surname;
+    protected ?string $phono;
 
-    public function __construct(string $email, string $password, string $name, string $surname, string $linkpic, ?string $pseudo) {
+    public function __construct(string $email, string $password, ?string $name = null, ?string $surname = null, ?string $phone = null) {
         $this->email = $email;
         $this->password = $password;
         $this->name = $name;
         $this->surname = $surname;
-        $this->linkpic = $linkpic;
-        $this->pseudo = $pseudo;
-
+        $this->phono = $phone;
     }
 }
