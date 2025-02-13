@@ -9,6 +9,7 @@ import crazy.charlyday.optimisation.mappers.DatingSolutionMapper;
 import crazy.charlyday.optimisation.services.ScoreCalculator;
 import crazy.charlyday.optimisation.services.algos.GloutonSolver;
 import crazy.charlyday.optimisation.services.algos.RandomSolver;
+import crazy.charlyday.optimisation.services.algos.ecj.EcjSolver;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -50,6 +51,12 @@ public class DatingController {
         return getSolution(datingProblemDto, timeout, RANDOM);
     }
 
+    @CrossOrigin
+    @PostMapping(value = {"/evolution/{timeout}", "/evolution"})
+    public DatingSolutionDto getDatingSolutionEvolution(@RequestBody DatingProblemDto datingProblemDto, @PathVariable(required = false) Integer timeout) {
+        return getSolution(datingProblemDto, timeout, EVOLUTION);
+    }
+
     public DatingSolutionDto getSolution(DatingProblemDto datingProblemDto, Integer timeout, Solvers solver){
         if (timeout == null) {
             timeout = 200;
@@ -58,6 +65,7 @@ public class DatingController {
         Solver actualSolver = switch (solver) {
             case GLOUTON -> new GloutonSolver(timeout);
             case RANDOM -> new RandomSolver(timeout);
+            case EVOLUTION -> new EcjSolver(timeout);
         };
 
         ScoreCalculator calculator = new ScoreCalculator(actualSolver);
