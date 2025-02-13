@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {useBesoin} from "@/services/besoin.js";
 import BesoinForm from '@/components/forms/BesoinForm.vue';
 import { useToast } from 'vue-toastification';
@@ -11,66 +11,52 @@ const {getBesoins} = useBesoin();
 const showEditModal = ref(false);
 const selectedBesoin = ref(null);
 
-const isLoading = computed(() => besoins.value === null);
+const isLoading = ref(false);
 
 // Pagination
 const currentPage = ref(1);
 const itemsPerPage = ref(5);
 const totalPages = ref(1);
 
-const filteredBesoins = computed(() => {
-  if (!besoins.value) return [];
-  if (filterStatus.value === 'all') return besoins.value;
-  return besoins.value.filter(b => b.status === parseInt(filterStatus.value));
-});
-
-
 const fetchBesoins = async () => {
+  isLoading.value = true;
   try {
-    const { besoins: data, totalPages: pages, currentPage: page } = await getBesoins(currentPage.value, itemsPerPage.value);
+    const { besoins: data, totalPages: pages, currentPage: page } = await getBesoins(currentPage.value, itemsPerPage.value, filterStatus.value);
     besoins.value = data;
     totalPages.value = pages;
     currentPage.value = page;
   } catch (error) {
     console.error(error);
+    toast.error("Erreur lors de la récupération des besoins.");
+  } finally {
+    isLoading.value = false;
   }
 };
 
-const paginatedBesoins = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value;
-  const end = start + itemsPerPage.value;
-  return filteredBesoins.value.slice(start, end);
+watch(filterStatus, () => {
+  currentPage.value = 1;
+  fetchBesoins();
 });
 
-watch(filterStatus, fetchBesoins);
-const formatDate = (dateString) => {
-  return new Date(dateString).toLocaleDateString('fr-FR');
-};
+const formatDate = (dateString) => new Date(dateString).toLocaleDateString('fr-FR');
 
 const getStatusLabel = (status) => {
   switch (status) {
-    case 0:
-      return 'En attente';
-    case 1:
-      return 'Terminé';
-    default:
-      return 'Inconnu';
+    case 0: return 'En attente';
+    case 1: return 'Terminé';
+    default: return 'Inconnu';
   }
 };
 
 const handleEditClick = (besoin) => {
-    selectedBesoin.value = besoin;
-    showEditModal.value = true;
+  selectedBesoin.value = besoin;
+  showEditModal.value = true;
 };
 
 const handleSuccess = async () => {
-    showEditModal.value = false;
-    try {
-        await fetchBesoins();
-        toast.success('Besoin mis à jour avec succès');
-    } catch (error) {
-        console.error(error);
-    }
+  showEditModal.value = false;
+  fetchBesoins();
+  toast.success('Besoin mis à jour avec succès');
 };
 
 const goToPage = (page) => {
@@ -80,14 +66,7 @@ const goToPage = (page) => {
   }
 };
 
-onMounted(async () => {
-  try {
-    await fetchBesoins();
-  } catch (error) {
-    console.error(error);
-  }
-});
-
+onMounted(fetchBesoins);
 </script>
 
 <template>
@@ -107,12 +86,12 @@ onMounted(async () => {
       <span>Chargement...</span>
     </div>
 
-    <div v-else-if="filteredBesoins.length === 0" class="empty-state">
+    <div v-else-if="besoins.length === 0" class="empty-state">
       Aucun besoin trouvé
     </div>
 
     <div v-else class="besoins-grid">
-      <div v-for="besoin in paginatedBesoins" :key="besoin.id" class="card">
+      <div v-for="besoin in besoins" :key="besoin.id" class="card"> <!-- ✅ Utilise directement besoins -->
         <div class="card-header">
           <h2>{{ besoin.competence.nom }}</h2>
         </div>
@@ -150,9 +129,9 @@ onMounted(async () => {
     <div v-if="showEditModal" class="modal-overlay">
       <div class="modal-content">
         <BesoinForm
-          :besoin="selectedBesoin"
-          @success="handleSuccess"
-          @close="showEditModal = false"
+            :besoin="selectedBesoin"
+            @success="handleSuccess"
+            @close="showEditModal = false"
         />
       </div>
     </div>
@@ -164,6 +143,7 @@ onMounted(async () => {
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .pagination {
