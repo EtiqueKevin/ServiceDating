@@ -21,6 +21,7 @@ const handleSuccess = async () => {
     showEditModal.value = false;
     try {
         salaries.value = await getAllSalaries();
+        competences.value = await getAllCompetences();
         toast.success('Salarié enregistré avec succès');
     } catch (error) {
         console.error(error);
