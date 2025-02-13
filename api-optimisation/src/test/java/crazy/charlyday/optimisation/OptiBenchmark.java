@@ -112,6 +112,7 @@ public class OptiBenchmark {
     int getScore(String inputFile) throws IOException {
         var solution = SolverFactory.getSolver()
                 .compute(DatingProblem.fromCsv(inputFile));
+        //System.out.println(solution);
         return solution.score();
     }
 }
