@@ -61,6 +61,7 @@ return function( App $app): App {
         ->setName('DeleteCompetences');
 
     $app->post('/utilisateur[/]',PostUtilisateurAction::class)
+        ->add(AuthzMiddleware::class)
         ->setName('PostUtilisateur');
 
     $app->get('/competences/clients/{id}[/]', GetCompetencesByClientAction::class)
