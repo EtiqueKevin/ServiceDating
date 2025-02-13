@@ -12,8 +12,8 @@ class CompetenceDTO extends DTO
 
     public function __construct(Competence $competence) {
         $this->id = $competence->id;
-        $this->nom = $competence->nom;
-        $this->description = $competence->description;
+        $this->nom = $competence->getNom();
+        $this->description = $competence->getDescription();
     }
 
     public function jsonSerialize(): array {
