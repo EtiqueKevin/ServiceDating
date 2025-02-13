@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import static crazy.charlyday.optimisation.interfaces.Solvers.*;
 
 @RestController
-@RequestMapping("/dating")
+@RequestMapping("/affectations")
 public class DatingController {
     ScoreCalculator scoreCalculator;
 

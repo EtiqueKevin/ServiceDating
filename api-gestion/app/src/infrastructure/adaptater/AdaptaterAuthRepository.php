@@ -36,7 +36,7 @@ class AdaptaterAuthRepository implements AuthRepositoryInterface
 
     public function RecuperationRoleUser(string $token): string
     {
-        $response = $this->client->post('/token/user/role', [
+        $response = $this->client->get('/token/user/role', [
             'headers' => ['Authorization' => 'Bearer '.$token]
         ]);
 

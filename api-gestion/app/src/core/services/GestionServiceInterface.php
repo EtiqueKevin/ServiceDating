@@ -29,6 +29,7 @@ interface GestionServiceInterface
 
     public function adminVerification(string $token): bool;
     public function getSalaries(): array;
+    public function getCompetencesByClient(): array;
 
 
 }

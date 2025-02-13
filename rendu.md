@@ -6,15 +6,22 @@
 ## Liste des membres ##
 
 - nom / prénom / groupe
-- nom / prénom / groupe
-- nom / prénom / groupe
+- Bruson Paul DWM2
+- Cheklat Ahmed-Massi DACS
+- Etique Kevin DWM2
+- Mellano Louka IL1
+- Naiegon Adrien IL2
+- Netange Clément DWM2
+- Quilliec Amaury DWM2
+- Reveillard Fabio IL1
+
 
 ## URL ##
 
-- des dépôts git
-- de l'application finale
+- git : https://github.com/EtiqueKevin/ServiceDating
+- de l'application finale : http://servicedating.paul-bruson.fr/acceuil
 
-##  Partie application Web##
+##  Partie application Web ##
 
 ### Liste des numéros de fonctionnalités implantées ###
 
@@ -38,10 +45,13 @@ Et une image aussi :
 
 ##  Partie Optimisation ##
 
-Pour cette partie, nous avons suivi l'approche :
 
-- les explications...
-- ...de ce qu'on a fait
+### API ###
+Pour permettre à l'application d'utiliser les algorithmes de recommandation, nous avons mis en place une API Spring Boot.
+Cet API permet d'envoyer en entrée des clients et des salariés et de recevoir en sortie le salarié le plus adapté à chaque client, le tout en format JSON.
+
+![Image de la doc de l'API](images_rendu/illustration_doc_api.png "Doc de l'API")
+
 
 ##  Déploiement ##
 
